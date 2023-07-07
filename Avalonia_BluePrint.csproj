@@ -1,0 +1,142 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	  <PublishAot>true</PublishAot>
+  </PropertyGroup>
+
+	<!--<PropertyGroup>
+    <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+  </PropertyGroup>
+  <ItemGroup>
+    <RdXmlFile Include="Roots.xml" />
+    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="7.0.8" />
+  </ItemGroup>-->
+	
+		
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="BluePrint\Class1.cs" />
+    <Compile Remove="BluePrint\test.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.0" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="BluePrint\Blueprint..cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\BParent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\BP_Line.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Controls\ElTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Controls\TestTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\IJoin\IJoinControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\IJoin\ToastControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\INode\NodeBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\INode\Title.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\AddExecJoin.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\ComboBoxJoin.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\DateJoint .cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\ExecJoin.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\imageJoint.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\MouseJoin.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\SliderJoint.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\TextBoxJoint.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\TextJoint.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Join\ValueText.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\ImageShow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\ImageSplit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\Branch.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\CreateVar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\GetVar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\Print.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\ScriptType.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\sequence.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\ThanEqual.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\ThanGreater.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\ThanLess.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\ThanStrEqual.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="BluePrint\Node\liunx\_StartNode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
