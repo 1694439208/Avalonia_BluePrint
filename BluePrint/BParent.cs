@@ -11,10 +11,11 @@ using 蓝图重制版.BluePrint.INode;
 using 蓝图重制版.BluePrint.Join;
 using 蓝图重制版.BluePrint.Node;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 
 namespace 蓝图重制版.BluePrint
 {
-    public class BParent : Panel
+    public class BParent : Avalonia.Controls.ContentControl
     {
         /// <summary>
         /// 设置节点上下文
@@ -242,7 +243,7 @@ namespace 蓝图重制版.BluePrint
                     }
                     bluePrint.AddLineChildren(bP_Line1);
                     bP_Line1.SetJoin(star, end);
-                    //bP_Line.Invalidate();
+                    bP_Line.InvalidateVisual();
                     //创建完成让他先刷新一下
                     bP_Line1.RefreshDrawBezier();
 
@@ -346,56 +347,54 @@ namespace 蓝图重制版.BluePrint
             };
             return bp;
         }
-        
-        //public override void Render(DrawingContext dc)
-        //{
-            //var rect = this.Bounds;
+
+        public override void Render(DrawingContext dc)
+        {
+            var rect = this.Bounds;
             //base.Render(dc);
+            // new SolidColorBrush(Color.FromRgb(39, 39, 39));
+            //dc.FillRectangle(new SolidColorBrush(Color.FromRgb(39, 39, 39)), rect);
 
-            //using (var brush = XPathColor.CreateBrush(rect, Root.RenderScaling))
-            //{
-            //    using (var brush1 = YPathColor.CreateBrush(rect, Root.RenderScaling))
-            //    {
-            //        //dc.FillRectangle(brush, rect);
+            PathGeometry XPath = new PathGeometry();
+            var xcontext = XPath.Open();
+            PathGeometry YPath = new PathGeometry();
+            var ycontext = YPath.Open();
+            for (int i = 0; i < rect.Height; i++)
+            {
+                if (i % 12 == 0)
+                {
+                    xcontext.BeginFigure(new Point(0, i), false);
+                    xcontext.LineTo(new Point(rect.Width, i));
+                }
+                if (i % 84 == 0)
+                {
+                    ycontext.BeginFigure(new Point(0, i), false);
+                    ycontext.LineTo(new Point(rect.Width, i));
+                }
+            }
 
-            //        PathGeometry XPath = new PathGeometry();
-            //        PathGeometry YPath = new PathGeometry();
-            //        for (int i = 0; i < rect.Height; i++)
-            //        {
-            //            if (i % 12 == 0)
-            //            {
-            //                XPath.BeginFigure(0, i);
-            //                XPath.LineTo(rect.Width, i);
-            //            }
-            //            if (i % 84 == 0)
-            //            {
-            //                YPath.BeginFigure(0, i);
-            //                YPath.LineTo(rect.Width, i);
-            //            }
-            //        }
+            for (int i = 0; i < rect.Width; i++)
+            {
+                if (i % 12 == 0)
+                {
+                    xcontext.BeginFigure(new Point(i, 0), false);
+                    xcontext.LineTo(new Point(i, rect.Width));
+                }
+                if (i % 84 == 0)
+                {
+                    ycontext.BeginFigure(new Point(i, 0), false);
+                    ycontext.LineTo(new Point(i, rect.Width));
+                }
+            }
 
-            //        for (int i = 0; i < rect.Width; i++)
-            //        {
-            //            if (i % 12 == 0)
-            //            {
-            //                XPath.BeginFigure(i, 0);
-            //                XPath.LineTo(i, rect.Width);
-            //            }
-            //            if (i % 84 == 0)
-            //            {
-            //                YPath.BeginFigure(i, 0);
-            //                YPath.LineTo(i, rect.Width);
-            //            }
-            //        }
-
-            //        dc.DrawPath(brush, "1", XPath);
-            //        dc.DrawPath(brush1, "1", YPath);
-            //    }
-            //}
-       // }
-
-        //private ViewFill XPathColor = Color.FromRgba(52, 52, 52, 255);
-        //private ViewFill YPathColor = Color.FromRgba(0, 0, 0, 150);
+            dc.DrawGeometry(null, XPathColor, XPath);
+            dc.DrawGeometry(null, YPathColor, YPath);
+            
+        }
+        readonly IPen XPathColor = new ImmutablePen(Color.FromArgb(255, 52, 52, 52).ToUInt32(), 1d, null, PenLineCap.Round, PenLineJoin.Round);
+        readonly IPen YPathColor = new ImmutablePen(Color.FromArgb(150, 0, 0, 0).ToUInt32(), 1d, null, PenLineCap.Round, PenLineJoin.Round);
+        //private Brush XPathColor = new SolidColorBrush(Color.FromArgb(255,52, 52, 52 )) ;
+        //private Brush YPathColor = new SolidColorBrush(Color.FromArgb(150,0, 0, 0));
 
 
         public BluePrint bluePrint;
@@ -407,6 +406,7 @@ namespace 蓝图重制版.BluePrint
             ClipToBounds = true;
             //base.OnInitialized();
 
+            ///Background = Color.FromRgb(39, 39, 39);
             Background = new SolidColorBrush(Color.FromRgb(39, 39, 39));
             bluePrint = new BluePrint
             {
@@ -424,7 +424,7 @@ namespace 蓝图重制版.BluePrint
             //    MarginLeft = 0f,
             //    MarginTop = 0f,
             //    Children = { bluePrint }
-            //};
+            //};Control
             VisualChildren.Add(bluePrint);
             //添加拖动节点
             MouseJoin = new MouseJoin(this, IJoinControl.NodePosition.Left, this) {
@@ -721,7 +721,7 @@ namespace 蓝图重制版.BluePrint
                                 bP_Line1.SetJoin(a, b);
                                 
                                 bluePrint.AddLineChildren(bP_Line1);
-                                //bP_Line.Invalidate();
+                                bP_Line.InvalidateVisual();
                                 //创建完成让他先刷新一下
                                 bP_Line1.RefreshDrawBezier();
                                 Canvas.SetLeft(bP_Line1, 0);

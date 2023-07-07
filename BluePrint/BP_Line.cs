@@ -13,6 +13,7 @@ using 蓝图重制版.BluePrint.INode;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace 蓝图重制版.BluePrint
 {
@@ -90,6 +91,11 @@ namespace 蓝图重制版.BluePrint
             {
                 return 0; // Point is at the origin
             }
+        }
+        public override void ApplyTemplate()
+        {
+            base.ApplyTemplate();
+            //RefreshDrawBezier();
         }
         /// <summary>
         /// 计算自身尺寸，位置

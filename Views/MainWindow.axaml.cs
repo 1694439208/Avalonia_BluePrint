@@ -78,6 +78,7 @@ namespace Avalonia_BluePrint.Views
                     //bp.bluePrint.AddChildren(line);
                     bp.bluePrint.AddLineChildren(line);
                     line.SetJoin(node._OutPutJoin[0].Item1, node1._IntPutJoin[0].Item1);
+                    //line.RefreshDrawBezier();
                 }
 
             }; ;  
