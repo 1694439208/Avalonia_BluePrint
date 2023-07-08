@@ -229,6 +229,52 @@ namespace 蓝图重制版.BluePrint.Node
         
         protected override void OnInitialized()
         {
+            ContextMenu = new ContextMenu()
+            {
+                //Width = 100,
+            };
+
+            var deljoin = new MenuItem
+            {
+                //Classes = "ContextMenu1",
+                Header = "断开连接",
+            };
+            deljoin.Click += (s, e) => {
+                if (_position == NodePosition.Left)
+                {
+                    var lines = this.bParent.bluePrint.FildIutJoin(this);
+                    foreach (var item in lines)
+                    {
+                        this.bParent.bluePrint.RemoveLine(item);
+
+                    }
+                }
+                else
+                {
+                    var lines = this.bParent.bluePrint.FildOutJoin(this);
+                    foreach (var item in lines)
+                    {
+                        this.bParent.bluePrint.RemoveLine(item);
+
+                    }
+                }
+            };
+            ContextMenu.Items.Add(deljoin);
+            // 创建一个 MenuItem 对象，并将其添加到 ContextMenu 中
+            var menuItem = new MenuItem();
+            menuItem.Header = "操作";
+
+            var delline = new MenuItem
+            {
+                Header = "删除当前节点",
+            };
+            delline.Click += (s, e) => {
+                this.bParent.bluePrint.RemoveNode(_Node);
+                this.bParent.ClearState();
+            };
+            menuItem.Items.Add(delline);
+            ContextMenu.Items.Add(menuItem);
+
             Canvas.SetTop(this,3);
             //Classes = { "IJoinControl"};
             B_Join = new Border
@@ -278,51 +324,10 @@ namespace 蓝图重制版.BluePrint.Node
                 }
                 if (e.InitialPressMouseButton == MouseButton.Right)
                 {
-
-                    ContextMenu = new ContextMenu()
+                    if (ContextMenu!=null)
                     {
-                        //Width = 100,
-                    };
-                    var deljoin = new MenuItem
-                    {
-                        //Classes = "ContextMenu1",
-                        Header = "断开连接",
-                    };
-                    deljoin.Click += (s,e) => {
-                        if (_position == NodePosition.Left)
-                        {
-                            var lines = this.bParent.bluePrint.FildIutJoin(this);
-                            foreach (var item in lines)
-                            {
-                                this.bParent.bluePrint.RemoveLine(item);
-
-                            }
-                        }
-                        else
-                        {
-                            var lines = this.bParent.bluePrint.FildOutJoin(this);
-                            foreach (var item in lines)
-                            {
-                                this.bParent.bluePrint.RemoveLine(item);
-
-                            }
-                        }
-                    };
-                    ContextMenu.Items.Add(deljoin);
-                    // 创建一个 MenuItem 对象，并将其添加到 ContextMenu 中
-                    var menuItem = new MenuItem();
-                    menuItem.Header = "操作";
-
-                    var delline = new MenuItem
-                    {
-                        Header = "删除当前节点",
-                    };
-                    delline.Click += (s,e) =>{
-                        this.bParent.bluePrint.RemoveNode(_Node);
-                        this.bParent.ClearState();
-                    };
-                    menuItem.Items.Add(delline);
-                    ContextMenu.Items.Add(menuItem);
+                        ContextMenu.Open();
+                    }
                 }
             };
             B_StackPanel = new DockPanel

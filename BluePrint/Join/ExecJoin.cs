@@ -13,7 +13,6 @@ using System.Security.Cryptography;
 using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Markup.Xaml;
 
 namespace 蓝图重制版.BluePrint.IJoin
 {
@@ -108,6 +107,7 @@ namespace 蓝图重制版.BluePrint.IJoin
                     var ast = a.Parser(_Node as NodeBase);
                     Runtime.Evaluate.Eval(ast, null);
                     //var code = Runtime.CodeGenerator.Generator(ast);
+
                     //System.Diagnostics.Debug.WriteLine(code);
                     //ToSZArray
 
