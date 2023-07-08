@@ -1,8 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
+using Avalonia_BluePrint;
 using System;
 
-namespace Avalonia_BluePrint
+namespace Avalonia_BluePrint.Desktop
 {
     internal class Program
     {
