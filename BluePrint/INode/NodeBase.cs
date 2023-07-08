@@ -133,12 +133,15 @@ if({arguments[0]} > {arguments[1]}){{
             {
                 //Orientation = Avalonia.Layout.Orientation.Vertical,// Orientation.Vertical,
                 Background = new SolidColorBrush(Colors.Chocolate),
+                //Margin = new Thickness(0,0,5,0)
             };
             stack.Children.Add(InPutIJoin);
             Grid.SetColumn(InPutIJoin, 0);
             OuPutIJoin = new StackPanel
             {
                 Background = new SolidColorBrush(Colors.Bisque),
+                //Margin = new Thickness(5, 0, 0, 0),
+                
                 //Orientation = Avalonia.Layout.Orientation.Vertical,
                 //Width = 200,
                 //HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
@@ -347,8 +350,9 @@ if({arguments[0]} > {arguments[1]}){{
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            base.OnPointerReleased(e);
             e.Handled = true;//吃掉鼠标消息不让他冒泡
+            base.OnPointerReleased(e);
+            
             var point = e.GetCurrentPoint(this);
             if (e.InitialPressMouseButton == MouseButton.Left)
             {
@@ -360,6 +364,28 @@ if({arguments[0]} > {arguments[1]}){{
         private Point Mouxy;
         private bool isclick = false;
 
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            var ret = base.ArrangeOverride(finalSize);
+            //RefreshDrawBezier();
+            //InvalidateVisual();
+            //节点第一次被初始化，先刷新连线
+            foreach (var item in _IntPutJoin)
+            {
+                foreach (var line in bParent.bluePrint.FildIutJoin(item.Item1))
+                {
+                    line.RefreshDrawBezier();
+                }
+            }
+            foreach (var item in _OutPutJoin)
+            {
+                foreach (var line in bParent.bluePrint.FildOutJoin(item.Item1))
+                {
+                    line.RefreshDrawBezier();
+                }
+            }
+            return ret;
+        }
 
         protected override void OnPointerMoved(PointerEventArgs e)
         {

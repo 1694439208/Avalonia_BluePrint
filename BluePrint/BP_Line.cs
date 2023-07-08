@@ -14,6 +14,7 @@ using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 namespace 蓝图重制版.BluePrint
 {
@@ -27,6 +28,7 @@ namespace 蓝图重制版.BluePrint
         
         public override void Render(DrawingContext dc)
         {
+            base.Render(dc);
             if (geometry != null)
             {
                 // 设置抗锯齿模式
@@ -36,11 +38,13 @@ namespace 蓝图重制版.BluePrint
 
 
                 // Get the bounds of the control
-                Rect bounds = new Rect(new Point(0, 0), Bounds.Size);
+                //Rect bounds = new Rect(new Point(0, 0), Bounds.Size);
                 // Fill the background with the control's background color
                 //dc.FillRectangle(Background, bounds);
                 dc.DrawGeometry(null, strokePen, geometry);
-                //Clip = geometry;
+                //Debug.Print(geometry.Figures.Count.ToString());
+                //Dispatcher.UIThread.Post(() => { Clip = geometry; });
+                
             }
         }
         /// <summary>

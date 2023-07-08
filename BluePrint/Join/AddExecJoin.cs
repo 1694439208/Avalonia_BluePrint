@@ -12,7 +12,15 @@ using 蓝图重制版.BluePrint.Node;
 
 namespace 蓝图重制版.BluePrint.IJoin
 {
-    
+    public class AddExecJoinEventArgs : RoutedEventArgs
+    {
+        public DataType.JoinEventType Message { get; set; }
+
+        public AddExecJoinEventArgs(RoutedEvent routedEvent, DataType.JoinEventType message) : base(routedEvent)
+        {
+            Message = message;
+        }
+    }
     public class AddExecJoin : IJoinControl
     {
         public AddExecJoin() : base()
@@ -51,10 +59,10 @@ namespace 蓝图重制版.BluePrint.IJoin
         public Node_Interface_Data title;
 
         public static readonly RoutedEvent<RoutedEventArgs> TapEvent =
-            RoutedEvent.Register<JoinEvent, RoutedEventArgs>(nameof(OnJoinEveTemp), RoutingStrategies.Bubble);
+            RoutedEvent.Register<AddExecJoin, RoutedEventArgs>(nameof(OnJoinEveTemp), RoutingStrategies.Bubble);
 
         // Provide CLR accessors for the event
-        public event EventHandler<RoutedEventArgs> OnJoinEveTemp
+        public event EventHandler<AddExecJoinEventArgs> OnJoinEveTemp
         {
             add => AddHandler(TapEvent, value);
             remove => RemoveHandler(TapEvent, value);
@@ -110,6 +118,7 @@ namespace 蓝图重制版.BluePrint.IJoin
                 IsHitTestVisible = true,
                 Width = 16,
                 Height = 16,
+                Background = Brushes.DarkBlue,
                 //ToolTip = title?.Value,
                 //IsAntiAlias = true,
                 //Fill = "#FFFFFF",
@@ -120,7 +129,7 @@ namespace 蓝图重制版.BluePrint.IJoin
             svg.PointerReleased += (s, e) =>
             {
                 // 触发自定义事件
-                RaiseEvent(new RoutedEventArgs(TapEvent, new DataType.JoinEventType()
+                RaiseEvent(new AddExecJoinEventArgs(TapEvent, new DataType.JoinEventType()
                 {
                     eveType = DataType.EveType.MouseUp,
                     Value = e,

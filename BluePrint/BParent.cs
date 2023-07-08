@@ -13,10 +13,12 @@ using 蓝图重制版.BluePrint.Node;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Controls.Primitives;
+using Avalonia_BluePrint.BluePrint.Controls;
 
 namespace 蓝图重制版.BluePrint
 {
-    public class BParent : Control
+    public class BParent : Panel
     {
         /// <summary>
         /// 设置节点上下文
@@ -349,56 +351,17 @@ namespace 蓝图重制版.BluePrint
             return bp;
         }
 
-        public override void Render(DrawingContext dc)
-        {
-            var rect = this.Bounds;
-            base.Render(dc);
-            // new SolidColorBrush(Color.FromRgb(39, 39, 39));
-            dc.FillRectangle(new SolidColorBrush(Color.FromRgb(255, 255, 255)), rect);
+        //public override void Render(DrawingContext dc)
+        //{
+        //    var rect = this.Bounds;
+        //    base.Render(dc);
+        //    // new SolidColorBrush(Color.FromRgb(39, 39, 39));
+        //    dc.FillRectangle(new SolidColorBrush(Color.FromRgb(255, 255, 255)), rect);
 
-            dc.DrawGeometry(null, XPathColor, XPath);
-            dc.DrawGeometry(null, YPathColor, YPath);
+        //    dc.DrawGeometry(null, XPathColor, XPath);
+        //    dc.DrawGeometry(null, YPathColor, YPath);
 
-        }
-        PathGeometry XPath = new PathGeometry();
-        PathGeometry YPath = new PathGeometry();
-        protected override void ArrangeCore(Rect finalRect)
-        {
-            base.ArrangeCore(finalRect);
-            var rect = finalRect;
-            
-            var xcontext = XPath.Open();
-            var ycontext = YPath.Open();
-            for (int i = 0; i < finalRect.Height; i++)
-            {
-                if (i % 12 == 0)
-                {
-                    xcontext.BeginFigure(new Point(0, i), false);
-                    xcontext.LineTo(new Point(finalRect.Width, i));
-                }
-                if (i % 84 == 0)
-                {
-                    ycontext.BeginFigure(new Point(0, i), false);
-                    ycontext.LineTo(new Point(rect.Width, i));
-                }
-            }
-
-            for (int i = 0; i < rect.Width; i++)
-            {
-                if (i % 12 == 0)
-                {
-                    xcontext.BeginFigure(new Point(i, 0), false);
-                    xcontext.LineTo(new Point(i, rect.Width));
-                }
-                if (i % 84 == 0)
-                {
-                    ycontext.BeginFigure(new Point(i, 0), false);
-                    ycontext.LineTo(new Point(i, rect.Width));
-                }
-            }
-        }
-        readonly IPen XPathColor = new ImmutablePen(Color.FromArgb(255, 52, 52, 52).ToUInt32(), 1d, null, PenLineCap.Round, PenLineJoin.Round);
-        readonly IPen YPathColor = new ImmutablePen(Color.FromArgb(150, 0, 0, 0).ToUInt32(), 1d, null, PenLineCap.Round, PenLineJoin.Round);
+        //}
         //private Brush XPathColor = new SolidColorBrush(Color.FromArgb(255,52, 52, 52 )) ;
         //private Brush YPathColor = new SolidColorBrush(Color.FromArgb(150,0, 0, 0));
 
@@ -413,7 +376,6 @@ namespace 蓝图重制版.BluePrint
             //base.OnInitialized();
 
             ///Background = Color.FromRgb(39, 39, 39);
-            
             bluePrint = new BluePrint
             {
                 //MarginLeft = 0f,
@@ -430,8 +392,10 @@ namespace 蓝图重制版.BluePrint
             //    MarginLeft = 0f,
             //    MarginTop = 0f,
             //    Children = { bluePrint }
-            //};Control
-            VisualChildren.Add(bluePrint);
+            //};ControlbluePrint
+            Children.Add(new GridLinesControl { });
+            
+            Children.Add(bluePrint);
             //添加拖动节点
             MouseJoin = new MouseJoin(this, IJoinControl.NodePosition.Left, this) {
                 //MarginLeft = 0f,
@@ -517,10 +481,11 @@ namespace 蓝图重制版.BluePrint
             //    mousePos = e.Location / scale;
             //    CaptureMouse();
             //}
-            //MousepanelPupopPos.MarginLeft = e.Location.X;
-            //MousepanelPupopPos.MarginTop = e.Location.Y;
+            MousePoint = e.GetPosition(this);//.Location;
+            Canvas.SetLeft(MousepanelPupopPos, MousePoint.X);
+            Canvas.SetTop(MousepanelPupopPos, MousePoint.Y);
         }
-        //Popup popup;
+        
         /// <summary>
         /// 鼠标位置为了弹窗IList, ICollection
         /// </summary>
@@ -536,71 +501,29 @@ namespace 蓝图重制版.BluePrint
                 return _NodeTypes;
             }
         }
-
-        //protected override void OnMouseUp(MouseButtonEventArgs e)
-        //{
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    base.OnMouseUp(e);
-        //    var key = Root.InputManager.KeyboardDevice.Modifiers;
-        //    //Console.WriteLine($"OnMouseUp:\r\n    e.MouseButton:{e.MouseButton}\r\n    key:{key}");
-
-        //    if (e.MouseButton == MouseButton.Right && 
-        //        (key == InputModifiers.Control || key == (InputModifiers.Control | InputModifiers.MiddleMouseButton)))
-        //    {
-        //        //Console.WriteLine($"ReleaseMouseCapture");
-        //        mousePos = null;
-        //        ReleaseMouseCapture();
-        //    }
-        //    if (e.MouseButton == MouseButton.Right && 
-        //        (key == InputModifiers.None || key == (InputModifiers.None | InputModifiers.MiddleMouseButton)))
-        //    {
-        //        //Console.WriteLine($"if (e.MouseButton == MouseButton.Right&& key == InputModifiers.None)");
-        //        if (popup == null)
-        //        {
-        //            //Console.WriteLine($"popup == null");
-        //            popup = new Popup
-        //            {
-        //                PlacementTarget = MousepanelPupopPos,
-        //                Placement = PlacementMode.Padding,
-        //                CanActivate = true,
-        //                StaysOpen = true,
-        //                MarginTop = -10,
-        //                //MarginLeft = -10,
-        //                Background = null,
-                        
-        //                Children =
-        //                {
-        //                    new SearchMenuItem(NodeContextTypes,this),
-        //                },
-        //                Commands = {
-        //                    {nameof(Popup.GotFocus),(s1,e1)=>{
-        //                        //var a = 123;
-        //                        //Debug.WriteLine("获取焦点");
-        //                        //popup.Visibility = Visibility.Visible;
-        //                        //popup.Hide();
-        //                    }},
-        //                    {nameof(Popup.LostFocus),(s1,e1)=>{
-        //                        if (earchStr!=null)
-        //                        {
-        //                            earchStr.Text = "";
-        //                        }
-        //                        popup.Hide();
-        //                        //var a = 123;
-        //                        //popup.Visibility = Visibility.Hidden;
-        //                    }}
-        //                },
-        //            };
-        //            popup.LoadStyleFile("res://蓝图重制版/css/ElementUI1.css");
-        //            popup.LoadStyleFile("res://蓝图重制版/css/icons.css", true);
-        //        }
-        //        Debug.WriteLine($"{popup.Visibility}");
-                
-        //        (popup.Children[0] as SearchMenuItem).close();
-        //        popup.Show();
-        //        //var aa = popup.Focus(NavigationMethod.Click);
-
-        //    }
-        //}
+        public Flyout? popup;
+        protected override void OnPointerReleased(PointerReleasedEventArgs e)
+        {
+            
+            base.OnPointerReleased(e);
+            Console.ForegroundColor = ConsoleColor.Red;
+            if (e.InitialPressMouseButton == MouseButton.Right)
+            {
+                //Console.WriteLine($"if (e.MouseButton == MouseButton.Right&& key == InputModifiers.None)");
+                if (popup == null)
+                {
+                    //Console.WriteLine($"popup == null");
+                    popup = new Flyout
+                    {
+                        Placement = PlacementMode.Pointer,
+                        Content = new SearchMenuItem(NodeContextTypes, this),
+                    };
+                    //this.popup = popup;
+                }
+                popup.ShowAt(this,true);
+                //var aa = popup.Focus(NavigationMethod.Click);
+            }
+        }
         public Hm_Controls.ElTextBox earchStr = null;
         /// <summary>
         /// 清空当前拖放状态
@@ -728,11 +651,13 @@ namespace 蓝图重制版.BluePrint
                                 bP_Line1.SetJoin(a, b);
                                 
                                 bluePrint.AddLineChildren(bP_Line1);
-                                bP_Line.InvalidateVisual();
+                                
                                 //创建完成让他先刷新一下
-                                bP_Line1.RefreshDrawBezier();
+                                
                                 Canvas.SetLeft(bP_Line1, 0);
                                 Canvas.SetTop(bP_Line1, 0);
+                                bP_Line1.RefreshDrawBezier();
+                                bP_Line.InvalidateVisual();
                             }
                             else {
                                 UIElementTool.Toast(bluePrint, "流程只支持一对一", p);
@@ -749,8 +674,11 @@ namespace 蓝图重制版.BluePrint
                                     Width = 1f,
                                     Height = 1f
                                 };
+                                
                                 Canvas.SetLeft(bP_Line1, 0);
                                 Canvas.SetTop(bP_Line1, 0);
+                                bP_Line1.RefreshDrawBezier();
+                                bP_Line.InvalidateVisual();
                                 bluePrint.AddLineChildren(bP_Line1);
                                 bP_Line1.SetJoin(a, b);
                                 ///连上之后，输入禁用操作

@@ -44,7 +44,14 @@ namespace 蓝图重制版.BluePrint.Node
                 UINode.Background = new ImageBrush(_value.bitmap);
             }
             else {
-                UINode.Background = new ImageBrush(new Bitmap(_value.bitmap_path)); ;// $"url({_value.bitmap_path}) no-repeat fill";
+                try
+                {
+                    UINode.Background = new ImageBrush(new Bitmap(_value.bitmap_path)); ;// $"url({_value.bitmap_path}) no-repeat fill";
+                }
+                catch (Exception)
+                {
+                }
+                
             }
         }
         public override Node_Interface_Data Get()

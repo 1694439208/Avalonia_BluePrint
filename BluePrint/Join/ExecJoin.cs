@@ -89,7 +89,7 @@ namespace 蓝图重制版.BluePrint.IJoin
             //};
             b.Child = new Panel
             {
-                Background = Brushes.Aquamarine,
+                Background = Brushes.RoyalBlue,
                 Width = 16,
                 Height = 16,
             };
@@ -98,21 +98,23 @@ namespace 蓝图重制版.BluePrint.IJoin
             {
                 UINode = new Button
                 {
-                    Width = 60f,
-                    Content = "开始执行",
+                    Width = 80f,
+                    Content = "动态执行"
                 };
-                (UINode as Button).Click += (s, e) => {
+                (UINode as Button).Click += (s, e) =>
+                {
                     //(_Node as Context).Execute();
                     var a = new Runtime.NodeParse(bParent);
                     var ast = a.Parser(_Node as NodeBase);
-                    Runtime.Evaluate.Eval(ast,null);
+                    Runtime.Evaluate.Eval(ast, null);
                     //var code = Runtime.CodeGenerator.Generator(ast);
                     //System.Diagnostics.Debug.WriteLine(code);
                     //ToSZArray
 
                     //CPF.Skia.SkiaPdf.CreatePdf(Root,"蓝图.pdf");
                 };
-                
+
+
             }
             base.AddControl(UINode, nodePosition);
         }

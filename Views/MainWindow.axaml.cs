@@ -54,11 +54,17 @@ namespace Avalonia_BluePrint.Views
                 {
                 };
                 bp.bluePrint.AddChildren(node);
+                var node2 = new sequence(bp)
+                {
+                };
+                bp.bluePrint.AddChildren(node2);
+                Canvas.SetLeft(node2, 0);
+                Canvas.SetTop(node2, 0);
                 Canvas.SetLeft(node, 0);
                 Canvas.SetTop(node, 0);
                 int x = 200;
                 int y = 30;
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     x += 100;
                     if (i % 15 == 0)
@@ -81,9 +87,9 @@ namespace Avalonia_BluePrint.Views
                     //line.RefreshDrawBezier();
                 }
 
-            }; ;  
-
+            };
             stackPanel.Children.Add(bp);
+            
 
             this.Content = stackPanel;
 

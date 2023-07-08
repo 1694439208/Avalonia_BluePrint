@@ -1,7 +1,9 @@
 ﻿
 using Avalonia;
+using Avalonia.Automation.Peers;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 using SkiaSharp;
@@ -15,7 +17,7 @@ using static 蓝图重制版.BluePrint.Runtime.Token;
 
 namespace 蓝图重制版.BluePrint.Node
 {
-    public class IJoinControl : Control,BP_IJoin
+    public class IJoinControl : Panel,BP_IJoin
     {
         
         /*/// <summary>
@@ -201,7 +203,7 @@ namespace 蓝图重制版.BluePrint.Node
         {
             if (dir == NodePosition.Left)
             {
-                return new Point(0,this.Bounds.Height/2);//B_Join.TransformPoint(new Point(0, B_Join.Height.Value / 2));
+                return new Point(0,this.Bounds.Height/2);// BoundsB_Join.TransformPoint(new Point(0, B_Join.Height.Value / 2));
             }
             else {
                 return new Point(this.Bounds.Width, this.Bounds.Height/2); ;// B_Join.TransformPoint(new Point(B_Join.Width.Value, B_Join.Height.Value / 2));
@@ -224,7 +226,7 @@ namespace 蓝图重制版.BluePrint.Node
         public Border GetJoinRef() {
             return B_Join;
         }
-
+        
         protected override void OnInitialized()
         {
             Canvas.SetTop(this,3);
@@ -235,6 +237,7 @@ namespace 蓝图重制版.BluePrint.Node
                 Height = Interface_size,
                 //BorderType = BorderType.BorderThickness,
                 BorderThickness = new Thickness(1),
+                Background = Brushes.RosyBrown,
                 //BorderFill = "red",
                 //Size = "16,16",
                 //Background = Brushes.Red,
@@ -278,50 +281,47 @@ namespace 蓝图重制版.BluePrint.Node
 
                     ContextMenu = new ContextMenu()
                     {
-                        Width = 100,
+                        //Width = 100,
                     };
-                    ContextMenu.Items.Add(new MenuItem
+                    var deljoin = new MenuItem
                     {
                         //Classes = "ContextMenu1",
                         Header = "断开连接",
-                        //Commands = {
-                        //    {nameof(MenuItem.MouseUp),(s1,e1)=>{
-                        //        if (_position == NodePosition.Left)
-                        //        {
+                    };
+                    deljoin.Click += (s,e) => {
+                        if (_position == NodePosition.Left)
+                        {
+                            var lines = this.bParent.bluePrint.FildIutJoin(this);
+                            foreach (var item in lines)
+                            {
+                                this.bParent.bluePrint.RemoveLine(item);
 
-                        //            var lines = this.bParent.bluePrint.FildIutJoin(this);
-                        //            foreach (var item in lines)
-                        //            {
-                        //                this.bParent.bluePrint.RemoveLine(item);
+                            }
+                        }
+                        else
+                        {
+                            var lines = this.bParent.bluePrint.FildOutJoin(this);
+                            foreach (var item in lines)
+                            {
+                                this.bParent.bluePrint.RemoveLine(item);
 
-                        //            }
-                        //        }else{
-                        //            var lines = this.bParent.bluePrint.FildOutJoin(this);
-                        //            foreach (var item in lines)
-                        //            {
-                        //                this.bParent.bluePrint.RemoveLine(item);
-
-                        //            }
-                        //        }
-
-                        //    }}
-                        //},
-                    });
+                            }
+                        }
+                    };
+                    ContextMenu.Items.Add(deljoin);
                     // 创建一个 MenuItem 对象，并将其添加到 ContextMenu 中
                     var menuItem = new MenuItem();
                     menuItem.Header = "操作";
-                    menuItem.Items.Add(new MenuItem
+
+                    var delline = new MenuItem
                     {
-                        //Classes = "ContextMenu1",
                         Header = "删除当前节点",
-                        //Commands = {
-                        //    {nameof(MenuItem.MouseUp),(s1,e1)=>{
-                        //        this.bParent.bluePrint.RemoveNode(_Node);
-                        //        this.bParent.ClearState();
-                        //        //Get_NodeRef
-                        //    }}
-                        //},
-                    });
+                    };
+                    delline.Click += (s,e) =>{
+                        this.bParent.bluePrint.RemoveNode(_Node);
+                        this.bParent.ClearState();
+                    };
+                    menuItem.Items.Add(delline);
                     ContextMenu.Items.Add(menuItem);
                 }
             };
@@ -330,7 +330,7 @@ namespace 蓝图重制版.BluePrint.Node
                 //Orientation = Orientation.Horizontal,
                 Children = { B_Join },
             };
-            VisualChildren.Add(B_StackPanel);
+            Children.Add(B_StackPanel);
 
 
             if (_position == NodePosition.Left)
@@ -384,6 +384,10 @@ namespace 蓝图重制版.BluePrint.Node
             {
                 Body = control;
                 B_StackPanel.Children.Add(control);
+                //B_StackPanel.InvalidateVisual();
+                //B_StackPanel.InvalidateArrange();
+                
+                //control.InvalidateVisual();
             }
             if (position == NodePosition.Left)
             {
@@ -394,7 +398,7 @@ namespace 蓝图重制版.BluePrint.Node
                 //MarginRight = 0;
                 Canvas.SetRight(this, 0);
             }
-            
+            //InvalidateVisual();
             //Children.Add(control);
         }
 

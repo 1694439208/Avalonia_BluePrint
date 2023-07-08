@@ -1,4 +1,5 @@
 ﻿
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using System;
@@ -78,6 +79,14 @@ namespace 蓝图重制版.BluePrint.Node
         protected override void OnInitialized()
         {
             base.OnInitialized();
+            //VisualChildren.Add(new Panel
+            //{
+            //    Width = 10,
+            //    Height = 10,
+            //    //BorderThickness = new Thickness(1, 1, 1, 1),
+            //    //BorderBrush = Brushes.Red,
+            //    //Padding = new Thickness(10)
+            //});
             base.AddControl(text1, nodePosition);
         }
     }

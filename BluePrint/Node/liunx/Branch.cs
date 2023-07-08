@@ -57,7 +57,8 @@ namespace 蓝图重制版.BluePrint.INode
             //计算完毕可以设置接口的值，然后调用渲染,只是为了可视化
             for (int i = 0; i < arguments.Count; i++)
             {
-                _IntPutJoin[i + 1].Item1.Set(new Node_Interface_Data {Value = arguments[i]});
+                data.Value = arguments[i];
+                _IntPutJoin[i + 1].Item1.Set(data);
                 _IntPutJoin[i + 1].Item1.Render();
             }
         }
