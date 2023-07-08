@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -100,7 +101,7 @@ namespace 蓝图重制版.BluePrint.INode
                     greenPixels[offset + 1] = green;
                     bluePixels[offset] = blue;
                     // 输出通道值
-                    Console.WriteLine($"Pixel ({x}, {y}): R={red} G={green} B={blue}");
+                    Debug.WriteLine($"Pixel ({x}, {y}): R={red} G={green} B={blue}");
                 }
             }
 
