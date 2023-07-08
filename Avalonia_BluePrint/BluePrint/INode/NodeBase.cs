@@ -412,7 +412,7 @@ if({arguments[0]} > {arguments[1]}){{
                 //MarginLeft += a.X;
                 //MarginTop += a.Y;
                 //var aa = Canvas.GetLeft(this);
-                Debug.Print($"move:{a}");
+                //Debug.Print($"move:{a}");
                 Canvas.SetLeft(this, Canvas.GetLeft(this) + a.X);
                 Canvas.SetTop(this, Canvas.GetTop(this) + a.Y);
                 // TransformPoint

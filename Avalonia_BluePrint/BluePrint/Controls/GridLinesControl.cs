@@ -44,12 +44,12 @@ namespace Avalonia_BluePrint.BluePrint.Controls
                 if (i % 12 == 0)
                 {
                     xcontext.BeginFigure(new Point(i, 0), false);
-                    xcontext.LineTo(new Point(i, rect.Width));
+                    xcontext.LineTo(new Point(i, rect.Height));
                 }
                 if (i % 84 == 0)
                 {
                     ycontext.BeginFigure(new Point(i, 0), false);
-                    ycontext.LineTo(new Point(i, rect.Width));
+                    ycontext.LineTo(new Point(i, rect.Height));
                 }
             }
         }
