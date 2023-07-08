@@ -1,14 +1,68 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <PublishAot>true</PublishAot>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+		<DebugSymbols>false</DebugSymbols>
+		<DebugType>none</DebugType>
+
+		<!--启用AOT-->
+		<PublishAot>true</PublishAot>
+
+		<!--将 OptimizationPreference 设置为 Size 指示发布过程优先考虑可执行文件的大小，而不是其他性能指标。 应用大小预计会更小，但其他性能指标可能会受到影响。-->
+		<OptimizationPreference>Size</OptimizationPreference>
+
+		<!--剪裁应用中的所有程序集-->
+		<TrimMode>full</TrimMode>
+
+		<!--xxx-->
+		<RunAOTCompilation>True</RunAOTCompilation>
+
+		<!--在发布期间启用剪裁。 这还会关闭不兼容剪裁的功能，并在生成期间启用剪裁分析。-->
+		<PublishTrimmed>true</PublishTrimmed>
+
+		<!--通常会对符号进行剪裁，以匹配剪裁的程序集。 还可以删除所有符号（SDK 还可使用属性 DebuggerSupport 来禁用调试器支持。 禁用调试器支持时，剪裁将自动删除符号）-->
+		<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+
+		<!--使用 ReadyToRun 编译应用程序时，探查器可能需要使用符号来检查生成的 ReadyToRun 文件。 若要启用符号生成，请指定 <PublishReadyToRunEmitSymbols> 属性。-->
+		<PublishReadyToRunEmitSymbols>false</PublishReadyToRunEmitSymbols>
+
+		<!--删除在支持的平台上创建自动发布池的代码。 请参阅用于托管线程的 AutoreleasePool。 这是 .NET SDK 的默认值。-->
+		<AutoreleasePoolSupport>false</AutoreleasePoolSupport>
+
+		<!--删除代码可提供更佳的调试体验。 此设置还会删除符号。-->
+		<!--<DebuggerSupport>false</DebuggerSupport>-->
+
+		<!--删除 BinaryFormatter 序列化支持。 有关详细信息，请参阅 BinaryFormatter 序列化方法已过时。-->
+		<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+
+		<!--删除不安全的 UTF-7 编码代码。 有关详细信息，请参阅 UTF-7 代码路径已过时。-->
+		<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+
+		<!--删除与 EventSource 相关的代码或逻辑。-->
+		<EventSourceSupport>false</EventSourceSupport>
+
+		<!--删除与 System.Net.Http 的诊断支持相关的代码。-->
+		<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+
+		<!--删除全球化特定的代码和数据。 有关详细信息，请参阅固定模式。-->
+		<InvariantGlobalization>true</InvariantGlobalization>
+
+		<!--删除与热重载相关的元数据更新特定逻辑。-->
+		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+
+		<!--将 HttpMessageHandler 的默认平台实现用于 Android/iOS，并删除托管实现。-->
+		<UseNativeHttpHandler>true</UseNativeHttpHandler>
+
+		<!--删除 System.* 程序集的异常消息。 当 System.* 程序集中引发异常时，该消息将是简化的资源 ID，而不是完整的消息。-->
+		<UseSystemResourceKeys>true</UseSystemResourceKeys>
+
+	</PropertyGroup>
 
 	<!--<PropertyGroup>
     <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
@@ -17,126 +71,129 @@
     <RdXmlFile Include="Roots.xml" />
     <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="7.0.8" />
   </ItemGroup>-->
-	
-		
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <AvaloniaResource Include="Assets\**" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="BluePrint\Class1.cs" />
-    <Compile Remove="BluePrint\test.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<RdXmlFile Include="rd.xml" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<Folder Include="Models\" />
+		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.0" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="BluePrint\Class1.cs" />
+		<Compile Remove="BluePrint\test.cs" />
+	</ItemGroup>
 
 
-  <ItemGroup>
-    <Compile Update="BluePrint\Blueprint..cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\BParent.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\BP_Line.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Controls\ElTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Controls\TestTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\IJoin\IJoinControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\IJoin\ToastControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\INode\NodeBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\INode\Title.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\AddExecJoin.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\ComboBoxJoin.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\DateJoint .cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\ExecJoin.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\imageJoint.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\MouseJoin.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\SliderJoint.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\TextBoxJoint.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\TextJoint.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Join\ValueText.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\ImageShow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\ImageSplit.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\Branch.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\CreateVar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\GetVar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\Print.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\ScriptType.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\sequence.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\ThanEqual.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\ThanGreater.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\ThanLess.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\ThanStrEqual.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="BluePrint\Node\liunx\_StartNode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.0.0" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.0" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0" />
+		<PackageReference Include="Avalonia.ReactiveUI" Version="11.0.0" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<Compile Update="BluePrint\Blueprint..cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\BParent.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\BP_Line.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Controls\ElTextBox.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Controls\TestTreeView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\IJoin\IJoinControl.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\IJoin\ToastControl.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\INode\NodeBase.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\INode\Title.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\AddExecJoin.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\ComboBoxJoin.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\DateJoint .cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\ExecJoin.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\imageJoint.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\MouseJoin.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\SliderJoint.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\TextBoxJoint.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\TextJoint.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Join\ValueText.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\ImageShow.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\ImageSplit.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\Branch.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\CreateVar.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\GetVar.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\Print.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\ScriptType.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\sequence.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\ThanEqual.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\ThanGreater.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\ThanLess.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\ThanStrEqual.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="BluePrint\Node\liunx\_StartNode.cs">
+			<SubType>Component</SubType>
+		</Compile>
+	</ItemGroup>
 </Project>
