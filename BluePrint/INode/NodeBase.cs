@@ -350,7 +350,7 @@ if({arguments[0]} > {arguments[1]}){{
             base.OnPointerReleased(e);
             e.Handled = true;//吃掉鼠标消息不让他冒泡
             var point = e.GetCurrentPoint(this);
-            if (point.Properties.IsLeftButtonPressed)
+            if (e.InitialPressMouseButton == MouseButton.Left)
             {
                 isclick = false;
                 e.Pointer.Capture(null);
@@ -372,8 +372,8 @@ if({arguments[0]} > {arguments[1]}){{
                 //为了刷新溢出了的线条
                 //Parent.Parent.Invalidate();
 
-                Canvas.SetLeft(this, Canvas.GetLeft(this)+1);
-                Canvas.SetTop(this, Canvas.GetTop(this)+1);
+                Canvas.SetLeft(this, Canvas.GetLeft(this) + 1);
+                Canvas.SetTop(this, Canvas.GetTop(this) + 1);
                 return;
             }
             if (point.Properties.IsLeftButtonPressed && isclick)
@@ -382,17 +382,17 @@ if({arguments[0]} > {arguments[1]}){{
                 //为了刷新溢出了的线条
                 //Parent.Parent.Invalidate();
                 var a = point.Position - Mouxy;
-                
+
                 //MarginLeft += a.X;
                 //MarginTop += a.Y;
-                var aa = Canvas.GetLeft(this);
-                //Debug.Print($"move:{aa}");
+                //var aa = Canvas.GetLeft(this);
+                Debug.Print($"move:{a}");
                 Canvas.SetLeft(this, Canvas.GetLeft(this) + a.X);
                 Canvas.SetTop(this, Canvas.GetTop(this) + a.Y);
                 // TransformPoint
 
             }
-            
+
         }
         /// <summary>
         /// 通知此节点接口线条引用刷新

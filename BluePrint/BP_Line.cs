@@ -23,7 +23,7 @@ namespace 蓝图重制版.BluePrint
         {
             backound_color = color;
         }
-        readonly IPen strokePen = new ImmutablePen(Brushes.DarkBlue, 5d, null, PenLineCap.Round, PenLineJoin.Round);
+        readonly IPen strokePen = new ImmutablePen(Brushes.DarkBlue, 3d, null, PenLineCap.Round, PenLineJoin.Round);
         
         public override void Render(DrawingContext dc)
         {
@@ -66,6 +66,11 @@ namespace 蓝图重制版.BluePrint
                     break;
             }
         }
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            //ClipToBounds = true;
+        }
         public int GetQuadrant(Point origin, Point point)
         {
             double dx = point.X - origin.X;
@@ -92,11 +97,12 @@ namespace 蓝图重制版.BluePrint
                 return 0; // Point is at the origin
             }
         }
-        public override void ApplyTemplate()
-        {
-            base.ApplyTemplate();
-            //RefreshDrawBezier();
-        }
+        //public override void ApplyTemplate()
+        //{
+        //    base.ApplyTemplate();
+        //    //RefreshDrawBezier();
+        //    //InvalidateVisual();
+        //}
         /// <summary>
         /// 计算自身尺寸，位置
         /// </summary>

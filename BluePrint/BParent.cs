@@ -12,10 +12,11 @@ using 蓝图重制版.BluePrint.Join;
 using 蓝图重制版.BluePrint.Node;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using Avalonia.Markup.Xaml.Templates;
 
 namespace 蓝图重制版.BluePrint
 {
-    public class BParent : Avalonia.Controls.ContentControl
+    public class BParent : Control
     {
         /// <summary>
         /// 设置节点上下文
@@ -351,20 +352,29 @@ namespace 蓝图重制版.BluePrint
         public override void Render(DrawingContext dc)
         {
             var rect = this.Bounds;
-            //base.Render(dc);
+            base.Render(dc);
             // new SolidColorBrush(Color.FromRgb(39, 39, 39));
-            //dc.FillRectangle(new SolidColorBrush(Color.FromRgb(39, 39, 39)), rect);
+            dc.FillRectangle(new SolidColorBrush(Color.FromRgb(255, 255, 255)), rect);
 
-            PathGeometry XPath = new PathGeometry();
+            dc.DrawGeometry(null, XPathColor, XPath);
+            dc.DrawGeometry(null, YPathColor, YPath);
+
+        }
+        PathGeometry XPath = new PathGeometry();
+        PathGeometry YPath = new PathGeometry();
+        protected override void ArrangeCore(Rect finalRect)
+        {
+            base.ArrangeCore(finalRect);
+            var rect = finalRect;
+            
             var xcontext = XPath.Open();
-            PathGeometry YPath = new PathGeometry();
             var ycontext = YPath.Open();
-            for (int i = 0; i < rect.Height; i++)
+            for (int i = 0; i < finalRect.Height; i++)
             {
                 if (i % 12 == 0)
                 {
                     xcontext.BeginFigure(new Point(0, i), false);
-                    xcontext.LineTo(new Point(rect.Width, i));
+                    xcontext.LineTo(new Point(finalRect.Width, i));
                 }
                 if (i % 84 == 0)
                 {
@@ -386,10 +396,6 @@ namespace 蓝图重制版.BluePrint
                     ycontext.LineTo(new Point(i, rect.Width));
                 }
             }
-
-            dc.DrawGeometry(null, XPathColor, XPath);
-            dc.DrawGeometry(null, YPathColor, YPath);
-            
         }
         readonly IPen XPathColor = new ImmutablePen(Color.FromArgb(255, 52, 52, 52).ToUInt32(), 1d, null, PenLineCap.Round, PenLineJoin.Round);
         readonly IPen YPathColor = new ImmutablePen(Color.FromArgb(150, 0, 0, 0).ToUInt32(), 1d, null, PenLineCap.Round, PenLineJoin.Round);
@@ -407,7 +413,7 @@ namespace 蓝图重制版.BluePrint
             //base.OnInitialized();
 
             ///Background = Color.FromRgb(39, 39, 39);
-            Background = new SolidColorBrush(Color.FromRgb(39, 39, 39));
+            
             bluePrint = new BluePrint
             {
                 //MarginLeft = 0f,
@@ -639,6 +645,7 @@ namespace 蓝图重制版.BluePrint
             {
                 bP_Line.Width = 0;
                 bP_Line.Height = 0;
+                bP_Line.RefreshDrawBezier();
                 ParentJoin = State;
                 //Point p = State.GetPosition(State.GetJoinPos(IJoinControl.NodePosition.Left));
                 //MouseJoin.MarginLeft = p.X;
@@ -818,8 +825,10 @@ namespace 蓝图重制版.BluePrint
 
         protected override void OnPointerMoved(PointerEventArgs e)
         {
-            MousePoint = e.GetPosition(this);//.Location;
+            
             base.OnPointerMoved(e);
+            //var MousePoint1 = e.GetCurrentPoint(this);
+            MousePoint = e.GetPosition(this);//.Location;
             if (IsMouseJoin)
             {
                 bP_Line.InvalidateVisual();
@@ -831,11 +840,15 @@ namespace 蓝图重制版.BluePrint
                 
                 //Debug.WriteLine($"e.Location11:{p}--{e.Location}");
             }
-            var p1 = e.GetCurrentPoint(bluePrint);
+            //var p1 = e.GetPosition(this);
             //MouseJoin.MarginLeft = p1.X;
             //MouseJoin.MarginTop = p1.Y;
-            Canvas.SetLeft(MouseJoin, p1.Position.X);
-            Canvas.SetTop(MouseJoin, p1.Position.Y);
+            //Debug.WriteLine($"e.Location11:{MousePoint}");
+            Canvas.SetLeft(MouseJoin, MousePoint.X);
+            Canvas.SetTop(MouseJoin, MousePoint.Y);
+
+
+
             //if (mousePos.HasValue && e.RightButton == MouseButtonState.Pressed)
             //{
             //    //bluePrint.MarginLeft
