@@ -506,7 +506,7 @@ namespace 蓝图重制版.BluePrint
         {
             
             base.OnPointerReleased(e);
-            Console.ForegroundColor = ConsoleColor.Red;
+            //Console.ForegroundColor = ConsoleColor.Red;
             if (e.InitialPressMouseButton == MouseButton.Right)
             {
                 //Console.WriteLine($"if (e.MouseButton == MouseButton.Right&& key == InputModifiers.None)");
