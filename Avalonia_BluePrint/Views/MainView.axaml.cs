@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System;
 using 蓝图重制版.BluePrint.INode;
 using 蓝图重制版.BluePrint;
-using Avalonia.Media;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 
 namespace Avalonia_BluePrint.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainView : UserControl
     {
-        public MainWindow()
+        public MainView()
         {
             InitializeComponent();
 
@@ -23,7 +22,7 @@ namespace Avalonia_BluePrint.Views
 
             var bp = new BParent
             {
-                Margin = new Avalonia.Thickness(0,0,0,0),
+                Margin = new Avalonia.Thickness(0, 0, 0, 0),
                 //HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,// HorizontalAlignment.Stretch
             };
             //bp.Background = new SolidColorBrush(Colors.Red);
@@ -49,7 +48,7 @@ namespace Avalonia_BluePrint.Views
                     typeof(ThanLess),
                     typeof(ThanStrEqual),
                 });
-            bp.Initialized += (s,e) => {
+            bp.Initialized += (s, e) => {
                 var node = new _StartNode(bp)
                 {
                 };
@@ -89,17 +88,15 @@ namespace Avalonia_BluePrint.Views
 
             };
             stackPanel.Children.Add(bp);
-            
 
             this.Content = stackPanel;
+        }
 
-            
-        }
-        public static WindowNotificationManager? _manager;
-        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-        {
-            base.OnApplyTemplate(e);
-            _manager = new WindowNotificationManager(this) { MaxItems = 3 };
-        }
+        //public static WindowNotificationManager? _manager;
+        //protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        //{
+        //    base.OnApplyTemplate(e);
+        //    _manager = new WindowNotificationManager(this) { MaxItems = 3 };
+        //}
     }
 }

@@ -6,7 +6,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
