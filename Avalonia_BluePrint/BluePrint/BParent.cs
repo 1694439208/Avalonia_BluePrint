@@ -16,6 +16,7 @@ using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Controls.Primitives;
 using Avalonia_BluePrint.BluePrint.Controls;
 using Document.Node;
+using Avalonia_BluePrint.BluePrint.DataType;
 
 namespace 蓝图重制版.BluePrint
 {
@@ -123,7 +124,7 @@ namespace 蓝图重制版.BluePrint
             /// <summary>
             /// 位置
             /// </summary>
-            public Point Point { set; get; }
+            public Data_Point Point { set; get; }
             /// <summary>
             /// 节点
             /// </summary>
@@ -323,7 +324,7 @@ namespace 蓝图重制版.BluePrint
                     pdata.Add(new BPNodedata
                     {
                        
-                        Point = new Point(Canvas.GetLeft(item), Canvas.GetTop(item)),//item.ActualOffset
+                        Point = new Data_Point(Canvas.GetLeft(item), Canvas.GetTop(item)),//item.ActualOffset
                         ID = item.ID,
                         node = new BPNodeType
                         {

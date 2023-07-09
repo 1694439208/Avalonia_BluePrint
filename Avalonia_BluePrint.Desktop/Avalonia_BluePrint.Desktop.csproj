@@ -16,6 +16,14 @@
 	<PropertyGroup>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
