@@ -59,6 +59,9 @@ namespace 蓝图重制版.BluePrint.INode
                 {
                     UInNodeSize = new Size(200, 200),
                 },new Node_Interface_Data{
+                    ClassValue = new Dictionary<string, object>{
+                        {"UInNodeSize",new Size(200, 200)}
+                    },
                     Title = "执行开始",
                     Type = typeof(Data_Bitmap),
                     Value = new Data_Bitmap("","F:\\Users\\Administrator\\source\\repos\\CPF蓝图\\蓝图重制版\\Data\\test.jpg"),
@@ -101,7 +104,7 @@ namespace 蓝图重制版.BluePrint.INode
                     greenPixels[offset + 1] = green;
                     bluePixels[offset] = blue;
                     // 输出通道值
-                    Debug.WriteLine($"Pixel ({x}, {y}): R={red} G={green} B={blue}");
+                    //Debug.WriteLine($"Pixel ({x}, {y}): R={red} G={green} B={blue}");
                 }
             }
 

@@ -1,5 +1,4 @@
 ﻿
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using System;
@@ -10,12 +9,12 @@ using 蓝图重制版.BluePrint.IJoin;
 
 namespace 蓝图重制版.BluePrint.Node
 {
-    public class ValueText : IJoinControl
+    public class LableJoin : IJoinControl
     {
-        public ValueText() : base()
+        public LableJoin() : base()
         {
         }
-        public ValueText(BParent _bParent, NodePosition JoinDir, Control Node) :base(_bParent, JoinDir, Node, Runtime.Token.NodeToken.Value)
+        public LableJoin(BParent _bParent, NodePosition JoinDir, Control Node) :base(_bParent, JoinDir, Node, Runtime.Token.NodeToken.Value)
         {
             nodePosition = JoinDir;
         }
@@ -32,9 +31,10 @@ namespace 蓝图重制版.BluePrint.Node
         public override void Set(Node_Interface_Data value)
         {
             __value = value;
-            if (GetJoinType() == typeof(Data_Bitmap))
+            text1.Text = value.Title;
+            /*if (GetJoinType() == typeof(Data_Bitmap))
             {
-                text1.Text = (__value.Value as Data_Bitmap).Title1;
+                text1.Text = (__value.Value as Data_Bitmap).Title;
             }
             else if (GetJoinType() == typeof(bool))
             {
@@ -49,8 +49,8 @@ namespace 蓝图重制版.BluePrint.Node
                 text1.Text = "列表数据";
             }
             else {
-                text1.Text = __value.Value.ToString();
-            }
+                text1.Text = __value.Value?.ToString()??"";
+            }*/
         }
         public override Node_Interface_Data Get()
         {
@@ -59,7 +59,7 @@ namespace 蓝图重制版.BluePrint.Node
         public TextBlock text1 = new TextBlock
         {
             Text = "文本a11111111",
-            //Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
+            Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255))
         };
         /*protected override void Initial0izeComponent()
         {
@@ -79,14 +79,6 @@ namespace 蓝图重制版.BluePrint.Node
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            //VisualChildren.Add(new Panel
-            //{
-            //    Width = 10,
-            //    Height = 10,
-            //    //BorderThickness = new Thickness(1, 1, 1, 1),
-            //    //BorderBrush = Brushes.Red,
-            //    //Padding = new Thickness(10)
-            //});
             base.AddControl(text1, nodePosition);
         }
     }

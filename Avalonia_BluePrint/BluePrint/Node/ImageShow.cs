@@ -45,6 +45,9 @@ namespace 蓝图重制版.BluePrint.INode
                     Value = new Data_Bitmap(""),
                     Type = typeof(Data_Bitmap),
                     Tips = "",
+                    ClassValue = new Dictionary<string, object>{
+                        {"UInNodeSize",new Size(200, 200)}
+                    },
                 }),
             };
         }

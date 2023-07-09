@@ -9,6 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia;
 using Avalonia.Media;
 using System.Diagnostics;
+using Avalonia.Markup.Xaml;
 
 namespace 蓝图重制版.BluePrint.INode
 {
@@ -109,6 +110,7 @@ if({arguments[0]} > {arguments[1]}){{
         }*/
         protected override void OnInitialized()
         {
+            //AvaloniaXamlLoader.Load(this);
             Focusable = true;
             //ClipToBounds = true;
             //CornerRadius = "3.8";
@@ -152,10 +154,8 @@ if({arguments[0]} > {arguments[1]}){{
             //Canvas.SetTop(OuPutIJoin, TitleHeight + 5);
             //Canvas.SetLeft(OuPutIJoin, 20);
 
-            Border border = new Border();
-            border.Child = stack;
-
-            Children.Add(new StackPanel
+            border = new Border();
+            border.Child = new StackPanel
             {
                 Children =
                 {
@@ -167,34 +167,54 @@ if({arguments[0]} > {arguments[1]}){{
                         Height = TitleHeight,
                         //MarginLeft = 0,
                         //MarginTop = 0,
-                        Background = Brushes.Aqua,
+                        Background = new SolidColorBrush(Color.Parse("#B8FFBF19")),// Brushes.Aqua,
                         title = Title,
                     },
-                    border
+                    stack
                 }
+            };
+            border.BoxShadow = new BoxShadows(new BoxShadow
+            {
+                Color = Colors.Black,
+                Blur = 10,
             });
+            border.Name = "test";
+            Children.Add(border);
             
             RefreshNodes();
+            //
         }
         public StackPanel OuPutIJoin;
         public StackPanel InPutIJoin;
-
+        Border border;
         protected override void OnGotFocus(GotFocusEventArgs e)
         {
             base.OnGotFocus(e);
-            if (Children[0] is Border border)
+
+            var myButton = this.FindControl<Border>("test");
+            if (border is Border)
             {
-                border.BorderBrush = new SolidColorBrush(Color.FromRgb(197, 131, 35));
-                border.BorderThickness = new Thickness(1);
+                border.BoxShadow = new BoxShadows(new BoxShadow
+                {
+                    Color = Colors.Black,
+                    Blur = 15,
+                });
+                //border.BorderBrush = new SolidColorBrush(Color.FromRgb(197, 131, 35));
+                //border.BorderThickness = new Thickness(1);
             }
 
         }
         protected override void OnLostFocus(RoutedEventArgs e)
         {
-            if (Children[0] is Border border)
+            if (border is Border)
             {
-                border.BorderBrush = new SolidColorBrush(Color.FromRgb(35, 38, 35));
-                border.BorderThickness = new Thickness(1);
+                border.BoxShadow = new BoxShadows(new BoxShadow
+                {
+                    Color = Color.FromRgb(197, 131, 35),
+                    Blur = 10,
+                });
+                //border.BorderBrush = null;// new SolidColorBrush(Color.FromRgb(35, 38, 35));
+                //border.BorderThickness = new Thickness(1);
             }
             //base.OnLostFocus(e);
             //BorderFill = Color.FromRgb(35, 38, 35);

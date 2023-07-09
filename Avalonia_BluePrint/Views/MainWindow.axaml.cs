@@ -14,6 +14,14 @@ namespace Avalonia_BluePrint.Views
         public MainWindow()
         {
             InitializeComponent();
+            _MainWindow = this;
+        }
+        public static WindowNotificationManager? _manager;
+        public static Window? _MainWindow;
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+            _manager = new WindowNotificationManager(this) { MaxItems = 3 };
         }
     }
 }

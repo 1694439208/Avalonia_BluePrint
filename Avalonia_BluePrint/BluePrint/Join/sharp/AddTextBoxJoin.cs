@@ -3,30 +3,24 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Styling;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using 蓝图重制版.BluePrint;
+using 蓝图重制版.BluePrint.IJoin;
 using 蓝图重制版.BluePrint.INode;
 using 蓝图重制版.BluePrint.Node;
+using 蓝图重制版.BluePrint.Runtime;
 
 namespace 蓝图重制版.BluePrint.IJoin
 {
-    public class AddExecJoinEventArgs : RoutedEventArgs
+    public class AddTextBoxJoin : IJoinControl
     {
-        public DataType.JoinEventType Message { get; set; }
-
-        public AddExecJoinEventArgs(RoutedEvent routedEvent, DataType.JoinEventType message) : base(routedEvent)
-        {
-            Message = message;
-        }
-    }
-    public class AddExecJoin : IJoinControl
-    {
-        public AddExecJoin() : base()
+        public AddTextBoxJoin() : base()
         {
         }
-        public AddExecJoin(BParent _bParent, NodePosition JoinDir, Control Node) : base(_bParent, JoinDir,Node, Runtime.Token.NodeToken.None)
+        public AddTextBoxJoin(BParent _bParent, NodePosition JoinDir, Control Node) : base(_bParent, JoinDir, Node, Runtime.Token.NodeToken.None)
         {
             nodePosition = JoinDir;
             _Node = Node;
@@ -52,7 +46,8 @@ namespace 蓝图重制版.BluePrint.IJoin
         {
             return title;
         }
-        public Control UINode = new Panel {
+        public Control UINode = new Panel
+        {
             Width = 20f,
         };
 

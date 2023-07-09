@@ -74,7 +74,7 @@ namespace 蓝图重制版.BluePrint.IJoin
         //static List<ToastControl> controls = new List<ToastControl>();
         public static void Toast(BluePrint control, string title, Point point, float time = 0.3f)
         {
-            //MainWindow._manager?.Show(new Notification("提示", title, NotificationType.Error));
+            MainWindow._manager?.Show(new Notification("提示", title, NotificationType.Error));
             //if (controls.Count > 0)
             //{
             //    foreach (var item in controls)
