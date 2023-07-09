@@ -31,8 +31,8 @@ namespace Document.Node
                     Type = typeof(object),
                     Tips = "打印的变量",
                     IsTypeCheck = false,
-                    ClassValue = new Dictionary<string, object>{
-                        {"IsEnabledd",false}
+                    ClassValue = new Dictionary<string, MyData>{
+                        {"IsEnabledd",new MyData<bool>(false)}
                     },
                 }),
             }) ;

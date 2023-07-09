@@ -1,5 +1,6 @@
 ﻿
 using Avalonia;
+using Avalonia_BluePrint.BluePrint.DataType;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,8 +46,8 @@ namespace 蓝图重制版.BluePrint.INode
                     Value = new Data_Bitmap(""),
                     Type = typeof(Data_Bitmap),
                     Tips = "",
-                    ClassValue = new Dictionary<string, object>{
-                        {"UInNodeSize",new Size(200, 200)}
+                    ClassValue = new Dictionary<string, MyData>{
+                        {"UInNodeSize",new MyData<Data_Size>(new Data_Size(200, 200))}
                     },
                 }),
             };

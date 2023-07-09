@@ -41,7 +41,7 @@ namespace Document.Join
         {
             if (value.ClassValue != null && value.ClassValue.TryGetValue("IsEnabledd", out var val))
             {
-                IsEnabledd = (bool)val;
+                IsEnabledd = val.GetValue<bool>();
             }
             switch (value.Value)
             {

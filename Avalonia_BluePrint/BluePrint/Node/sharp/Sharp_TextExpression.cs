@@ -20,10 +20,11 @@ namespace 蓝图重制版.BluePrint.INode
                     Value = "a",
                     Type = typeof(string),
                     Tips = "可以自己写代码表达式条件",
-                    ClassValue =new Dictionary<string, object>(){
-                        {nameof(TextBoxJoint.Enabled),false },
-                        {nameof(TextBoxJoint.Watermark),"表达式" },
-                        {nameof(TextBoxJoint.Width),130f }
+                    ClassValue =new Dictionary<string, MyData>(){
+                        {nameof(TextBoxJoint.Enabled),new MyData<bool>(false) },
+                        {nameof(TextBoxJoint.Watermark),new MyData<string>("表达式" )},
+                        {nameof(TextBoxJoint.Width),new MyData<double>(130 ) }
+                        
                     }
                 })
             });

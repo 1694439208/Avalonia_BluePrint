@@ -1,9 +1,40 @@
-﻿using System;
+﻿using Avalonia;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace 蓝图重制版.BluePrint.IJoin
 {
+    // 自定义一个泛型类 MyData，用于记录数据类型和数据
+    public class MyData
+    {
+        public Type DataType { get; }
+        public object Data { get; }
+
+        public MyData(Type dataType, object data)
+        {
+            DataType = dataType;
+            Data = data;
+        }
+        public T GetValue<T>()
+        {
+            if (Data is JObject job)
+            {
+                return job.ToObject<T>();
+            }
+            return (T)Data;
+        }
+    }
+
+    public class MyData<T> : MyData
+    {
+        public MyData(T data) : base(typeof(T), data)
+        {
+        }
+        
+    }
     public class Node_Interface_Data
     {
         /// <summary>
@@ -25,11 +56,11 @@ namespace 蓝图重制版.BluePrint.IJoin
         /// <summary>
         /// 数据
         /// </summary>
-        public Object Value { set; get; }
+        public System.Object Value { set; get; }
         /// <summary>
         /// 接口类参数
         /// </summary>
-        public Dictionary<string,object> ClassValue { set; get; }
+        public Dictionary<string, MyData> ClassValue { set; get; }
         /// <summary>
         /// 获取指定类型数据
         /// </summary>

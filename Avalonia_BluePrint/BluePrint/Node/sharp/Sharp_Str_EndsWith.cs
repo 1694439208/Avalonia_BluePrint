@@ -27,9 +27,9 @@ namespace 蓝图重制版.BluePrint.INode
                     Value = "",
                     Type = typeof(string),
                     Tips = "判断的字符串" + LOL_JSON.TIPS,
-                    ClassValue =new Dictionary<string, object>(){
-                        {nameof(TextBoxJoint.Enabled),false },
-                        {nameof(TextBoxJoint.Watermark),"判断的字符串" },
+                    ClassValue =new Dictionary<string, MyData>(){
+                        {nameof(TextBoxJoint.Enabled),new MyData<bool>(true) },
+                        {nameof(TextBoxJoint.Watermark), new MyData<string>("判断的字符串")},
                         //{nameof(TextBoxJoint.Width),130f }
                     }
                 })

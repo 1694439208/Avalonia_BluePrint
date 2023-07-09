@@ -47,7 +47,7 @@ namespace 蓝图重制版.BluePrint.IJoin
         {
             if (value.ClassValue!=null&&value.ClassValue.TryGetValue("IsButton", out var val))
             {
-                IsButton = (bool)val;
+                IsButton = val.GetValue<bool>();
             }
             title = value;
         }

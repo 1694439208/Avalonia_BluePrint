@@ -6,17 +6,41 @@ using 蓝图重制版.BluePrint;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
-using System.Text.Json;
-using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using 蓝图重制版.BluePrint.IJoin;
 using Document.Node;
+using System.IO;
 
 namespace Avalonia_BluePrint.Views
 {
     public partial class MainView : UserControl
     {
+        // 自定义一个JsonConverter类型的对象，用于在序列化和反序列化时带上类型信息
+        class ObjectWithTypeConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType)
+            {
+                return true;
+            }
+
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
+            {
+                // 使用JsonSerializer.Deserialize方法反序列化
+                return serializer.Deserialize(reader, Type.GetType((string)((JObject)JToken.ReadFrom(reader))["$type"]));
+            }
+
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                // 写入类型信息和对象信息
+                writer.WriteStartObject();
+                writer.WritePropertyName("$type");
+                writer.WriteValue(value.GetType().FullName);
+                writer.WritePropertyName("$value");
+                serializer.Serialize(writer, value);
+                writer.WriteEndObject();
+            }
+        }
         /// <summary>
         /// 蓝图jobject的参数转为net对象
         /// </summary>
@@ -189,6 +213,7 @@ namespace Avalonia_BluePrint.Views
                     if (!string.IsNullOrEmpty(result))
                     {
                         string savePath = result;
+
                         // 处理选定的保存目录
                         var bptext = JsonConvert.SerializeObject(bp.SerializeBP());
                         File.WriteAllText(savePath, bptext);

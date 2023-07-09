@@ -8,6 +8,8 @@ using 蓝图重制版.BluePrint.DataType;
 using 蓝图重制版.BluePrint.IJoin;
 using Avalonia;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Avalonia_BluePrint.BluePrint.DataType;
 
 namespace 蓝图重制版.BluePrint.Node
 {
@@ -34,11 +36,12 @@ namespace 蓝图重制版.BluePrint.Node
         public Data_Bitmap _value;
         public override void Set(Node_Interface_Data value)
         {
+            base.Set(value);
             if (value.ClassValue != null && value.ClassValue.TryGetValue("UInNodeSize", out var val))
             {
-                UINode.Width = ((Size)val).Width;
-                UINode.Height = ((Size)val).Height;
-                UINode.InvalidateVisual();
+                var size = val.GetValue<Data_Size>();
+                UINode.Width = size.Width;
+                UINode.Height = size.Height;
             }
             if (GetJoinType() == typeof(Data_Bitmap)){
                 _value = (Data_Bitmap)value.Value;
@@ -64,15 +67,12 @@ namespace 蓝图重制版.BluePrint.Node
         public override Node_Interface_Data Get()
         {
             //_value.bitmap = null;
-            return new Node_Interface_Data {
-                Type = typeof(Data_Bitmap),
-                Value = _value,
-            };
+            return base.Get();
         }
         public Panel UINode = new Panel
         {
-            Width = 190,
-            Height = 190,
+            Width = 100,
+            Height = 100,
             //BorderFill: rgb(220, 220, 220);
             //BorderStroke: 1;
         };

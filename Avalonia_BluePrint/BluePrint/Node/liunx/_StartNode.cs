@@ -21,8 +21,8 @@ namespace 蓝图重制版.BluePrint.INode
                     Value = new JoinType("执行结束"),
                     Type = typeof(JoinType),
                     Tips = "test",
-                    ClassValue = new Dictionary<string, object>{
-                        {"IsButton",true}
+                    ClassValue = new Dictionary<string, MyData>{
+                        {"IsButton",new MyData<bool>(true)}
                     },
                 }),
             });

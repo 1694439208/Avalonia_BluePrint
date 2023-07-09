@@ -1,6 +1,7 @@
 ﻿
 using Avalonia;
 using Avalonia.Media.Imaging;
+using Avalonia_BluePrint.BluePrint.DataType;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -59,8 +60,8 @@ namespace 蓝图重制版.BluePrint.INode
                 {
                     UInNodeSize = new Size(200, 200),
                 },new Node_Interface_Data{
-                    ClassValue = new Dictionary<string, object>{
-                        {"UInNodeSize",new Size(200, 200)}
+                    ClassValue = new Dictionary<string, MyData>{
+                        {"UInNodeSize",new MyData<Data_Size>(new Data_Size(200, 200))}
                     },
                     Title = "执行开始",
                     Type = typeof(Data_Bitmap),

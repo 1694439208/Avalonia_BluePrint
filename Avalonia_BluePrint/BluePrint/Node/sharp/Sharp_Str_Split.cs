@@ -25,9 +25,9 @@ namespace 蓝图重制版.BluePrint.INode
                     Value = "",
                     Type = typeof(string),
                     Tips = "用来分割的字符串" + LOL_JSON.TIPS,
-                    ClassValue =new Dictionary<string, object>(){
-                        {nameof(TextBoxJoint.Enabled),false },
-                        {nameof(TextBoxJoint.Watermark),"用来分割的字符串" },
+                    ClassValue =new Dictionary<string, MyData>(){
+                        {nameof(TextBoxJoint.Enabled),new MyData<bool>(false) },
+                        {nameof(TextBoxJoint.Watermark),new MyData<string>("用来分隔的字符串") },
                         //{nameof(TextBoxJoint.Width),130f }
                     }
                 }),

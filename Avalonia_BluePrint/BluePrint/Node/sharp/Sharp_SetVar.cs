@@ -24,9 +24,9 @@ namespace 蓝图重制版.BluePrint.INode
                     Value = "",
                     Type = typeof(string),
                     Tips = "变量名",
-                    ClassValue =new Dictionary<string, object>(){
-                        {nameof(TextBoxJoint.Enabled),false },
-                        {nameof(TextBoxJoint.Watermark),"变量名" },
+                    ClassValue =new Dictionary<string, MyData>(){
+                        {nameof(TextBoxJoint.Enabled), new MyData<bool>(false)},
+                        {nameof(TextBoxJoint.Watermark),new MyData<string>("变量名")},
                     }
                 }),
                 (new LableJoin(bParent, IJoinControl.NodePosition.Left, this),new Node_Interface_Data{

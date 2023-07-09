@@ -144,20 +144,28 @@ namespace 蓝图重制版.BluePrint.Node
         }
         Node_Interface_Data _Data;
         /// <summary>
-        /// 设置接口数据
+        /// 设置接口数据 用于反序列化
         /// </summary>
         /// <param name="value"></param>
         public virtual void Set(Node_Interface_Data value) {
-            _Data.Type = _Data.Value?.GetType();
-            _Data = value;
+            if (_Data==null)
+            {
+                _Data = value;
+            }
+            _Data.Type = value.Value.GetType();
+            //_Data = value;
         }
 
         /// <summary>
-        /// 读取接口数据
+        /// 读取接口数据 用于序列化
         /// </summary>
         /// <returns></returns>
         public virtual Node_Interface_Data Get() {
-            _Data.Type = _Data.Value?.GetType();
+            if (_Data?.Value?.GetType() == null)
+            {
+                return _Data??new Node_Interface_Data { };
+            }
+            _Data.Type = _Data.Value.GetType();
             return _Data;
         }
 

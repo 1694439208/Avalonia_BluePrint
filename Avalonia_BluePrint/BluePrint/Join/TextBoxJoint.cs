@@ -42,15 +42,15 @@ namespace 蓝图重制版.BluePrint.Node
         {
             if (value.ClassValue != null && value.ClassValue.TryGetValue("Watermark", out var val))
             {
-                Watermark = (string)val;
+                Watermark = val.GetValue<string>();
             }
             if (value.ClassValue != null && value.ClassValue.TryGetValue("Enabled", out var val1))
             {
-                Enabled = (bool)val1;
+                Enabled = val1.GetValue<bool>();
             }
             if (value.ClassValue != null && value.ClassValue.TryGetValue("Width", out var width))
             {
-                UINode.Width = Convert.ToSingle(width);
+                UINode.Width = Convert.ToSingle(width.GetValue<double>());
             }
             //this[nameof(MinWidth)] = (this, nameof(ActualSize), a => (FloatField)((Size)a).Width);
             //this.SetPropretyValue("ad","123");ObjectTypeDic[key].Item2;
