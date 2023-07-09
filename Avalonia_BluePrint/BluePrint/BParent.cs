@@ -15,6 +15,7 @@ using Avalonia.Media.Immutable;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Controls.Primitives;
 using Avalonia_BluePrint.BluePrint.Controls;
+using Document.Node;
 
 namespace 蓝图重制版.BluePrint
 {
@@ -49,6 +50,8 @@ namespace 蓝图重制版.BluePrint
                 }
             }
             bluePrint.InvalidateVisual();
+            bluePrint.InvalidateArrange();
+            bluePrint.InvalidateMeasure();
             return control;
         }
         /// <summary>
@@ -164,7 +167,7 @@ namespace 蓝图重制版.BluePrint
             var indexa = 1;
             foreach (var item in data.NodeList)
             {
-                
+                //CreateNode((Type)tree1.Tag, Canvas.GetLeft(parent.MousepanelPupopPos), Canvas.GetTop(parent.MousepanelPupopPos));
                 var control = CreateNode(item.node.node,item.Point.X, item.Point.Y);
                 if (control == null)
                 {

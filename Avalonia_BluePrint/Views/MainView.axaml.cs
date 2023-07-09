@@ -225,26 +225,35 @@ namespace Avalonia_BluePrint.Views
                     Content = "加载蓝图",
                     Background = new SolidColorBrush(Colors.Crimson)
                 };
-                bt2.Click += async (s, e) => {
-                    var dialog = new OpenFileDialog();
-                    dialog.AllowMultiple = false;
-                    dialog.Filters.Add(new FileDialogFilter { Name = "选择加载bp文件", Extensions = { "bp" } });
-
-                    var result = await dialog.ShowAsync(MainWindow._MainWindow);
-
-                    if (result != null && result.Length > 0)
+                bt2.Click += (s, e) => {
+                    // 处理选定的文件路径
+                    var strjson = File.ReadAllText("C:\\Users\\16944\\Documents\\qk.bp");
+                    var BPObject = JsonConvert.DeserializeObject<BParent.BPByte>(strjson);
+                    if (BPObject != null)
                     {
-                        string filePath = result[0];
-                        // 处理选定的文件路径
-                        var strjson = File.ReadAllText(filePath);
-                        var BPObject = JsonConvert.DeserializeObject<BParent.BPByte>(strjson);  
-                        if (BPObject != null)
-                        {
-                            JobjectTobject(BPObject);
-                            bp.Deserialize(BPObject);
-                            UIElementTool.Toast(bp.bluePrint, "加载成功", default);
-                        }
+                        JobjectTobject(BPObject);
+                        bp.Deserialize(BPObject);
+                        UIElementTool.Toast(bp.bluePrint, "加载成功", default);
                     }
+                    //var dialog = new OpenFileDialog();
+                    //dialog.AllowMultiple = false;
+                    //dialog.Filters.Add(new FileDialogFilter { Name = "选择加载bp文件", Extensions = { "bp" } });
+
+                    //var result = await dialog.ShowAsync(MainWindow._MainWindow);
+
+                    //if (result != null && result.Length > 0)
+                    //{
+                    //    string filePath = result[0];
+                    //    // 处理选定的文件路径
+                    //    var strjson = File.ReadAllText(filePath);
+                    //    var BPObject = JsonConvert.DeserializeObject<BParent.BPByte>(strjson);  
+                    //    if (BPObject != null)
+                    //    {
+                    //        JobjectTobject(BPObject);
+                    //        bp.Deserialize(BPObject);
+                    //        UIElementTool.Toast(bp.bluePrint, "加载成功", default);
+                    //    }
+                    //}
                 };
                 var bt3 = new Button
                 {
