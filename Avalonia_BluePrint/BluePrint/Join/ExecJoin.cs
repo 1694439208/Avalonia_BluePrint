@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Media;
+using ReactiveUI;
 
 namespace 蓝图重制版.BluePrint.IJoin
 {
@@ -105,11 +106,12 @@ namespace 蓝图重制版.BluePrint.IJoin
                     //(_Node as Context).Execute();
                     var a = new Runtime.NodeParse(bParent);
                     var ast = a.Parser(_Node as NodeBase);
-                    Runtime.Evaluate.Eval(ast, null);
-                    //var code = Runtime.CodeGenerator.Generator(ast);
+                    //Runtime.Evaluate.Eval(ast, null);
+                    var code = Runtime.CodeGenerator.Generator(ast);
 
-                    //System.Diagnostics.Debug.WriteLine(code);
+                    System.Diagnostics.Debug.WriteLine(code);
                     //ToSZArray
+                    
 
                     //CPF.Skia.SkiaPdf.CreatePdf(Root,"蓝图.pdf");
                 };

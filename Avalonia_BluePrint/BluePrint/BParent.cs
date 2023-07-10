@@ -446,31 +446,33 @@ namespace 蓝图重制版.BluePrint
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             //Parent.Invalidate();
-            //var p = e.GetPosition(bluePrint);
-            //Matrix matrix = Matrix.Identity;
+            var p = e.GetCurrentPoint(bluePrint);//
+            //Debug.WriteLine($"State.p:{p.Position}");
+            Matrix matrix = Matrix.Identity;
             //if (bluePrint.RenderTransform is MatrixTransform transform)
             //{
             //    matrix = transform.Value;
             //}
-            //if (e.Delta.Y < 0)
-            //{
-            //    scale *= scale_value;
-            //    if (scale < 0.01)
-            //    {
-            //        scale /= scale_value;
-            //    }
-            //    else
-            //    {
-            //        matrix.ScaleAtPrepend(scale_value, scale_value, p.X, p.Y);
-            //    }
-            //}
-            //else
-            //{
-            //    scale /= scale_value;
-            //    matrix.ScaleAtPrepend(1 / scale_value, 1 / scale_value, p.X, p.Y);
-            //}
-            //bluePrint.RenderTransform = new MatrixTransform(matrix);
-            //base.OnMouseWheel(e);
+            
+            
+            if (e.Delta.Y < 0)
+            {
+                if (scale > 0.5)
+                {
+                    scale *= scale_value;
+                }
+                matrix = new Matrix(scale, 0, 0, scale, 0, 0);
+                bluePrint.RenderTransform = new MatrixTransform(matrix);
+            }
+            else
+            {
+                scale /= scale_value;
+                matrix = new Matrix(scale, 0, 0, scale, 0, 0);
+                bluePrint.RenderTransform = new MatrixTransform(matrix);
+            }
+            //ScaleTransform scaleTransform = new ScaleTransform(2.0, 2.0);
+            
+            base.OnPointerWheelChanged(e);
         }
         Point? mousePos;
         protected override void OnPointerPressed(PointerPressedEventArgs e)

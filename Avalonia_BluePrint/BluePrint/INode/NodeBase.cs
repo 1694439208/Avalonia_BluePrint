@@ -10,6 +10,8 @@ using Avalonia;
 using Avalonia.Media;
 using System.Diagnostics;
 using Avalonia.Markup.Xaml;
+using System.Reactive.Subjects;
+using System.Reactive.Linq;
 
 namespace 蓝图重制版.BluePrint.INode
 {
@@ -108,6 +110,11 @@ if({arguments[0]} > {arguments[1]}){{
                 }
             }
         }*/
+        IObservable<double> Move_X { get; set; }
+        IObservable<double> Move_Y { get; set; }
+
+        Subject<double> _moveY = new Subject<double>();
+        Subject<double> _moveX = new Subject<double>();
         protected override void OnInitialized()
         {
             //AvaloniaXamlLoader.Load(this);
@@ -119,7 +126,12 @@ if({arguments[0]} > {arguments[1]}){{
             //BorderStroke = "1";
             //添加标题
             
-
+            //Move_X = _moveX.AsObservable().Scan((acc, val) => {
+            //    return acc + val;
+            //}); ;
+            //Move_Y = _moveY.AsObservable().Scan((acc, val) => acc + val); ;
+            //Bind(Canvas.LeftProperty, Move_X);
+            //Bind(Canvas.TopProperty, Move_Y);
 
             var stack = new Grid {};
             // Define the Columns.
@@ -433,6 +445,7 @@ if({arguments[0]} > {arguments[1]}){{
                 //MarginTop += a.Y;
                 //var aa = Canvas.GetLeft(this);
                 //Debug.Print($"move:{a}");
+                //_moveX.OnNext(a.X);
                 Canvas.SetLeft(this, Canvas.GetLeft(this) + a.X);
                 Canvas.SetTop(this, Canvas.GetTop(this) + a.Y);
                 // TransformPoint
