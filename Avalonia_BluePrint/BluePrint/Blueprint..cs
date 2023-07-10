@@ -127,6 +127,7 @@ namespace 蓝图重制版.BluePrint
         /// </summary>
         /// <param name="control"></param>
         public void RemoveNode(Control control) {
+            RemoveFocusNode(control);
             //这个要重新做一下，遍历要删除节点的接口，再删除线条节点
             //Lines.Remove(control);
             if (control is BP_Line)
@@ -175,6 +176,31 @@ namespace 蓝图重制版.BluePrint
         /// 所有节点的列表记录
         /// </summary>
         List<Control> Instances = new List<Control>();
+        /// <summary>
+        /// 激活的列表记录
+        /// </summary>
+        List<Control> activeElements = new List<Control>();
+
+        public void AddFocusNode(Control node)
+        {
+            if (!activeElements.Contains(node))
+            {
+                activeElements.Add(node);
+            }
+        }
+
+        public void RemoveFocusNode(Control node)
+        {
+            if (activeElements.Contains(node))
+            {
+                activeElements.Remove(node);
+            }
+        }
+        public List<Control> GetFocusNodes()
+        {
+            return activeElements;
+        }
+
         public List<Control> GetChildrenList() {
             return Instances;
         }

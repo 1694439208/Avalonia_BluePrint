@@ -361,6 +361,8 @@ if({arguments[0]} > {arguments[1]}){{
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            //节点被按下 储存到 焦点处理
+            bParent.bluePrint.AddFocusNode(this);
             //PointerPressedHandler 
             base.OnPointerPressed(e);
             var point = e.GetCurrentPoint(this);
@@ -382,6 +384,7 @@ if({arguments[0]} > {arguments[1]}){{
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
+            bParent.bluePrint.RemoveFocusNode(this);
             e.Handled = true;//吃掉鼠标消息不让他冒泡
             base.OnPointerReleased(e);
             
@@ -418,7 +421,10 @@ if({arguments[0]} > {arguments[1]}){{
             }
             return ret;
         }
-
+        public void SetOffset(Point point) {
+            Canvas.SetLeft(this, point.X - Mouxy.X);
+            Canvas.SetTop(this, point.Y - Mouxy.Y);
+        }
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             base.OnPointerMoved(e);
@@ -436,18 +442,18 @@ if({arguments[0]} > {arguments[1]}){{
             }
             if (point.Properties.IsLeftButtonPressed && isclick)
             {
-                RefreshDrawBezier();
+                //RefreshDrawBezier();
                 //为了刷新溢出了的线条
                 //Parent.Parent.Invalidate();
-                var a = point.Position - Mouxy;
+                //var a = point.Position - Mouxy;
 
                 //MarginLeft += a.X;
                 //MarginTop += a.Y;
                 //var aa = Canvas.GetLeft(this);
                 //Debug.Print($"move:{a}");
                 //_moveX.OnNext(a.X);
-                Canvas.SetLeft(this, Canvas.GetLeft(this) + a.X);
-                Canvas.SetTop(this, Canvas.GetTop(this) + a.Y);
+                //Canvas.SetLeft(this, Canvas.GetLeft(this) + a.X);
+                //Canvas.SetTop(this, Canvas.GetTop(this) + a.Y);
                 // TransformPoint
 
             }

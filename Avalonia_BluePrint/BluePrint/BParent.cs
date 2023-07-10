@@ -447,6 +447,7 @@ namespace 蓝图重制版.BluePrint
         {
             //Parent.Invalidate();
             var p = e.GetCurrentPoint(bluePrint);//
+            
             //Debug.WriteLine($"State.p:{p.Position}");
             Matrix matrix = Matrix.Identity;
             //if (bluePrint.RenderTransform is MatrixTransform transform)
@@ -463,14 +464,22 @@ namespace 蓝图重制版.BluePrint
                 }
                 matrix = new Matrix(scale, 0, 0, scale, 0, 0);
                 bluePrint.RenderTransform = new MatrixTransform(matrix);
+                
             }
             else
             {
                 scale /= scale_value;
                 matrix = new Matrix(scale, 0, 0, scale, 0, 0);
                 bluePrint.RenderTransform = new MatrixTransform(matrix);
+
+                var tf = bluePrint.TransformToVisual(this);
+                // 计算缩放后的椭圆中心坐标
+                if (tf is Matrix matrix1)
+                {
+                    Point scaledCenter = matrix1.Transform(p.Position);
+                    bluePrint.RenderTransformOrigin = new RelativePoint(scaledCenter, RelativeUnit.Absolute);
+                }
             }
-            //ScaleTransform scaleTransform = new ScaleTransform(2.0, 2.0);
             
             base.OnPointerWheelChanged(e);
         }
@@ -784,10 +793,24 @@ namespace 蓝图重制版.BluePrint
 
         protected override void OnPointerMoved(PointerEventArgs e)
         {
-            
             base.OnPointerMoved(e);
             //var MousePoint1 = e.GetCurrentPoint(this);
-            MousePoint = e.GetPosition(this);//.Location;
+            MousePoint = e.GetCurrentPoint(this).Position;//.Location;
+                                                          // 计算缩放后的椭圆中心坐标
+            var tf = this.TransformToVisual(bluePrint);
+            // 计算缩放后的椭圆中心坐标
+            if (tf is Matrix matrix)
+            {
+                Point scaledCenter = matrix.Transform(MousePoint);
+                foreach (var item in bluePrint.GetFocusNodes())
+                {
+                    if (item is NodeBase node)
+                    {
+                        node.SetOffset(scaledCenter);
+                    }
+                }
+            }
+
             if (IsMouseJoin)
             {
                 bP_Line.InvalidateVisual();
