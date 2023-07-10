@@ -18,13 +18,14 @@ using Color = Avalonia.Media.Color;
 using DynamicData;
 using Avalonia.Data;
 using System.Xml.Linq;
+using Avalonia.VisualTree;
 
 namespace Avalonia_BluePrint.BluePrint.Controls
 {
     public class ViewModel : ReactiveObject
     {
-        private List<TreeViewItem> _Nodes;
-        public List<TreeViewItem> Nodes
+        private ObservableCollection<TreeViewItem> _Nodes;
+        public ObservableCollection<TreeViewItem> Nodes
         {
             get => _Nodes;
             set => this.RaiseAndSetIfChanged(ref _Nodes, value);
@@ -79,8 +80,9 @@ namespace Avalonia_BluePrint.BluePrint.Controls
             {
                 if (model.Nodes == null)
                 {
-                    model.Nodes = new List<TreeViewItem>();
+                    model.Nodes = new ObservableCollection<TreeViewItem>();
                 }
+                //model.Nodes = new List<TreeViewItem>();
                 model.Nodes.Clear();
                 foreach (var item in valuePair)
                 {
@@ -108,11 +110,12 @@ namespace Avalonia_BluePrint.BluePrint.Controls
         /// </summary>
         public void Open()
         {
-            //var tree = FindPresenterByName<TreeView>("TreeView1");
-            //foreach (var item in tree.AllItems())
-            //{
-            //    item.IsExpanded = true;
-            //}
+            //var tree = this.FindControl<TreeView>("TreeView1");
+            // 遍历树并展开所有节点
+            foreach (var node in tree.Items)
+            {
+               tree.ExpandSubTree(node as TreeViewItem);
+            }
         }
         /// <summary>
         /// 关闭所有节点
@@ -125,6 +128,7 @@ namespace Avalonia_BluePrint.BluePrint.Controls
             //    item.IsExpanded = false;
             //}
         }
+        TreeView tree;
         protected override void OnInitialized()
         {
             //_popup = Parent as Flyout;
@@ -180,36 +184,15 @@ namespace Avalonia_BluePrint.BluePrint.Controls
             Grid.SetRow(p1,0);
             stack.Children.Add(p1);
 
+
             var p2 = new Panel
             {
                 Children =
                 {
                     new TextBox
                     {
-                        //Name = "SearchElTextBox",
+                        Name = "SearchElTextBox",
                         Watermark = "搜索",
-                        //Commands = {
-                        //    {nameof(ElTextBox.TextChanged),(s,e)=>{
-                        //         //(s as TextBox).Text
-                        //         //Debug.WriteLine((s as ElTextBox).Text);
-                        //        var data = ((ElTextBox)s).Text;
-                        //        if (data == string.Empty||data == "")
-                        //        {
-                        //            SetNodes(valuePairs);
-                        //            return;
-                        //        }
-                        //        var ret = valuePairs.Where(a=>a.Value.Any(b=>b.Item1.NodeName.IndexOf(data)!=-1))
-                        //        .Select(a=>{
-                        //            return new KeyValuePair<string,List<(IJoin.NodeBaseInfoAttribute,Type)>>(
-                        //                a.Key,
-                        //                a.Value.Where(b=>b.Item1.NodeName.IndexOf(data)!=-1).ToList()
-                        //            );
-                        //        });
-                        //        var reta = ret.ToDictionary(a=>a.Key,b=>b.Value);//string,List<(IJoin.NodeBaseInfoAttribute,Type)>
-                        //        SetNodes(reta);
-                        //        Open();
-                        //    }}
-                        //}
                     },
                     new TextBlock
                     {
@@ -218,36 +201,44 @@ namespace Avalonia_BluePrint.BluePrint.Controls
                         //MarginRight =0f,
                         Width = 20,
                         Foreground = new SolidColorBrush(Color.FromArgb(255,0,0,0)),
-                        //Commands = {
-                        //    {nameof(TextBlock.MouseUp),(s,e)=>{
-                        //        var Searchtextbox = FindPresenterByName<ElTextBox>("SearchElTextBox");
-                        //        var data = Searchtextbox.Text;
-                        //        Searchtextbox.Text = "";
-                        //        if (data == string.Empty||data == "")
-                        //        {
-                        //            SetNodes(valuePairs);
-                        //            return;
-                        //        }
-                        //        var ret = valuePairs.Where(a=>a.Value.Any(b=>b.Item1.NodeName.IndexOf(data)!=-1))
-                        //        .Select(a=>{
-                        //            return new KeyValuePair<string,List<(IJoin.NodeBaseInfoAttribute,Type)>>(
-                        //                a.Key,
-                        //                a.Value.Where(b=>b.Item1.NodeName.IndexOf(data)!=-1).ToList()
-                        //            );
-                        //        });
-                        //        var reta = ret.ToDictionary(a=>a.Key,b=>b.Value);//string,List<(IJoin.NodeBaseInfoAttribute,Type)>
-                        //        SetNodes(reta);
-                        //        Open();
-                        //    }}
-                        //},
                     },
                 },
             };
+            var SearchElTextBox = p2.TemporaryFix<TextBox>("SearchElTextBox");
+
+
+            //var textBox1 = p2.FindViewControl<TextBox>("SearchElTextBox");
+            if (SearchElTextBox is TextBox)
+            {
+                SearchElTextBox.TextChanged += (s, e) => {
+                    //(s as TextBox).Text
+                    //         //Debug.WriteLine((s as ElTextBox).Text);
+                    var data = ((TextBox)s).Text;
+                    if (data == string.Empty || data == "")
+                    {
+                        SetNodes(valuePairs);
+                        return;
+                    }
+                    var ret = valuePairs.Where(a => a.Value.Any(b => b.Item1.NodeName.IndexOf(data) != -1))
+                    .Select(a =>
+                    {
+                        return new KeyValuePair<string, List<(NodeBaseInfoAttribute, Type)>>(
+                            a.Key,
+                            a.Value.Where(b => b.Item1.NodeName.IndexOf(data) != -1).ToList()
+                        );
+                    });
+                    var reta = ret.ToDictionary(a => a.Key, b => b.Value);//string,List<(IJoin.NodeBaseInfoAttribute,Type)>
+                    SetNodes(reta);
+                    Open();
+                };
+            }
+            
+
             Grid.SetRow(p2,1);
             stack.Children.Add(p2);
 
 
-            var tree = new TreeView
+            tree = new TreeView
             {
                 DataContext = DataContext,
                 Name = "TreeView1",
@@ -264,7 +255,7 @@ namespace Avalonia_BluePrint.BluePrint.Controls
                     }}
                     }
                 },*/
-                [!TreeView.ItemsSourceProperty] = new Binding("Nodes")
+                [!TreeView.ItemsSourceProperty] = new Binding("Nodes", BindingMode.Default)
                 //Size= SizeField.Fill,
                 //DisplayMemberPath=nameof(NodeData.Text),
                 //ItemsMemberPath=nameof(NodeData.Nodes),

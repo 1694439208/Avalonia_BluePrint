@@ -17,6 +17,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia_BluePrint.BluePrint.Controls;
 using Document.Node;
 using Avalonia_BluePrint.BluePrint.DataType;
+using Avalonia.LogicalTree;
+using System.Xml.Linq;
 
 namespace 蓝图重制版.BluePrint
 {
@@ -517,6 +519,29 @@ namespace 蓝图重制版.BluePrint
                 if (popup == null)
                 {
                     //Console.WriteLine($"popup == null");
+                    //var SearchElTextBox = new TextBox
+                    //{
+                    //    Name = "SearchElTextBox",
+                    //    Watermark = "搜索",
+                    //};
+
+                    //var p2 = new Panel
+                    //{
+                    //    Children =
+                    //    {
+                    //        SearchElTextBox,
+                    //        new TextBlock
+                    //        {
+                    //            Name = "closetext",
+                    //            //Classes = "el-icon,el-icon-close",
+                    //            //MarginRight =0f,
+                    //            Width = 20,
+                    //            Foreground = new SolidColorBrush(Color.FromArgb(255,0,0,0)),
+                    //        },
+                    //    },
+                    //};
+
+                    //var textBox1 = p2.LogicalChildren().Where(x => x. == name)
                     popup = new Flyout
                     {
                         Placement = PlacementMode.Pointer,

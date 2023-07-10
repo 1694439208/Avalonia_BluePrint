@@ -9,6 +9,9 @@ using Avalonia.VisualTree;
 using Avalonia.Controls.Notifications;
 using Splat;
 using Avalonia_BluePrint.Views;
+using System.Diagnostics.Contracts;
+using Avalonia.LogicalTree;
+using System.Xml.Linq;
 
 namespace 蓝图重制版.BluePrint.IJoin
 {
@@ -91,6 +94,41 @@ namespace 蓝图重制版.BluePrint.IJoin
             //    controls.Add(toast);
             //}
 
+        }
+        // Temporary fix for https://github.com/AvaloniaUI/Avalonia/issues/2562
+        public static T TemporaryFix<T>(this ILogical control,string name) where T : Control
+        {
+            T Recursion(System.Collections.Generic.IEnumerable<Avalonia.LogicalTree.ILogical> list)
+            {
+                foreach (Avalonia.LogicalTree.ILogical i in list)
+                {
+                    if (i is Avalonia.INamed named && named is T ret && ret.Name == name)
+                    {
+                        return ret;
+                    }
+                    else
+                    {
+                        T r = Recursion(i.LogicalChildren);
+                        if (r != null)
+                        {
+                            return r;
+                        }
+                    }
+                }
+                return null;
+            }
+            return Recursion(control.LogicalChildren);
+        }
+
+        public static T FindViewControl<T>(this Control view, string name) where T : Control
+        {
+            if (view == null)
+            {
+                return default(T);
+            }
+            var viewControl = view.GetLogicalDescendants().Where(a => a is Control c && c.Name == name).FirstOrDefault();
+            if (viewControl != null && viewControl is T control) return control;
+            return default(T);
         }
     }
 }
