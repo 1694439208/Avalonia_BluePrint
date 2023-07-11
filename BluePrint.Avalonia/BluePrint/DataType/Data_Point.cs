@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Avalonia_BluePrint.BluePrint.DataType
+namespace BluePrint.Avalonia.BluePrint.DataType
 {
     public class Data_Point
     {

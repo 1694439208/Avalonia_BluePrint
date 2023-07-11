@@ -3,6 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Avalonia_BluePrint.ViewModels"
+			 xmlns:v="using:Avalonia_BluePrint.Views"
+			 xmlns:bw="using:BluePrint.Avalonia.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia_BluePrint.Views.MainView"
              x:DataType="vm:MainViewModel">
@@ -12,13 +14,14 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-	<StackPanel Margin="20">
-		<TextBlock Margin="0 5" >Name:</TextBlock>
-		<TextBox  Watermark="Enter your name"/>
-		<TextBlock Margin="0 5" >Password:</TextBlock>
-		<TextBox PasswordChar="*" Watermark="Enter your password"/>
-		<TextBlock Margin="0 15 0 5">Notes:</TextBlock>
-
-		<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-	</StackPanel>
+	<DockPanel Margin="20">
+		<StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+			<Button Command="{Binding SaveBP, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=v:MainView}}">保存蓝图</Button>
+			<Button Command="{Binding LoadBP, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=v:MainView}}">加载蓝图</Button>
+			<Button Command="{Binding ClearBP, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=v:MainView}}">清空蓝图</Button>
+		</StackPanel>
+		<DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+			<bw:BluePrint Name="bp"></bw:BluePrint>
+		</DockPanel>
+	</DockPanel>
 </UserControl>

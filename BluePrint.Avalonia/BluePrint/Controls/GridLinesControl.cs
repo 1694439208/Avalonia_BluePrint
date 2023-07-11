@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Avalonia_BluePrint.BluePrint.Controls
+namespace BluePrint.Avalonia.BluePrint.Controls
 {
     internal class GridLinesControl : Control
     {

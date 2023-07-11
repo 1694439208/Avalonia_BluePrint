@@ -14,9 +14,9 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Controls.Primitives;
-using Avalonia_BluePrint.BluePrint.Controls;
+using BluePrint.Avalonia.BluePrint.Controls;
 using Document.Node;
-using Avalonia_BluePrint.BluePrint.DataType;
+using BluePrint.Avalonia.BluePrint.DataType;
 using Avalonia.LogicalTree;
 using System.Xml.Linq;
 
