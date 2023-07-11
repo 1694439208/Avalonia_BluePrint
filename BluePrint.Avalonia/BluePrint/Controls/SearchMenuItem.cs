@@ -19,8 +19,9 @@ using DynamicData;
 using Avalonia.Data;
 using System.Xml.Linq;
 using Avalonia.VisualTree;
+using OAvalonia = Avalonia;
 
-namespace Avalonia_BluePrint.BluePrint.Controls
+namespace BluePrint.Avalonia.BluePrint.Controls
 {
     public class ViewModel : ReactiveObject
     {
@@ -166,7 +167,7 @@ namespace Avalonia_BluePrint.BluePrint.Controls
                 Text = "此蓝图的所有操作",
                 Foreground = new SolidColorBrush(Color.FromArgb(221, 221, 221, 200)),
                 FontSize = 15,
-                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+                VerticalAlignment = OAvalonia.Layout.VerticalAlignment.Center
             };
             DockPanel.SetDock(c2, Dock.Left);
 
@@ -178,7 +179,7 @@ namespace Avalonia_BluePrint.BluePrint.Controls
                     c2
                 },
                 //Background = new SolidColorBrush(Color.FromRgb(60,50,30)),
-                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                VerticalAlignment = OAvalonia.Layout.VerticalAlignment.Center,
                 Margin = new Thickness(3)
             };
             Grid.SetRow(p1,0);

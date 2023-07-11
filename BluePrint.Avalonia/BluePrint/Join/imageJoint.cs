@@ -9,7 +9,7 @@ using 蓝图重制版.BluePrint.IJoin;
 using Avalonia;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using Avalonia_BluePrint.BluePrint.DataType;
+using BluePrint.Avalonia.BluePrint.DataType;
 
 namespace 蓝图重制版.BluePrint.Node
 {

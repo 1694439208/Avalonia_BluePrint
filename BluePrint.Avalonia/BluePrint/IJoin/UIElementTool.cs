@@ -8,7 +8,7 @@ using Avalonia.Media;
 using Avalonia.VisualTree;
 using Avalonia.Controls.Notifications;
 using Splat;
-using Avalonia_BluePrint.Views;
+using BluePrint.Avalonia.Views;
 using System.Diagnostics.Contracts;
 using Avalonia.LogicalTree;
 using System.Xml.Linq;
@@ -17,7 +17,8 @@ namespace 蓝图重制版.BluePrint.IJoin
 {
     public static class UIElementTool
     {
-        
+        public static WindowNotificationManager? _manager;
+
         public static T Get<T>(this List<object> element, int name)
         {
             return (T)(element[name]);
@@ -78,7 +79,7 @@ namespace 蓝图重制版.BluePrint.IJoin
         //static List<ToastControl> controls = new List<ToastControl>();
         public static void Toast(BluePrint control, string title, Point point, float time = 0.3f)
         {
-            MainWindow._manager?.Show(new Notification("提示", title, NotificationType.Error));
+            _manager?.Show(new Notification("提示", title, NotificationType.Error));
             //if (controls.Count > 0)
             //{
             //    foreach (var item in controls)

@@ -1,7 +1,7 @@
 ﻿
 using Avalonia;
 using Avalonia.Media.Imaging;
-using Avalonia_BluePrint.BluePrint.DataType;
+using BluePrint.Avalonia.BluePrint.DataType;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
