@@ -445,44 +445,24 @@ namespace 蓝图重制版.BluePrint
 
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
-            //Parent.Invalidate();
-            var p = e.GetCurrentPoint(bluePrint);//
-            
-            //Debug.WriteLine($"State.p:{p.Position}");
-            Matrix matrix = Matrix.Identity;
-            //if (bluePrint.RenderTransform is MatrixTransform transform)
-            //{
-            //    matrix = transform.Value;
-            //}
-            
-            
+            var p = e.GetCurrentPoint(bluePrint);
+
+            bluePrint.RenderTransformOrigin = new RelativePoint(new Point(p.Position.X / bluePrint.Bounds.Width, p.Position.Y / bluePrint.Bounds.Height), RelativeUnit.Relative);
+
             if (e.Delta.Y < 0)
             {
-                if (scale > 0.5)
-                {
-                    scale *= scale_value;
-                }
-                matrix = new Matrix(scale, 0, 0, scale, 0, 0);
-                bluePrint.RenderTransform = new MatrixTransform(matrix);
-                
+                scale *= scale_value;
             }
             else
             {
                 scale /= scale_value;
-                matrix = new Matrix(scale, 0, 0, scale, 0, 0);
-                bluePrint.RenderTransform = new MatrixTransform(matrix);
-
-                var tf = bluePrint.TransformToVisual(this);
-                // 计算缩放后的椭圆中心坐标
-                if (tf is Matrix matrix1)
-                {
-                    Point scaledCenter = matrix1.Transform(p.Position);
-                    bluePrint.RenderTransformOrigin = new RelativePoint(scaledCenter, RelativeUnit.Absolute);
-                }
             }
-            
+
+            bluePrint.RenderTransform = new ScaleTransform(scale, scale);
+
             base.OnPointerWheelChanged(e);
         }
+
         Point? mousePos;
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
