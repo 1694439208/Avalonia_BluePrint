@@ -19,6 +19,8 @@ using Document.Node;
 using BluePrint.Avalonia.BluePrint.DataType;
 using Avalonia.LogicalTree;
 using System.Xml.Linq;
+using BluePrint.Avalonia.Views;
+using BluePrint.Avalonia.BluePrint.Tool;
 
 namespace 蓝图重制版.BluePrint
 {
@@ -389,7 +391,8 @@ namespace 蓝图重制版.BluePrint
                 //Width = "100%",
                 //Height = "100%",
                 Tag = 1f,
-                //RenderTransformOrigin = new PointField(0, 0),
+                //RenderTransform = new ScaleTransform(0.8, 0.8),
+                //RenderTransformOrigin = new RelativePoint(new Point(29, 29),RelativeUnit.Relative),
             };
             Canvas.SetLeft(bluePrint,0);
             Canvas.SetTop(bluePrint, 0);
@@ -445,10 +448,18 @@ namespace 蓝图重制版.BluePrint
 
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
-            var p = e.GetCurrentPoint(bluePrint);
+            base.OnPointerWheelChanged(e);
 
-            bluePrint.RenderTransformOrigin = new RelativePoint(new Point(p.Position.X / bluePrint.Bounds.Width, p.Position.Y / bluePrint.Bounds.Height), RelativeUnit.Relative);
-
+            var p = e.GetCurrentPoint(this).Position;//.Location;
+                                                          // 计算缩放后的中心坐标
+            var tf = this.TransformToVisual(bluePrint);
+            // 计算缩放后的中心坐标
+            if (tf is Matrix matrix)
+            {
+                Point scaledCenter = matrix.Transform(p);
+                bluePrint.RenderTransformOrigin = new RelativePoint(new Point(scaledCenter.X / bluePrint.Bounds.Width, scaledCenter.Y / bluePrint.Bounds.Height),
+                RelativeUnit.Relative);
+            }
             if (e.Delta.Y < 0)
             {
                 scale *= scale_value;
@@ -458,9 +469,16 @@ namespace 蓝图重制版.BluePrint
                 scale /= scale_value;
             }
 
-            bluePrint.RenderTransform = new ScaleTransform(scale, scale);
-
-            base.OnPointerWheelChanged(e);
+            bluePrint.RenderTransform = new TransformGroup
+            {
+                Children = new Transforms
+                {
+                    new ScaleTransform(scale, scale),
+                    //new TranslateTransform(p.Position.X / bluePrint.Bounds.Width, p.Position.Y / bluePrint.Bounds.Height),
+                }
+            };
+            //bluePrint.RenderTransform = new ScaleTransform(scale, scale);
+            e.Handled = true;
         }
 
         Point? mousePos;
@@ -789,6 +807,8 @@ namespace 蓝图重制版.BluePrint
                         node.SetOffset(scaledCenter);
                     }
                 }
+                Canvas.SetLeft(MouseJoin, scaledCenter.X);
+                Canvas.SetTop(MouseJoin, scaledCenter.Y);
             }
 
             if (IsMouseJoin)
@@ -802,12 +822,8 @@ namespace 蓝图重制版.BluePrint
                 
                 //Debug.WriteLine($"e.Location11:{p}--{e.Location}");
             }
-            //var p1 = e.GetPosition(this);
-            //MouseJoin.MarginLeft = p1.X;
-            //MouseJoin.MarginTop = p1.Y;
-            //Debug.WriteLine($"e.Location11:{MousePoint}");
-            Canvas.SetLeft(MouseJoin, MousePoint.X);
-            Canvas.SetTop(MouseJoin, MousePoint.Y);
+            //Canvas.SetLeft(MouseJoin, MousePoint.X);
+            //Canvas.SetTop(MouseJoin, MousePoint.Y);
 
 
 
@@ -822,7 +838,7 @@ namespace 蓝图重制版.BluePrint
             //    {
             //        matrix = transform.Value;
             //    }
-                
+
             //    matrix.TranslatePrepend(a.X, a.Y);
             //    System.Diagnostics.Debug.WriteLine(a);
             //    bluePrint.RenderTransform = new MatrixTransform(matrix);

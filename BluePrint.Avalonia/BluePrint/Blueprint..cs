@@ -1,7 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
+using BluePrint.Avalonia.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -216,6 +218,7 @@ namespace 蓝图重制版.BluePrint
         protected override void OnInitialized()
         {
             base.OnInitialized();
+            Background = Brushes.Lavender;
 
         }
         protected override void OnPointerMoved(PointerEventArgs e)
