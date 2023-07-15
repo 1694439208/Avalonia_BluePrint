@@ -60,7 +60,7 @@ namespace Avalonia_BluePrint.Views
             }
             catch (System.Exception ex)
             {
-
+                File.WriteAllText("error.txt",ex.Message);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
 	<Application>
 		<Assembly Name="Avalonia_BluePrint" Dynamic="Required All" />
+		<Assembly Name="BluePrint.Avalonia" Dynamic="Required All" />
 	</Application>
 </Directives>

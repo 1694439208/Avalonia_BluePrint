@@ -56,7 +56,7 @@ namespace 蓝图重制版.BluePrint
             //InvalidateArrange();
             //InvalidateMeasure();
             var size = PositionReckon();
-            Debug.Print($"RefreshDrawBezier:{size}");
+            //Debug.Print($"RefreshDrawBezier:{size}");
             switch (drant)
             {
                 case 4:
