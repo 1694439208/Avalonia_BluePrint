@@ -4,6 +4,7 @@ using System;
 using Avalonia.Media;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
+using ¿∂Õº÷ÿ÷∆∞Ê.BluePrint.IJoin;
 
 namespace Avalonia_BluePrint.Views
 {
@@ -20,6 +21,7 @@ namespace Avalonia_BluePrint.Views
         {
             base.OnApplyTemplate(e);
             _manager = new WindowNotificationManager(this) { MaxItems = 3 };
+            UIElementTool._manager = _manager;
         }
     }
 }

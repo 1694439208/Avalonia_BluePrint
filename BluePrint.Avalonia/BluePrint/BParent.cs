@@ -17,10 +17,12 @@ using Avalonia.Controls.Primitives;
 using BluePrint.Avalonia.BluePrint.Controls;
 using Document.Node;
 using BluePrint.Avalonia.BluePrint.DataType;
-using Avalonia.LogicalTree;
-using System.Xml.Linq;
-using BluePrint.Avalonia.Views;
+using static System.Math;
 using BluePrint.Avalonia.BluePrint.Tool;
+using Avalonia.Animation;
+using Avalonia.Media.Transformation;
+using System.Xml.Linq;
+using Avalonia.Remote.Protocol.Input;
 
 namespace 蓝图重制版.BluePrint
 {
@@ -442,44 +444,62 @@ namespace 蓝图重制版.BluePrint
             //ClearState();
 
         }
+        /// <summary>
+        /// 缩放因子
+        /// </summary>
+        public float ScaleRate = 0.8f;
+        Matrix _matrix = Matrix.Identity;
+        private TransformOperations.Builder _transformBuilder;
 
-        float scale = 1;
-        float scale_value = 0.8f;
+        /// <summary>
+        /// Invalidate child element.
+        /// </summary>
+        /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
+        private void InvalidateElement(bool skipTransitions)
+        {
+            if (bluePrint == null)
+            {
+                return;
+            }
 
+            bluePrint.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+            _transformBuilder = new TransformOperations.Builder(1);
+            _transformBuilder.AppendMatrix(_matrix);
+            bluePrint.RenderTransform = _transformBuilder.Build();
+            bluePrint.InvalidateVisual();
+        }
+        /// <summary>
+        /// Zoom to provided zoom ratio and provided center point.
+        /// </summary>
+        /// <param name="ratio">The zoom ratio.</param>
+        /// <param name="x">The center point x axis coordinate.</param>
+        /// <param name="y">The center point y axis coordinate.</param>
+        /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
+        public void ZoomTo(double ratio, double x, double y, bool skipTransitions = false)
+        {
+            _matrix = MatrixHelper.ScaleAtPrepend(_matrix, ratio, ratio, x, y);
+            InvalidateElement(skipTransitions);
+        }
+        /// <summary>
+        /// Zoom to provided zoom delta ratio and provided center point.
+        /// </summary>
+        /// <param name="delta">The zoom delta ratio.</param>
+        /// <param name="x">The center point x axis coordinate.</param>
+        /// <param name="y">The center point y axis coordinate.</param>
+        /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
+        public void ZoomDeltaTo(double delta, double x, double y, bool skipTransitions = false)
+        {
+            //double realDelta = Sign(delta) * Pow(Abs(delta), 1);
+            double realDelta = Sign(delta) * Pow(Abs(delta), 1);
+            Debug.WriteLine($"realDelta:{realDelta}");
+            ZoomTo(Pow(ScaleRate, realDelta), x, y, false);
+        }
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
-            base.OnPointerWheelChanged(e);
-
-            var p = e.GetCurrentPoint(this).Position;//.Location;
-                                                          // 计算缩放后的中心坐标
-            var tf = this.TransformToVisual(bluePrint);
-            // 计算缩放后的中心坐标
-            if (tf is Matrix matrix)
-            {
-                Point scaledCenter = matrix.Transform(p);
-                bluePrint.RenderTransformOrigin = new RelativePoint(new Point(scaledCenter.X / bluePrint.Bounds.Width, scaledCenter.Y / bluePrint.Bounds.Height),
-                RelativeUnit.Relative);
-            }
-            if (e.Delta.Y < 0)
-            {
-                scale *= scale_value;
-            }
-            else
-            {
-                scale /= scale_value;
-            }
-
-            bluePrint.RenderTransform = new TransformGroup
-            {
-                Children = new Transforms
-                {
-                    new ScaleTransform(scale, scale),
-                    //new TranslateTransform(p.Position.X / bluePrint.Bounds.Width, p.Position.Y / bluePrint.Bounds.Height),
-                }
-            };
-            //bluePrint.RenderTransform = new ScaleTransform(scale, scale);
-            e.Handled = true;
+            var point = e.GetPosition(bluePrint);
+            ZoomDeltaTo(-e.Delta.Y, point.X, point.Y);
         }
+
 
         Point? mousePos;
         protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -522,7 +542,7 @@ namespace 蓝图重制版.BluePrint
             
             base.OnPointerReleased(e);
             //Console.ForegroundColor = ConsoleColor.Red;
-            if (e.InitialPressMouseButton == MouseButton.Right)
+            if (e.InitialPressMouseButton == Avalonia.Input.MouseButton.Right)
             {
                 //Console.WriteLine($"if (e.MouseButton == MouseButton.Right&& key == InputModifiers.None)");
                 if (popup == null)
@@ -792,6 +812,7 @@ namespace 蓝图重制版.BluePrint
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             base.OnPointerMoved(e);
+            //Debug.WriteLine($"OnPointerMoved:{e.GetPosition(bluePrint)}");
             //var MousePoint1 = e.GetCurrentPoint(this);
             MousePoint = e.GetCurrentPoint(this).Position;//.Location;
                                                           // 计算缩放后的椭圆中心坐标

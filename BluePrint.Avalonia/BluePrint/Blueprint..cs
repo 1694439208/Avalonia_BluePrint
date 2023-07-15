@@ -214,11 +214,14 @@ namespace 蓝图重制版.BluePrint
         {
             return Lines;
         }
+        protected override Size ArrangeOverride(Size finalSize) {
 
+            return base.ArrangeOverride(finalSize);
+        }
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            Background = Brushes.Lavender;
+            //Background = Brushes.Lavender;
 
         }
         protected override void OnPointerMoved(PointerEventArgs e)

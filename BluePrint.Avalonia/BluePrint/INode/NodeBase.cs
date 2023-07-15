@@ -464,7 +464,7 @@ if({arguments[0]} > {arguments[1]}){{
         /// </summary>
         public void RefreshDrawBezier() {
             foreach (var item in _IntPutJoin)
-            {
+            {            
                 var lines = bParent.bluePrint.FildIutJoin(item.Item1);
                 foreach (var line in lines)
                 {

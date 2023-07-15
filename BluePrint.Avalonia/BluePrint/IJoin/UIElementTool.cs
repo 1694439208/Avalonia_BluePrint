@@ -61,7 +61,7 @@ namespace 蓝图重制版.BluePrint.IJoin
         public static Point GetPosition(this Control element,Point point)
         {
             //改成从canvas取
-            return new Point(Canvas.GetLeft(element), Canvas.GetTop(element)) + point;
+            return new Point(Canvas.GetLeft(element)+ point.X, Canvas.GetTop(element)+ point.Y);
             //return GetParentPosition(element, point, parent);
         }
         public static Point GetParentPosition(Control element,Point point, Visual parent) {
@@ -80,6 +80,7 @@ namespace 蓝图重制版.BluePrint.IJoin
         public static void Toast(BluePrint control, string title, Point point, float time = 0.3f)
         {
             _manager?.Show(new Notification("提示", title, NotificationType.Error));
+            //_manager?.Show(new Notification("提示", title, NotificationType.Error));
             //if (controls.Count > 0)
             //{
             //    foreach (var item in controls)

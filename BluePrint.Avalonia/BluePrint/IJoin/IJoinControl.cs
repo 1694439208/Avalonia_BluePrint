@@ -103,7 +103,7 @@ namespace 蓝图重制版.BluePrint.Node
         /// <returns></returns>
         public virtual Control Get_NodeRef() { return _Node; }
         Control _Node;
-        BParent bParent;
+        public BParent bParent;
         public NodePosition _position;
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {

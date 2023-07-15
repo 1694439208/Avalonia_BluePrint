@@ -40,18 +40,23 @@ namespace 蓝图重制版.BluePrint
                 // Get the bounds of the control
                 //Rect bounds = new Rect(new Point(0, 0), Bounds.Size);
                 // Fill the background with the control's background color
-                //dc.FillRectangle(Background, bounds);
+                //dc.FillRectangle(Background, Bounds);
                 dc.DrawGeometry(null, strokePen, geometry);
+                //dc.DrawRectangle(strokePen, bounds);
                 //Debug.Print(geometry.Figures.Count.ToString());
                 //Dispatcher.UIThread.Post(() => { Clip = geometry; });
-                
+
             }
         }
         /// <summary>
         /// 刷新路径
         /// </summary>
         public void RefreshDrawBezier() {
+            //InvalidateVisual();
+            //InvalidateArrange();
+            //InvalidateMeasure();
             var size = PositionReckon();
+            Debug.Print($"RefreshDrawBezier:{size}");
             switch (drant)
             {
                 case 4:
@@ -117,11 +122,16 @@ namespace 蓝图重制版.BluePrint
             {
                 // IJoinControl.NodePosition
                 //var offset = UIElementTool.GetParentPosition(_Star,new Point(0,0), _Star.GetVisualParent());
+
                 var _StarPosition = _Star.TranslatePoint(_Star.GetJoinPos(_Star.GetDir()), _Star.Get_NodeRef());
                 var _EndPosition = _End.TranslatePoint(_End.GetJoinPos(_End.GetDir()), _End.Get_NodeRef());
 
-                Point Spos = _Star.Get_NodeRef().GetPosition(_StarPosition ?? new Point(0,0));//_Star.GetPosition(_Star.Get_NodeRef().GetJoinPos(_Star.GetDir()));
-                Point SEnd = _End.Get_NodeRef().GetPosition(_EndPosition ?? new Point(0, 0));// _End.GetPosition(_End.GetJoinPos(_End.GetDir()));
+                Point Spos = _Star.Get_NodeRef().GetPosition(_StarPosition??new Point(0, 0));//_Star.GetPosition(_Star.Get_NodeRef().GetJoinPos(_Star.GetDir()));
+                Point SEnd = _End.Get_NodeRef().GetPosition(_EndPosition??new Point(0, 0));// _End.GetPosition(_End.GetJoinPos(_End.GetDir()));
+
+                //var Spos = _Star.TranslatePoint(_Star.GetJoinPos(_Star.GetDir()), _Star.bParent.bluePrint) ?? default;
+                //var SEnd = _End.TranslatePoint(_End.GetJoinPos(_End.GetDir()), _End.bParent.bluePrint) ?? default;
+
                 if (_Star is MouseJoin)
                 {
                     Spos = _Star.GetPosition(default);
