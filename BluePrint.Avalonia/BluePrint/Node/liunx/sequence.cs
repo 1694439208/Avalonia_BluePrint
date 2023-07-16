@@ -40,23 +40,23 @@ namespace 蓝图重制版.BluePrint.INode
                     Tips = "添加执行",
                 }),
             });
-            if (_OutPutJoin[2].Item1 is AddExecJoin join)
-            {
-                join.OnJoinEveTemp += (s,e) =>{
-                    var temp = e.Message as DataType.JoinEventType;
-                    if (temp.eveType == DataType.EveType.MouseUp)
-                    {
-                        //_OutPutJoin.find
-                        AddOntPut((new ExecJoin(bParent, IJoinControl.NodePosition.right, this), new Node_Interface_Data
-                        {
-                            Title = "执行结束的接头",
-                            Value = new JoinType("执行结束"),
-                            Type = typeof(JoinType),
-                            Tips = "test",
-                        }), s as IJoinControl, IsAddList: true);
-                    }
-                };
-            }
+            //if (_OutPutJoin[2].Item1 is AddExecJoin join)
+            //{
+            //    join.OnJoinEveTemp += (s, e) => {
+            //        var temp = e.Message as DataType.JoinEventType;
+            //        if (temp.eveType == DataType.EveType.MouseUp)
+            //        {
+            //            //_OutPutJoin.find
+            //            AddOntPut((new ExecJoin(bParent, IJoinControl.NodePosition.right, this), new Node_Interface_Data
+            //            {
+            //                Title = "执行结束的接头",
+            //                Value = new JoinType("执行结束"),
+            //                Type = typeof(JoinType),
+            //                Tips = "test",
+            //            }), s as IJoinControl, IsAddList: true);
+            //        }
+            //    };
+            //}
         }
 
         public override void Execute(object Context, List<object> arguments, in Runtime.Evaluate.Result result)

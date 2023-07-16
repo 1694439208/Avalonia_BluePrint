@@ -177,7 +177,7 @@ namespace BluePrint.Avalonia.Views
                 Canvas.SetTop(node, 100);
                 int x = 200;
                 int y = 30;
-                for (int i = 0; i < 120; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     x += 100;
                     if (i % 15 == 0)

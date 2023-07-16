@@ -12,6 +12,7 @@ using System.Diagnostics;
 using Avalonia.Markup.Xaml;
 using System.Reactive.Subjects;
 using System.Reactive.Linq;
+using Avalonia.Data;
 
 namespace 蓝图重制版.BluePrint.INode
 {
@@ -115,6 +116,9 @@ if({arguments[0]} > {arguments[1]}){{
 
         Subject<double> _moveY = new Subject<double>();
         Subject<double> _moveX = new Subject<double>();
+
+
+        IObservable<bool?> ischeck { get; set; }
         protected override void OnInitialized()
         {
             //AvaloniaXamlLoader.Load(this);
@@ -167,24 +171,106 @@ if({arguments[0]} > {arguments[1]}){{
             //Canvas.SetLeft(OuPutIJoin, 20);
 
             border = new Border();
-            border.Child = new StackPanel
+            var title_control = new StackPanel
             {
+                Background = new SolidColorBrush(Color.Parse("#B8FFBF19")),// Brushes.Aqua,
                 Children =
                 {
-                    new Title
-                    {
-                        //IsAntiAlias = true,
-                        //HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,// HorizontalAlignment.Stretch,
-                        //Width = "100%",
-                        Height = TitleHeight,
-                        //MarginLeft = 0,
-                        //MarginTop = 0,
+                    new DockPanel{
                         Background = new SolidColorBrush(Color.Parse("#B8FFBF19")),// Brushes.Aqua,
-                        title = Title,
+                        Height = TitleHeight,
+                        Children = {
+                            new Title
+                            {
+                                Name = "title",
+                                Background = new SolidColorBrush(Color.Parse("#B8FFBF19")),// Brushes.Aqua,
+                                title = Title,
+                            },
+                            new CheckBox
+                            {
+                                Width = TitleHeight,
+                                Height = TitleHeight,
+                                IsThreeState = true,
+                                Name = "zhedie",
+                                Padding = new Thickness(0),
+                                //[!CheckBox.IsCheckedProperty] = new Binding("ischeck")
+                            }
+                        }
                     },
                     stack
                 }
             };
+            DockPanel.SetDock(title_control.FindViewControl<Title>("title"), Dock.Left);
+
+            var checkbox = title_control.FindViewControl<CheckBox>("zhedie");
+            DockPanel.SetDock(checkbox, Dock.Right);
+
+            checkbox.IsCheckedChanged += (s, e) => {
+                if (s is CheckBox checkBox)
+                {
+                    //Debug.Print($"checkBox:{checkBox.IsChecked}");
+                    switch (checkBox.IsChecked)
+                    {
+                        
+                        case true:
+                            //小折叠
+                            for (int i = 0; i < _IntPutJoin.Count; i++)
+                            {
+                                var item = _IntPutJoin[i];
+                                if (!bParent.bluePrint.FildIsJoinRef(item.Item1))
+                                {
+                                    item.Item1.IsVisible = false;
+                                }
+                            }
+                            for (int i = 0; i < _OutPutJoin.Count; i++)
+                            {
+                                var item = _OutPutJoin[i];
+                                if (!bParent.bluePrint.FildIsJoinRef(item.Item1))
+                                {
+                                    item.Item1.IsVisible = false;
+                                }
+                            }
+                            break;
+                        case false:
+                            foreach (var item in _IntPutJoin)
+                            {
+                                item.Item1.Margin = new Thickness(0);
+                                item.Item1.IsVisible = true;
+                            }
+                            foreach (var item in _OutPutJoin)
+                            {
+                                item.Item1.Margin = new Thickness(0);
+                                item.Item1.IsVisible = true;
+                            }
+                            break;
+                        default:
+                            //大折叠 只保留第一个
+                            for (int i = 0; i < _IntPutJoin.Count; i++)
+                            {
+                                if (i != 0)
+                                {
+                                    var h = _IntPutJoin[i].Item1.Bounds.Height;
+                                    _IntPutJoin[i].Item1.Margin = new Thickness(0, -h, 0, 0);
+                                    //_IntPutJoin[i].Item1.IsVisible = false;
+                                }
+                            }
+                            for (int i = 0; i < _OutPutJoin.Count; i++)
+                            {
+                                if (i!=0)
+                                {
+                                    var h = _OutPutJoin[i].Item1.Bounds.Height;
+                                    _OutPutJoin[i].Item1.Margin = new Thickness(0, -h, 0, 0);
+                                    //_OutPutJoin[i].Item1.IsVisible = false;
+                                }
+                            }
+                            break;
+                    }
+                }
+            };
+
+            //checkbox.Bind(CheckBox.IsCheckedProperty, ischeck);
+
+            border.Child = title_control;
             border.BoxShadow = new BoxShadows(new BoxShadow
             {
                 Color = Colors.Black,

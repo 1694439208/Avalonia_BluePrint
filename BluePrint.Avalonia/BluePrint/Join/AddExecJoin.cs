@@ -157,6 +157,38 @@ namespace 蓝图重制版.BluePrint.IJoin
                 TextAlignment = Avalonia.Media.TextAlignment.Center,// CPF.Drawing.TextAlignment.Center,
             };
             base.AddControl(UINode, nodePosition);
+
+            OnJoinEveTemp += (s, e) =>
+            {
+                var temp = e.Message as DataType.JoinEventType;
+                if (temp.eveType == DataType.EveType.MouseUp)
+                {
+                    //_OutPutJoin.find
+                    if (_Node is NodeBase nodeBase)
+                    {
+                        if (GetDir() == NodePosition.Left)
+                        {
+                            nodeBase.AddIntPut((new ExecJoin(bParent, IJoinControl.NodePosition.Left, _Node), new Node_Interface_Data
+                            {
+                                Title = "执行结束的接头",
+                                Value = new JoinType("执行结束"),
+                                Type = typeof(JoinType),
+                                Tips = "test",
+                            }), s as IJoinControl, IsAddList: true);
+                        }
+                        if (GetDir() == NodePosition.right)
+                        {
+                            nodeBase.AddOntPut((new ExecJoin(bParent, IJoinControl.NodePosition.right, _Node), new Node_Interface_Data
+                            {
+                                Title = "执行结束的接头",
+                                Value = new JoinType("执行结束"),
+                                Type = typeof(JoinType),
+                                Tips = "test",
+                            }), s as IJoinControl, IsAddList: true);
+                        }
+                    }
+                }
+            };
         }
     }
 }
