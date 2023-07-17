@@ -15,6 +15,7 @@ namespace 蓝图重制版.BluePrint.Runtime
         private static void Calculated(NodeAst nodeAst, object GlobalContext) {
             switch (nodeAst.NodeToken)
             {
+                case Token.NodeToken.ExpressionValue:
                 case Token.NodeToken.Expression:
                     //表达式就执行
                     foreach (var item in nodeAst.PrevNodes)

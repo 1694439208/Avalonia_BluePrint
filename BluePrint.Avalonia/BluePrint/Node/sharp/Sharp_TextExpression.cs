@@ -13,7 +13,7 @@ namespace 蓝图重制版.BluePrint.INode
             Title = "自定义条件";
             base._IntPutJoin.AddRange(new List<(IJoinControl,Node_Interface_Data)>{
                 (new TextBoxJoint(bParent, IJoinControl.NodePosition.Left, this){
-                    //Watermark = "表达式",
+                    Watermark = "表达式",
                     //Enabled = false,
                 },new Node_Interface_Data{
                     Title = "",
@@ -40,6 +40,7 @@ namespace 蓝图重制版.BluePrint.INode
         public override void Execute(object Context, List<object> arguments, in Runtime.Evaluate.Result result)
         {
             //输出默认
+            result.SetReturnValue(0, arguments.LastOrDefault()??"");
             base.Execute(Context,arguments, result);
         }
 

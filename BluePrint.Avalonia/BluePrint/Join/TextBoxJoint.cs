@@ -76,10 +76,9 @@ namespace 蓝图重制版.BluePrint.Node
             return textBoxDate;
         }
         public double width = 90f;
-        public ElTextBox UINode = new ElTextBox
+        public TextBox UINode = new TextBox
         {
             Width = 90f,
-            ClipToBounds = true,
             Text = "test",
         };
         

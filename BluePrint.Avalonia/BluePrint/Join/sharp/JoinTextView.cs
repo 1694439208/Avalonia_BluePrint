@@ -1,9 +1,13 @@
 ﻿
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using 蓝图重制版.BluePrint;
@@ -12,6 +16,7 @@ using 蓝图重制版.BluePrint.IJoin;
 using 蓝图重制版.BluePrint.INode;
 using 蓝图重制版.BluePrint.Node;
 using 蓝图重制版.BluePrint.Runtime;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Document.Join
 {
@@ -46,17 +51,18 @@ namespace Document.Join
             switch (value.Value)
             {
                 case byte[]:
-                    data = Encoding.Default.GetString((byte[])value?.Value);
+                    data.OnNext(Encoding.Default.GetString((byte[]?)value?.Value??new byte[] { }));
                     break;
                 default:
-                    data = value?.Value?.ToString();
+                    data.OnNext(value?.Value?.ToString() ?? "");
                     break;
             }
+            
             title = value;
         }
         public override Node_Interface_Data Get()
         {
-            title.Value = data;
+            //title.Value = data.AsObservable();
             return title;
         }
         public Control UINode = new Panel
@@ -77,6 +83,7 @@ namespace Document.Join
             UINode = new StackPanel { 
                 Children = {
                     new TextBox{
+                        Name = "print",
                         //Background="255,255,255",
                         Width = 300,
                         MinHeight = 90,
@@ -90,8 +97,13 @@ namespace Document.Join
                     }
                 },
             };
+            
+            var print =UINode.FindViewControl<TextBox>("print");
+            print.Bind(TextBox.TextProperty, data);
+            data.Subscribe(y => title.Value = y);
             base.AddControl(UINode, nodePosition);
         }
-        public string data;
+        Subject<string> data = new Subject<string>();
+        //IObservable<string> data { get; set; }
     }
 }
