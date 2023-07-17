@@ -29,6 +29,9 @@
 
 ![](image/df019cda2763dfaa3b108caac3fa4951.gif)
 
+>> 蓝图缩放参考了 https://github.com/wieslawsoltes/PanAndZoom
+>> 生成pdf参考了 https://github.com/Oaz/AvaloniaUI.PrintToPDF/
+
 >> 先放几张图
 
 ![](微信图片_20230710155046.png)
