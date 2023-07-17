@@ -229,7 +229,7 @@ namespace 蓝图重制版.BluePrint
             foreach (var item1 in data.JoinList)
             {
                 //执行线只支持一对一
-                var bP_Line1 = new BP_Line
+                var bP_Line1 = new BP_Line(bluePrint)
                 {
                     Width = 1f,
                     Height = 1f,
@@ -421,7 +421,7 @@ namespace 蓝图重制版.BluePrint
             bluePrint.AddChildren1(MouseJoin);
             //
             //添加默认拖动显示线条
-            bP_Line = new BP_Line
+            bP_Line = new BP_Line(bluePrint)
             {
                 //MarginLeft = 0f,
                 //MarginTop = 0f,
@@ -698,7 +698,7 @@ namespace 蓝图重制版.BluePrint
                             if (!bluePrint.FildIsJoinRef(a) && !bluePrint.FildIsJoinRef(b))
                             {
                                 //执行线只支持一对一
-                                var bP_Line1 = new BP_Line
+                                var bP_Line1 = new BP_Line(bluePrint)
                                 {
                                     //MarginLeft = 0f,
                                     //MarginTop = 0f,
@@ -725,7 +725,7 @@ namespace 蓝图重制版.BluePrint
                             //剩下的是普通线条
                             if (!bluePrint.FildLine(a, b))
                             {
-                                var bP_Line1 = new BP_Line
+                                var bP_Line1 = new BP_Line(bluePrint)
                                 {
                                     //MarginLeft = 0f,
                                     //MarginTop = 0f,
@@ -763,7 +763,7 @@ namespace 蓝图重制版.BluePrint
                             //剩下的是普通线条
                             if (!bluePrint.FildLine(a, b))
                             {
-                                var bP_Line1 = new BP_Line
+                                var bP_Line1 = new BP_Line(bluePrint)
                                 {
                                     //MarginLeft = 0f,
                                     //MarginTop = 0f,

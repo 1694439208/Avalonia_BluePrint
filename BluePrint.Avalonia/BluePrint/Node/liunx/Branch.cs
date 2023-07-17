@@ -20,7 +20,7 @@ namespace 蓝图重制版.BluePrint.INode
                     Type = typeof(JoinType),
                     Tips = "test",
                 }),
-                (new TextJoint(bParent, IJoinControl.NodePosition.Left, this),new Node_Interface_Data{
+                (new Checkjoin(bParent, IJoinControl.NodePosition.Left, this),new Node_Interface_Data{
                     Title = "布尔值",
                     Value = false,
                     Type = typeof(bool),
@@ -61,6 +61,8 @@ namespace 蓝图重制版.BluePrint.INode
                 _IntPutJoin[i + 1].Item1.Set(data);
                 _IntPutJoin[i + 1].Item1.Render();
             }
+            base.PlayAnimation();
+            //base.Execute(Context, arguments, result);
         }
         public override string CodeTemplate(List<string> Execute, List<string> PrevNodes, List<ParameterAST> arguments, List<ParameterAST> result)
         {

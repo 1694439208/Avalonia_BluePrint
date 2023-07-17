@@ -189,7 +189,7 @@ namespace BluePrint.Avalonia.Views
                     bp.bluePrint.AddChildren(node1);
                     Canvas.SetLeft(node1, x);
                     Canvas.SetTop(node1, y);
-                    var line = new BP_Line
+                    var line = new BP_Line(bp.bluePrint)
                     {
                         Width = 1f,
                         Height = 1f

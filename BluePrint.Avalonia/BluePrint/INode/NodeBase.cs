@@ -60,12 +60,20 @@ namespace 蓝图重制版.BluePrint.INode
         /// <param name="arguments">参数</param>
         /// <param name="result">返回</param>
         public virtual void Execute(object Context,List<object> arguments, in Runtime.Evaluate.Result result) {
-
-
+            PlayAnimation();
             //默认动作 ，输出所有连接
             for (int i = 0; i < result.GetNextNodeSize(); i++)
             {
                 result.SetExecute(i);
+            }
+        }
+        /// <summary>
+        /// 设置动画播放
+        /// </summary>
+        public virtual void PlayAnimation() {
+            foreach (var item in _IntPutJoin.Select(a => bParent.bluePrint.FildIutJoin(a.Item1)).SelectMany(a => a))
+            {
+                item?.Start_Animation(BP_Line.LineDirection.Output);
             }
         }
         /// <summary>

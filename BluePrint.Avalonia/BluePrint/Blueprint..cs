@@ -3,15 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
-using BluePrint.Avalonia.Views;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Timers;
+using Avalonia.Media.Immutable;
+using Avalonia.Threading;
+using System.Collections.Concurrent;
 using 蓝图重制版.BluePrint.INode;
+using static 蓝图重制版.BluePrint.BP_Line;
 
 namespace 蓝图重制版.BluePrint
 {
@@ -97,6 +93,51 @@ namespace 蓝图重制版.BluePrint
             return Lines.Where(x => x.GetStarJoin() == join || x.GetEndJoin() == join).ToList();
         }
         /// <summary>
+        /// 动画线条引用
+        /// </summary>
+        private ConcurrentDictionary<BP_Line, LineDirection> bP_Animation_Lines = new ConcurrentDictionary<BP_Line, LineDirection>();
+
+        /// <summary>
+        /// 添加BP_Line和对应的LineDirection
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="direction"></param>
+        public void AddAnimationLine(BP_Line line, LineDirection direction)
+        {
+            if (bP_Animation_Lines.ContainsKey(line))
+            {
+                bP_Animation_Lines[line] = direction;
+            }
+            else
+            {
+                bP_Animation_Lines.TryAdd(line, direction);
+            }
+        }
+
+        /// <summary>
+        /// 删除指定的BP_Line
+        /// </summary>
+        /// <param name="line"></param>
+        public void RemoveAnimationLine(BP_Line line)
+        {
+            if (bP_Animation_Lines.ContainsKey(line))
+            {
+                line.close_Animation();
+
+                line.strokePen = line.temp_strokePen;
+                line.InvalidateVisual();
+                LineDirection removedValue;
+                bP_Animation_Lines.TryRemove(line,out removedValue);
+            }
+        }
+
+        // 获取所有BP_Line和对应的LineDirection
+        public IReadOnlyDictionary<BP_Line, LineDirection> GetAllAnimationLines()
+        {
+            return bP_Animation_Lines;
+        }
+
+        /// <summary>
         /// 查询输出接口的所有线条引用
         /// </summary>
         /// <param name="Star"></param>
@@ -167,6 +208,10 @@ namespace 蓝图重制版.BluePrint
         /// <param name="control"></param>
         public void RemoveLine(Control control) {
             var line = (BP_Line)control;
+            //先从动画引用删除
+            RemoveAnimationLine(line);
+
+
             ((Node.IJoinControl)line.GetEndJoin()).SetEnabled(true);
 
             //((Node.IJoinControl)line.GetEndJoin()).Focusable = false;
@@ -218,11 +263,34 @@ namespace 蓝图重制版.BluePrint
 
             return base.ArrangeOverride(finalSize);
         }
+
+        private Timer? _timer;
         protected override void OnInitialized()
         {
             base.OnInitialized();
             //Background = Brushes.Lavender;
-
+            _timer = new Timer(a =>
+            {
+                foreach (var item in GetAllAnimationLines())
+                {
+                    if (item.Value == LineDirection.Input)
+                    {
+                        Interlocked.Increment(ref item.Key.offset);
+                    }
+                    if (item.Value == LineDirection.Output)
+                    {
+                        Interlocked.Decrement(ref item.Key.offset);
+                    }
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        //this.RaisePropertyChanged(offsetProperty);
+                        item.Key.strokePen = new ImmutablePen(Brushes.DarkBlue,
+                            3d, new ImmutableDashStyle(new double[] { 3, 3 }, item.Key.offset), PenLineCap.Round, PenLineJoin.Round);
+                        item.Key.InvalidateVisual();
+                    });
+                }
+            }
+            , null, 0, 50);
         }
         protected override void OnPointerMoved(PointerEventArgs e)
         {

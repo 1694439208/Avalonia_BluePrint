@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using 蓝图重制版.BluePrint.Node;
+﻿using 蓝图重制版.BluePrint.Node;
 using 蓝图重制版.BluePrint.IJoin;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -15,17 +10,43 @@ using Avalonia.VisualTree;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using Avalonia.Layout;
+using static 蓝图重制版.BluePrint.BP_Line;
+
 
 namespace 蓝图重制版.BluePrint
 {
     public class BP_Line : Control
     {
+        BluePrint? bluePrint { set; get; }
+        public BP_Line(BluePrint _bluePrint) {
+            bluePrint = _bluePrint;
+        }
+        /// <summary>
+        /// 线条方向 ，用于执行输入输出 动画
+        /// </summary>
+        public enum LineDirection
+        {
+            Input,
+            Output
+        }
+
         public void SetColor(Color color)
         {
             backound_color = color;
         }
-        readonly IPen strokePen = new ImmutablePen(Brushes.DarkBlue, 3d, null, PenLineCap.Round, PenLineJoin.Round);
-        
+        public IPen strokePen = new ImmutablePen(Brushes.DarkBlue,
+            3d, null, PenLineCap.Round, PenLineJoin.Round);
+
+
+        public IPen temp_strokePen => new ImmutablePen(Brushes.DarkBlue,
+            3d, null, PenLineCap.Round, PenLineJoin.Round);
+        /// <summary>
+        /// Gets or sets the width of the element.
+        /// </summary>
+        public int offset = 0;
+        //static readonly StyledProperty<double> offsetProperty =
+        //    AvaloniaProperty.Register<Layoutable, double>(nameof(offset), 0);
         public override void Render(DrawingContext dc)
         {
             base.Render(dc);
@@ -34,13 +55,21 @@ namespace 蓝图重制版.BluePrint
                 // 设置抗锯齿模式
                 //dc.AntialiasMode = AntialiasMode.AntiAlias;
                 //dc.DrawPath(backound_color, new Stroke(_LineWidth), geometry);
-                
+
 
 
                 // Get the bounds of the control
                 //Rect bounds = new Rect(new Point(0, 0), Bounds.Size);
                 // Fill the background with the control's background color
                 //dc.FillRectangle(Background, Bounds);
+
+
+                //skPaint.PathEffect = SKPathEffect.CreateDash(new float[] { 10, 5 }, index);
+                //new SolidColorPaint(SKColors.LightSlateGray)
+                //{
+                //    StrokeThickness = 2,
+                //    PathEffect = new DashEffect(new float[] { 3, 3 })
+                //}
                 dc.DrawGeometry(null, strokePen, geometry);
                 //dc.DrawRectangle(strokePen, bounds);
                 //Debug.Print(geometry.Figures.Count.ToString());
@@ -48,6 +77,7 @@ namespace 蓝图重制版.BluePrint
 
             }
         }
+        
         /// <summary>
         /// 刷新路径
         /// </summary>
@@ -75,10 +105,23 @@ namespace 蓝图重制版.BluePrint
                     break;
             }
         }
+        public void Start_Animation(LineDirection lineDirection)
+        {
+            bluePrint?.AddAnimationLine(this, lineDirection);
+        }
+        public void End_Animation()
+        {
+            bluePrint?.RemoveAnimationLine(this);
+        }
+        public void close_Animation()
+        {
+
+        }
         protected override void OnInitialized()
         {
             base.OnInitialized();
             //ClipToBounds = true;
+            //Width = 10;
         }
         public int GetQuadrant(Point origin, Point point)
         {
