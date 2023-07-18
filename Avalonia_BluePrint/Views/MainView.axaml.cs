@@ -6,6 +6,7 @@ using 蓝图重制版.BluePrint;
 using System.IO;
 using Avalonia.Controls.Notifications;
 using System.Threading.Tasks;
+using Avalonia.PrintToPDF;
 
 namespace Avalonia_BluePrint.Views
 {
@@ -31,6 +32,23 @@ namespace Avalonia_BluePrint.Views
                 // 处理选定的保存目录
                 var bptext = JsonConvert.SerializeObject(bp.GetBP());
                 File.WriteAllText(savePath, bptext);
+                MainWindow._manager?.Show(new Notification("提示", "保存成功", NotificationType.Error));
+            }
+        }
+        public async Task SavePDF()
+        {
+            var dialog = new SaveFileDialog();
+            dialog.Filters.Add(new FileDialogFilter { Name = "选择保存pdf文件目录", Extensions = { "pdf" } });
+
+
+            var result = await dialog.ShowAsync(MainWindow._MainWindow);
+
+            if (!string.IsNullOrEmpty(result))
+            {
+                string savePath = result;
+
+                // 处理选定的保存目录
+                Print.ToFile(savePath, bp);
                 MainWindow._manager?.Show(new Notification("提示", "保存成功", NotificationType.Error));
             }
         }
