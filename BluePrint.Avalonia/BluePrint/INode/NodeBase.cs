@@ -455,6 +455,7 @@ if({arguments[0]} > {arguments[1]}){{
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            e.Handled = true;
             //节点被按下 储存到 焦点处理
             bParent.bluePrint.AddFocusNode(this);
             //PointerPressedHandler 
@@ -470,16 +471,16 @@ if({arguments[0]} > {arguments[1]}){{
                 Mouxy = point.Position;
                 isclick = true;
                 (Parent as BluePrint).SelectThisInstance(this);
-                e.Pointer.Capture(this);
                 //CaptureMouse();
+                e.Pointer.Capture(this);
             }
             
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            bParent.bluePrint.RemoveFocusNode(this);
             e.Handled = true;//吃掉鼠标消息不让他冒泡
+            bParent.bluePrint.RemoveFocusNode(this);
             base.OnPointerReleased(e);
             
             var point = e.GetCurrentPoint(this);

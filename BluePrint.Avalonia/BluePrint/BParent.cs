@@ -504,8 +504,10 @@ namespace 蓝图重制版.BluePrint
         Point? mousePos;
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            IsLeftButtonPressed = true;
             ClearState();
             base.OnPointerPressed(e);
+            e.Pointer.Capture(this);
             //var key = Root.InputManager.KeyboardDevice.Modifiers;
 
             ////Console.WriteLine($"key:{key}");
@@ -516,7 +518,10 @@ namespace 蓝图重制版.BluePrint
             //    mousePos = e.Location / scale;
             //    CaptureMouse();
             //}
-            MousePoint = e.GetPosition(this);//.Location;
+            MousePoint = e.GetPosition(this);
+            //var tf = this.TransformToVisual(bluePrint);
+            //if (tf is Matrix matrix)
+            //    MousePoint = MatrixHelper.TransformPoint(matrix, e.GetPosition(this));
             Canvas.SetLeft(MousepanelPupopPos, MousePoint.X);
             Canvas.SetTop(MousepanelPupopPos, MousePoint.Y);
         }
@@ -539,8 +544,9 @@ namespace 蓝图重制版.BluePrint
         public Flyout? popup;
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            
+            IsLeftButtonPressed = false;
             base.OnPointerReleased(e);
+            e.Pointer.Capture(null);
             //Console.ForegroundColor = ConsoleColor.Red;
             if (e.InitialPressMouseButton == Avalonia.Input.MouseButton.Right)
             {
@@ -808,29 +814,52 @@ namespace 蓝图重制版.BluePrint
         /// </summary>
         public Point MousePoint;
 
-
+        public bool IsLeftButtonPressed { set; get; } = false;
         protected override void OnPointerMoved(PointerEventArgs e)
         {
-            base.OnPointerMoved(e);
-            //Debug.WriteLine($"OnPointerMoved:{e.GetPosition(bluePrint)}");
-            //var MousePoint1 = e.GetCurrentPoint(this);
-            MousePoint = e.GetCurrentPoint(this).Position;//.Location;
-                                                          // 计算缩放后的椭圆中心坐标
+            //base.OnPointerMoved(e);
+
+            var temp_mouse_point = e.GetCurrentPoint(this).Position;
+            
+            if (e.KeyModifiers == KeyModifiers.Control && IsLeftButtonPressed)
+            {
+                var temp_point = MousePoint- temp_mouse_point;
+                bluePrint.Margin -= new Thickness(temp_point.X, temp_point.Y, 0, 0);
+            }
+            MousePoint = temp_mouse_point;//.Location;
+
+
             var tf = this.TransformToVisual(bluePrint);
             // 计算缩放后的椭圆中心坐标
             if (tf is Matrix matrix)
+                temp_mouse_point = MatrixHelper.TransformPoint(matrix, temp_mouse_point);
+            foreach (var item in bluePrint.GetFocusNodes())
             {
-                Point scaledCenter = matrix.Transform(MousePoint);
-                foreach (var item in bluePrint.GetFocusNodes())
+                if (item is NodeBase node)
                 {
-                    if (item is NodeBase node)
-                    {
-                        node.SetOffset(scaledCenter);
-                    }
+                    node.SetOffset(temp_mouse_point);
                 }
-                Canvas.SetLeft(MouseJoin, scaledCenter.X);
-                Canvas.SetTop(MouseJoin, scaledCenter.Y);
             }
+            Canvas.SetLeft(MouseJoin, temp_mouse_point.X);
+            Canvas.SetTop(MouseJoin, temp_mouse_point.Y);
+
+
+            // 计算缩放后的椭圆中心坐标
+            //var tf = this.TransformToVisual(bluePrint);
+            //// 计算缩放后的椭圆中心坐标
+            //if (tf is Matrix matrix)
+            //{
+            //    Point scaledCenter = matrix.Transform(MousePoint);
+            //    foreach (var item in bluePrint.GetFocusNodes())
+            //    {
+            //        if (item is NodeBase node)
+            //        {
+            //            node.SetOffset(scaledCenter);
+            //        }
+            //    }
+            //    Canvas.SetLeft(MouseJoin, scaledCenter.X);
+            //    Canvas.SetTop(MouseJoin, scaledCenter.Y);
+            //}
 
             if (IsMouseJoin)
             {
