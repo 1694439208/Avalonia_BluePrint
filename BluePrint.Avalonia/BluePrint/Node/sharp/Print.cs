@@ -35,6 +35,15 @@ namespace Document.Node
                         {"IsEnabledd",new MyData<bool>(false)}
                     },
                 }),
+                (new test(bParent, IJoinControl.NodePosition.Left, this){
+                    //日志是可以浏览的，所以不禁用
+                },new Node_Interface_Data{
+                    Title = "变量类型",
+                    Value = "",
+                    Type = typeof(object),
+                    Tips = "打印的变量",
+                    IsTypeCheck = false,
+                })
             }) ;
             base._OutPutJoin.AddRange(new List<(IJoinControl, Node_Interface_Data)>{
                 (new ExecJoin(bParent, IJoinControl.NodePosition.right, this),new Node_Interface_Data{
