@@ -35,6 +35,23 @@ namespace Avalonia_BluePrint.Views
                 MainWindow._manager?.Show(new Notification("提示", "保存成功", NotificationType.Error));
             }
         }
+        public async Task SavePNG()
+        {
+            var dialog = new SaveFileDialog();
+            dialog.Filters.Add(new FileDialogFilter { Name = "选择保存png文件目录", Extensions = { "png" } });
+
+
+            var result = await dialog.ShowAsync(MainWindow._MainWindow);
+
+            if (!string.IsNullOrEmpty(result))
+            {
+                string savePath = result;
+
+                // 处理选定的保存目录
+                Print.ToPNGFile(savePath, bp);
+                MainWindow._manager?.Show(new Notification("提示", "保存成功", NotificationType.Error));
+            }
+        }
         public async Task SavePDF()
         {
             var dialog = new SaveFileDialog();

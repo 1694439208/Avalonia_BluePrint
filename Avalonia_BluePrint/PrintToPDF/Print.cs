@@ -1,11 +1,13 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Skia;
 using Avalonia.Skia.Helpers;
 using Avalonia.VisualTree;
+using BluePrint.Avalonia.BluePrint.Tool;
 using SkiaSharp;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +52,30 @@ namespace Avalonia.PrintToPDF
                 }
                 doc.Close();
                 return "生成pdf完成";
+            }
+            catch (System.Exception ex)
+            {
+                return $"生成失败：{ex.Message}";
+            }
+        }
+        public static string ToPNGFile(string fileName, Control visuals)
+        {
+            try
+            {
+                // 创建一个渲染目标位图
+                var render_Bounds = visuals.GetTransformedBounds();
+                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap(new PixelSize((int)render_Bounds?.Bounds.Width,
+                    (int)render_Bounds?.Bounds.Height));
+
+                // 将控件渲染到位图中
+                renderTargetBitmap.Render(visuals);
+
+                // 创建一个新的位图对象
+                //Bitmap bitmap = new Bitmap(renderTargetBitmap.PlatformImpl, renderTargetBitmap.Size);
+
+                // 将渲染目标位图复制到新的位图对象中
+                renderTargetBitmap.Save(fileName,1);//.PlatformImpl.Copy(bitmap.PlatformImpl, 0, 0);
+                return $"生成成功";
             }
             catch (System.Exception ex)
             {
