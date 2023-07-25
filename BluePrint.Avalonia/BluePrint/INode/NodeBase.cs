@@ -288,7 +288,19 @@ if({arguments[0]} > {arguments[1]}){{
             Children.Add(border);
             
             RefreshNodes();
+            // 触发自定义事件
+            RaiseEvent(new RoutedEventArgs(TapEvent));
             //
+        }
+
+        public static readonly RoutedEvent<RoutedEventArgs> TapEvent =
+            RoutedEvent.Register<NodeBase, RoutedEventArgs>(nameof(OnNodeInitEveTemp), RoutingStrategies.Bubble);
+
+        // Provide CLR accessors for the event
+        public event EventHandler<RoutedEventArgs> OnNodeInitEveTemp
+        {
+            add => AddHandler(TapEvent, value);
+            remove => RemoveHandler(TapEvent, value);
         }
         public StackPanel OuPutIJoin;
         public StackPanel InPutIJoin;

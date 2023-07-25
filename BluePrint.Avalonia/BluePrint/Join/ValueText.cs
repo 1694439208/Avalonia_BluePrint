@@ -29,28 +29,35 @@ namespace 蓝图重制版.BluePrint.Node
             return nodePosition;
         }
         public Node_Interface_Data __value;
+        public override void Render()
+        {
+            base.Render();
+
+        }
         public override void Set(Node_Interface_Data value)
         {
             __value = value;
-            if (GetJoinType() == typeof(Data_Bitmap))
-            {
-                text1.Text = (__value.Value as Data_Bitmap).Title1;
-            }
-            else if (GetJoinType() == typeof(bool))
-            {
-                text1.Text = __value.Value.ToString();
-            }
-            else if (GetJoinType() == typeof(string))
-            {
-                text1.Text = __value.Value.ToString();
-            }
-            else if (GetJoinType() == typeof(IEnumerable<string>))
-            {
-                text1.Text = "列表数据";
-            }
-            else {
-                text1.Text = __value.Value.ToString();
-            }
+            text1.Text = __value?.Tips?.ToString()??"";
+            ToolTip.SetTip(text1, __value?.Value?.ToString()??"");
+            //if (GetJoinType() == typeof(Data_Bitmap))
+            //{
+            //    text1.Text = (__value.Value as Data_Bitmap).Title1;
+            //}
+            //else if (GetJoinType() == typeof(bool))
+            //{
+            //    text1.Text = __value.Value.ToString();
+            //}
+            //else if (GetJoinType() == typeof(string))
+            //{
+            //    text1.Text = __value.Value.ToString();
+            //}
+            //else if (GetJoinType() == typeof(IEnumerable<string>))
+            //{
+            //    text1.Text = "列表数据";
+            //}
+            //else {
+
+            //}
         }
         public override Node_Interface_Data Get()
         {

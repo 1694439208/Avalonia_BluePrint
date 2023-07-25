@@ -36,6 +36,14 @@ namespace 蓝图重制版.BluePrint
             _NodeTypes = context;
         }
         /// <summary>
+        /// 设置节点上下文
+        /// </summary>
+        /// <param name="context"></param>
+        public void SetContext(Type context)
+        {
+            _NodeTypes.Add(context);
+        }
+        /// <summary>
         /// 在蓝图0，0位置创建一个指定类型的节点
         /// </summary>
         /// <param name="type"></param>

@@ -204,6 +204,22 @@ namespace BluePrint.Avalonia.Views
 
             this.Content = stackPanel;
         }
+        public void AddNode<T>(double x,double y,Action<T>? action =null) where T: NodeBase
+        {
+            var node = Activator.CreateInstance(typeof(T), bp) as T;
+            if (node!=null)
+            {
+                node.OnNodeInitEveTemp += (s,e) => {
+                    if (action != null)
+                    {
+                        action(node);
+                    }
+                };
+                bp.bluePrint.AddChildren(node);
+                Canvas.SetLeft(node, x);
+                Canvas.SetTop(node, y);
+            }
+        }
 
         public BParent.BPByte GetBP()
         {

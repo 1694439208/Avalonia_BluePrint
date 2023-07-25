@@ -57,7 +57,8 @@ namespace Document.Node
 
         public override void Execute(object Context, List<object> arguments, in Evaluate.Result result)
         {
-            _IntPutJoin[1].Item1.Set(new Node_Interface_Data { Value = arguments[0] });
+            
+            _IntPutJoin[1].Item1.Set(new Node_Interface_Data { Value = string.Join("\r\n", arguments.Where(a => a != null).Select(a => a.ToString())) });
             _IntPutJoin[1].Item1.Render();
             //输出默认
             base.Execute(Context,arguments, result);

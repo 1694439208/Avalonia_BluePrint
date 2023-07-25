@@ -16,7 +16,7 @@ namespace Avalonia_BluePrint.Views
             _MainWindow = this;
         }
         public static WindowNotificationManager? _manager;
-        public static Window? _MainWindow;
+        public static Window? _MainWindow { set; get; }
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
