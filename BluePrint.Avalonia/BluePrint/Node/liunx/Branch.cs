@@ -59,7 +59,7 @@ namespace 蓝图重制版.BluePrint.INode
             {
                 data.Value = arguments[i];
                 _IntPutJoin[i + 1].Item1.Set(data);
-                _IntPutJoin[i + 1].Item1.Render();
+                _IntPutJoin[i + 1].Item1.RenderData();
             }
             base.PlayAnimation();
             //base.Execute(Context, arguments, result);

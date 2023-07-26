@@ -36,7 +36,7 @@ namespace 蓝图重制版.BluePrint.Join
         {
             return dataDate;
         }
-        public override void Render( )
+        public override void RenderData( )
         {
             if (GetJoinType() == typeof(List<string>))
             {

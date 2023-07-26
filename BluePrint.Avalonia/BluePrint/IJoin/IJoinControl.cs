@@ -145,6 +145,7 @@ namespace 蓝图重制版.BluePrint.Node
         Node_Interface_Data _Data;
         /// <summary>
         /// 设置接口数据 用于反序列化
+        /// 这部分设计有问题，应该把数据设置和Node_Interface_Data分离 
         /// </summary>
         /// <param name="value"></param>
         public virtual void Set(Node_Interface_Data value) {
@@ -152,7 +153,7 @@ namespace 蓝图重制版.BluePrint.Node
             {
                 _Data = value;
             }
-            _Data.Type = value.Value.GetType();
+            _Data.Value = value.Value;
             //_Data = value;
         }
 
@@ -187,8 +188,8 @@ namespace 蓝图重制版.BluePrint.Node
         /// <summary>
         /// 渲染数据内容
         /// </summary>
-        public virtual void Render() {}
-        
+        public virtual void RenderData() {
+        }
         public Control GetParnt()
         {
             return _Node;

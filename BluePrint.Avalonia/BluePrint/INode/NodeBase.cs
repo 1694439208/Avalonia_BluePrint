@@ -13,6 +13,7 @@ using Avalonia.Markup.Xaml;
 using System.Reactive.Subjects;
 using System.Reactive.Linq;
 using Avalonia.Data;
+using System.Reflection;
 
 namespace 蓝图重制版.BluePrint.INode
 {
@@ -384,7 +385,7 @@ if({arguments[0]} > {arguments[1]}){{
             JoinControl.Item1.Index = intput_index++;
             JoinControl.Item1.SetType(JoinControl.Item2);
             JoinControl.Item1.Set(JoinControl.Item2);
-            JoinControl.Item1.Render();
+            JoinControl.Item1.RenderData();
             //JoinControl.Item1.Attacheds.Add(DockPanel.Dock, Dock.Left);
             DockPanel.SetDock(JoinControl.Item1, Dock.Left);
             if (join != null)
@@ -437,7 +438,7 @@ if({arguments[0]} > {arguments[1]}){{
             JoinControl.Item1.Index = output_index++;
             JoinControl.Item1.SetType(JoinControl.Item2);
             JoinControl.Item1.Set(JoinControl.Item2);
-            JoinControl.Item1.Render();
+            JoinControl.Item1.RenderData();
             //JoinControl.Item1.Attacheds.Add(DockPanel.Dock, Dock.Right);
             DockPanel.SetDock(JoinControl.Item1, Dock.Right);
             if (join != null)
@@ -460,6 +461,10 @@ if({arguments[0]} > {arguments[1]}){{
             }
             else
             {
+                if (IsAddList)
+                {
+                    _OutPutJoin.Add(JoinControl);
+                }
                 OuPutIJoin.Children.Add(JoinControl.Item1);
             }
         }

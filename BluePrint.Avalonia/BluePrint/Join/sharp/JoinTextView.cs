@@ -44,6 +44,7 @@ namespace Document.Join
         }
         public override void Set(Node_Interface_Data value)
         {
+            base.Set(value);
             if (value.ClassValue != null && value.ClassValue.TryGetValue("IsEnabledd", out var val))
             {
                 IsEnabledd = val.GetValue<bool>();
@@ -57,21 +58,20 @@ namespace Document.Join
                     data.OnNext(value?.Value?.ToString() ?? "");
                     break;
             }
-            
-            title = value;
+        }
+        public override void RenderData()
+        {
+            base.RenderData();
         }
         public override Node_Interface_Data Get()
         {
             //title.Value = data.AsObservable();
-            return title;
+            return base.Get();
         }
         public Control UINode = new Panel
         {
             Width = 20f,
         };
-
-        public Node_Interface_Data title;
-
         
         protected override void OnInitialized()
         {
@@ -100,7 +100,7 @@ namespace Document.Join
             
             var print =UINode.FindViewControl<TextBox>("print");
             print.Bind(TextBox.TextProperty, data);
-            data.Subscribe(y => title.Value = y);
+            data.Subscribe(y => base.Set(new Node_Interface_Data { Value = y }));
             base.AddControl(UINode, nodePosition);
         }
         Subject<string> data = new Subject<string>();

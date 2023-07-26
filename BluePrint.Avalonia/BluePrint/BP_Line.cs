@@ -12,12 +12,14 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.Layout;
 using static 蓝图重制版.BluePrint.BP_Line;
-
+using Avalonia.Rendering.Composition;
 
 namespace 蓝图重制版.BluePrint
 {
+    
     public class BP_Line : Control
     {
+        
         BluePrint? bluePrint { set; get; }
         public BP_Line(BluePrint _bluePrint) {
             bluePrint = _bluePrint;
@@ -35,7 +37,7 @@ namespace 蓝图重制版.BluePrint
         {
             backound_color = color;
         }
-        public IPen strokePen = new ImmutablePen(Brushes.DarkBlue,
+        public IPen strokePen { set; get; } =  new ImmutablePen(Brushes.DarkBlue,
             3d, null, PenLineCap.Round, PenLineJoin.Round);
 
 
@@ -52,6 +54,26 @@ namespace 蓝图重制版.BluePrint
             base.Render(dc);
             if (geometry != null)
             {
+                dc.DrawGeometry(null, strokePen, geometry);
+                // 创建一个GeometryStroke对象，并将其设置为Path对象的Stroke属性
+                //geometry.FillRule = FillRule.EvenOdd;
+                // 创建一个自定义的画刷
+                //var brush = new DrawingBrush
+                //{
+                //    Drawing = new GeometryDrawing
+                //    {
+                //        Pen = new Pen(Brushes.Black, 20),
+                //        Geometry = new RectangleGeometry(new Rect(0, 0, 10, 10))
+                //    }
+                //};
+
+                //// 使用画刷描边矩形
+                //dc.DrawGeometry(null, new Pen(Brushes.Red, 5), geometry);
+
+
+
+                // 使用画刷填充矩形
+                //dc.DrawGeometry(brush, null, geometry);
                 // 设置抗锯齿模式
                 //dc.AntialiasMode = AntialiasMode.AntiAlias;
                 //dc.DrawPath(backound_color, new Stroke(_LineWidth), geometry);
@@ -70,7 +92,8 @@ namespace 蓝图重制版.BluePrint
                 //    StrokeThickness = 2,
                 //    PathEffect = new DashEffect(new float[] { 3, 3 })
                 //}
-                dc.DrawGeometry(null, strokePen, geometry);
+
+
                 //dc.DrawRectangle(strokePen, bounds);
                 //Debug.Print(geometry.Figures.Count.ToString());
                 //Dispatcher.UIThread.Post(() => { Clip = geometry; });
@@ -371,10 +394,21 @@ namespace 蓝图重制版.BluePrint
 
             // 创建一个 PathGeometryContext 对象
             var context = p.Open();
-            context.BeginFigure(sKPoints[1], false);
+            context.BeginFigure(sKPoints[1], true);
             // 添加三次贝塞尔曲线
             context.CubicBezierTo(sKPoints[2], sKPoints[3], sKPoints[0]);
 
+            // Add the second cubic bezier curve
+            //Point midpoint1 = new Point(
+            //    (sKPoints[2].X + 2 * sKPoints[1].X + sKPoints[3].X) / 4,
+            //    (sKPoints[2].Y + 2 * sKPoints[1].Y + sKPoints[3].Y) / 4
+            //);
+            //Point controlPoint2 = new Point(midpoint1.X, midpoint1.Y - 5);
+            //Point startPoint2 = sKPoints[2];
+            //context.CubicBezierTo(controlPoint2, startPoint2, sKPoints[1]);
+
+
+            // Close the path
             // 关闭 PathGeometryContext 对象
             //context.Close();
 

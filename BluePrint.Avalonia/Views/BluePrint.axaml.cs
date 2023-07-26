@@ -220,6 +220,7 @@ namespace BluePrint.Avalonia.Views
                 Canvas.SetTop(node, y);
             }
         }
+        
 
         public BParent.BPByte GetBP()
         {

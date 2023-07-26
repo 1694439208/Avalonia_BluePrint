@@ -47,7 +47,7 @@ namespace 蓝图重制版.BluePrint.Node
                 _value = (Data_Bitmap)value.Value;
             }     
         }
-        public override void Render()
+        public override void RenderData()
         {
             if (_value.bitmap != null)
             {

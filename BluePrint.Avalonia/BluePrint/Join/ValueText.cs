@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,16 +30,16 @@ namespace 蓝图重制版.BluePrint.Node
             return nodePosition;
         }
         public Node_Interface_Data __value;
-        public override void Render()
-        {
-            base.Render();
-
-        }
+        
         public override void Set(Node_Interface_Data value)
         {
+            //if (__value == null)
+            //{
+            //    __value = value;
+            //}
+            //__value.Value = value.Value;
             __value = value;
-            text1.Text = __value?.Tips?.ToString()??"";
-            ToolTip.SetTip(text1, __value?.Value?.ToString()??"");
+            RenderData();
             //if (GetJoinType() == typeof(Data_Bitmap))
             //{
             //    text1.Text = (__value.Value as Data_Bitmap).Title1;
@@ -62,6 +63,11 @@ namespace 蓝图重制版.BluePrint.Node
         public override Node_Interface_Data Get()
         {
             return __value;
+        }
+        public override void RenderData()
+        {
+            text1.Text = __value?.Tips?.ToString() ?? "";
+            ToolTip.SetTip(text1, __value?.Value?.ToString() ?? "");
         }
         public TextBlock text1 = new TextBlock
         {

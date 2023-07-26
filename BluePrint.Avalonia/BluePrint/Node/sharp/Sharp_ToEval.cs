@@ -36,7 +36,7 @@ namespace Document.Node
         public override void Execute(object Context, List<object> arguments, in Evaluate.Result result)
         {
             _IntPutJoin[1].Item1.Set(new Node_Interface_Data { Value = arguments[0] });
-            _IntPutJoin[1].Item1.Render();
+            _IntPutJoin[1].Item1.RenderData();
             //输出默认
             base.Execute(Context,arguments, result);
         }

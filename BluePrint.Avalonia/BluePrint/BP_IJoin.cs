@@ -11,8 +11,15 @@ namespace 蓝图重制版.BluePrint
     public interface BP_IJoin
     {
         Point GetPos(bool IsZ);
+        /// <summary>
+        /// 取父元素
+        /// </summary>
+        /// <returns></returns>
         Control GetParnt();
-
+        /// <summary>
+        /// 取自身实例
+        /// </summary>
+        /// <returns></returns>
         Control GetThis();
 
         /// <summary>

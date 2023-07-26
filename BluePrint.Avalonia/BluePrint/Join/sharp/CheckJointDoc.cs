@@ -48,14 +48,14 @@ namespace Document.Join
         {
             UINode.Content = value.Title;
             dataDate = value;
-            Render();
+            RenderData();
         }
         public override Node_Interface_Data Get()
         {
             dataDate.Value = (DataContext as ViewModel)?.IsChecked??false;
             return dataDate;
         }
-        public override void Render()
+        public override void RenderData()
         {
             if (GetJoinType() == typeof(bool))
             {

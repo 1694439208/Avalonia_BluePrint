@@ -46,12 +46,12 @@ namespace 蓝图重制版.BluePrint.INode
             for (int i = 0; i < arguments.Count; i++)
             {
                 _IntPutJoin[i].Item1.Set(new Node_Interface_Data { Value = arguments[i] });
-                _IntPutJoin[i].Item1.Render();
+                _IntPutJoin[i].Item1.RenderData();
             }
             foreach (var item in result.GetReturns())
             {
                 _OutPutJoin[item.Key].Item1.Set(new Node_Interface_Data { Value = item.Value });
-                _OutPutJoin[item.Key].Item1.Render();
+                _OutPutJoin[item.Key].Item1.RenderData();
             }
         }
 

@@ -145,7 +145,7 @@ namespace 蓝图重制版.BluePrint.INode
             for (int i = 0; i < arguments.Count; i++)
             {
                 _IntPutJoin[i + 1].Item1.Set(new Node_Interface_Data { Value = arguments[i] });
-                _IntPutJoin[i + 1].Item1.Render();
+                _IntPutJoin[i + 1].Item1.RenderData();
             }
             //输出默认
             base.Execute(Context,arguments, result);
