@@ -82,6 +82,8 @@ namespace BluePrint.Avalonia.Views
 
         public BParent bp { get; set; }
 
+        private List<Type> _nodeTypes;
+
         public BluePrint()
         {
             InitializeComponent();
@@ -102,11 +104,7 @@ namespace BluePrint.Avalonia.Views
             Canvas.SetLeft(bp, 0);
             Canvas.SetTop(bp, 0);
 
-
-            //NodeTypes.Add(typeof(_StartNode));
-            //NodeTypes.Add(typeof(Branch));
-            //设置节点上下文
-            bp.SetContext(new List<Type>{
+            _nodeTypes = new List<Type>{
                     typeof(_StartNode),
                     typeof(Branch),
                     typeof(ImageShow),
@@ -161,8 +159,14 @@ namespace BluePrint.Avalonia.Views
                     //
                     /*typeof(Sharp_Str_ListToLamble),
                     typeof(Sharp_OrderBy),,*/
-                });
-            bp.Initialized += (s, e) => {
+                };
+
+            //NodeTypes.Add(typeof(_StartNode));
+            //NodeTypes.Add(typeof(Branch));
+            //设置节点上下文
+            bp.SetContext(_nodeTypes);
+            bp.Initialized += (s, e) =>
+            {
                 var node = new _StartNode(bp)
                 {
                 };
@@ -204,12 +208,13 @@ namespace BluePrint.Avalonia.Views
 
             this.Content = stackPanel;
         }
-        public void AddNode<T>(double x,double y,Action<T>? action =null) where T: NodeBase
+        public void AddNode<T>(double x, double y, Action<T>? action = null) where T : NodeBase
         {
             var node = Activator.CreateInstance(typeof(T), bp) as T;
-            if (node!=null)
+            if (node != null)
             {
-                node.OnNodeInitEveTemp += (s,e) => {
+                node.OnNodeInitEveTemp += (s, e) =>
+                {
                     if (action != null)
                     {
                         action(node);
@@ -220,7 +225,18 @@ namespace BluePrint.Avalonia.Views
                 Canvas.SetTop(node, y);
             }
         }
-        
+
+        public void RegisterNode(Type type)
+        {
+            if (!_nodeTypes.Contains(type))
+                _nodeTypes.Add(type);
+        }
+
+        public void UnRegisterNode(Type type)
+        {
+            if (_nodeTypes.Contains(type))
+                _nodeTypes.Remove(type);
+        }
 
         public BParent.BPByte GetBP()
         {

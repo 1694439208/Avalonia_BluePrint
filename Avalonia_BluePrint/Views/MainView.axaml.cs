@@ -7,6 +7,8 @@ using System.IO;
 using Avalonia.Controls.Notifications;
 using System.Threading.Tasks;
 using Avalonia.PrintToPDF;
+using Avalonia.Controls.Templates;
+using Avalonia_BluePrint.Nodes;
 
 namespace Avalonia_BluePrint.Views
 {
@@ -15,6 +17,7 @@ namespace Avalonia_BluePrint.Views
         public MainView()
         {
             InitializeComponent();
+            bp.RegisterNode(typeof(AINode));
         }
 
         public async Task SaveBP()
@@ -102,6 +105,11 @@ namespace Avalonia_BluePrint.Views
         public void ClearBP()
         {
             bp.ClearBP();
+        }
+
+        public void Test()
+        {
+            bp.UnRegisterNode(typeof(AINode));
         }
     }
 }

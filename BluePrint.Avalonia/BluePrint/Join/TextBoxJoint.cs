@@ -21,11 +21,16 @@ namespace 蓝图重制版.BluePrint.Node
         /// <summary>
         /// 水印
         /// </summary>
-        public string Watermark {
-            set {
+        public string Watermark
+        {
+            set
+            {
                 UINode.Watermark = value;
             }
         }
+
+        public bool Multiline { get; set; }
+        public bool PasswordMode { get; set; }
 
 
         public NodePosition nodePosition;
@@ -52,6 +57,27 @@ namespace 蓝图重制版.BluePrint.Node
             {
                 UINode.Width = Convert.ToSingle(width.GetValue<double>());
             }
+            if (value.ClassValue != null && value.ClassValue.TryGetValue("Height", out var height))
+            {
+                UINode.Height = Convert.ToSingle(height.GetValue<double>());
+            }
+            if (value.ClassValue != null && value.ClassValue.TryGetValue("Multiline", out var multiline))
+            {
+                if (multiline.GetValue<bool>())
+                {
+                    UINode.AcceptsReturn = true;
+                    UINode.TextWrapping = Avalonia.Media.TextWrapping.Wrap;
+                }
+                else
+                    UINode.TextWrapping = Avalonia.Media.TextWrapping.NoWrap;
+            }
+            if (value.ClassValue != null && value.ClassValue.TryGetValue("PasswordMode", out var passwordMode))
+            {
+                if (passwordMode.GetValue<bool>())
+                    UINode.PasswordChar = '*';
+                else
+                    UINode.PasswordChar = new char();
+            }
             //this[nameof(MinWidth)] = (this, nameof(ActualSize), a => (FloatField)((Size)a).Width);
             //this.SetPropretyValue("ad","123");ObjectTypeDic[key].Item2;
             //自动绑定属性
@@ -66,7 +92,7 @@ namespace 蓝图重制版.BluePrint.Node
                 }
             }*/
             UINode.Text = value.Value.ToString();
-;
+            ;
         }
         public override Node_Interface_Data Get()
         {
@@ -79,7 +105,7 @@ namespace 蓝图重制版.BluePrint.Node
             Width = 90f,
             Text = "test",
         };
-        
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -91,7 +117,7 @@ namespace 蓝图重制版.BluePrint.Node
                 HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
                 //Height = 27.1f,
                 //MarginTop = 10,
-                Children = {UINode},
+                Children = { UINode },
             }, nodePosition);
         }
     }
