@@ -60,7 +60,7 @@ namespace 蓝图重制版.BluePrint.IJoin
         /// <summary>
         /// 接口类参数
         /// </summary>
-        public Dictionary<string, MyData> ClassValue { set; get; }
+        public Dictionary<string, MyData> ClassValue { set; get; } = new Dictionary<string, MyData>();
         /// <summary>
         /// 获取指定类型数据
         /// </summary>

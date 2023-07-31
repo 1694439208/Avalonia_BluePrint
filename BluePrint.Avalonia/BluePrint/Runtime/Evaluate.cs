@@ -116,7 +116,7 @@ namespace 蓝图重制版.BluePrint.Runtime
                 }
             }
             public int _NextNode_Size = 0;
-            public Dictionary<int, object> Results = new Dictionary<int, object>();
+            public Dictionary<int, object?> Results = new Dictionary<int, object?>();
             public List<int> Nexts = new List<int>();
             /// <summary>
             /// 设置生成代码模板

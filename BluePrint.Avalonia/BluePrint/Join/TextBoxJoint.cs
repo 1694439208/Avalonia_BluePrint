@@ -37,9 +37,9 @@ namespace 蓝图重制版.BluePrint.Node
         {
             return nodePosition;
         }
-        Node_Interface_Data textBoxDate;
         public override void Set(Node_Interface_Data value)
         {
+            base.Set(value);
             if (value.ClassValue != null && value.ClassValue.TryGetValue("Watermark", out var val))
             {
                 Watermark = val.GetValue<string>();
@@ -65,15 +65,13 @@ namespace 蓝图重制版.BluePrint.Node
                     }
                 }
             }*/
-
-            textBoxDate = value;
-            UINode.Text = textBoxDate.Value.ToString();
+            UINode.Text = value.Value.ToString();
 ;
         }
         public override Node_Interface_Data Get()
         {
-            textBoxDate.Value = Convert.ChangeType(UINode.Text, GetJoinType());
-            return textBoxDate;
+            base.Get().Value = Convert.ChangeType(UINode.Text, GetJoinType());
+            return base.Get();
         }
         public double width = 90f;
         public TextBox UINode = new TextBox
