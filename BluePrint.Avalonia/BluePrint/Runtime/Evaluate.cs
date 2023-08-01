@@ -38,9 +38,9 @@ namespace 蓝图重制版.BluePrint.Runtime
                     Result result = new Result(nodeAst.NextNodes.Count,nodeAst.Results);
                     try
                     {
-                        nodeAst.NodeBase.SetState(INode.NodeState.Running, "");
+                        nodeAst.NodeBase.SetState(INode.NodeState.Running);
                         await nodeAst.NodeBase.Execute(GlobalContext, args, result);
-                        nodeAst.NodeBase.SetState(INode.NodeState.OK, "");
+                        nodeAst.NodeBase.SetState(INode.NodeState.OK);
                     }
                     catch (Exception ex)
                     {

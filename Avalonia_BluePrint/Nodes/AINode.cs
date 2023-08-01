@@ -136,10 +136,7 @@ namespace Avalonia_BluePrint.Nodes
             var sk = Convert.ToString(arguments[4]);
 
             if (string.IsNullOrWhiteSpace(sk))
-            {
-                base.SetState(NodeState.None, "");
                 return;
-            }
 
             var openAIService = new OpenAIService(new OpenAI.OpenAiOptions()
             {
@@ -151,10 +148,7 @@ namespace Avalonia_BluePrint.Nodes
             _IntPutJoin[1].Item1.RenderData();
 
             if (string.IsNullOrWhiteSpace(prompt) && string.IsNullOrWhiteSpace(prompt2))
-            {
-                base.SetState(NodeState.None, "");
                 return;
-            }
 
             await base.Execute(Context, arguments, result);
 
