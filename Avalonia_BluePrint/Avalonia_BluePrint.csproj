@@ -12,11 +12,6 @@
 		<AvaloniaResource Include="Assets\**" />
 	</ItemGroup>
 
-
-	<ItemGroup>
-	  <None Remove="Assets\Fonts\AlibabaPuHuiTi-2-45-Light.ttf" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="11.0.2" />
 		<PackageReference Include="Avalonia.Skia" Version="11.0.2" />

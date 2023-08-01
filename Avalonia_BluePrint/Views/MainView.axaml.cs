@@ -15,6 +15,7 @@ using System.Text;
 using BluePrint.Core.IJoin;
 using BluePrint.Core;
 using BluePrint.Node.Common;
+using SkiaSharp;
 
 namespace Avalonia_BluePrint.Views
 {
@@ -143,6 +144,10 @@ namespace Avalonia_BluePrint.Views
         public void ClearBP()
         {
             bp.ClearBP();
+
+            var f = this.FontFamily;
+
+            _manager?.Show(new Notification("Test", f.Name, NotificationType.Success));
         }
     }
 }
