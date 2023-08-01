@@ -17,10 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{028A92CA-0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{F43A4246-8AB3-4622-93BE-547E0339E7CA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{83F5EC47-D859-4667-84FB-B796D749E251}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "表格自动化", "F:\Users\Administrator\source\repos\表格自动化\表格自动化\表格自动化.csproj", "{CACD4771-8297-4A2E-827B-FABA9A99907C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,10 +45,6 @@ Global
 		{061A58B6-AA68-41EA-87F4-D3C29D8C6334}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{061A58B6-AA68-41EA-87F4-D3C29D8C6334}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{061A58B6-AA68-41EA-87F4-D3C29D8C6334}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CACD4771-8297-4A2E-827B-FABA9A99907C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CACD4771-8297-4A2E-827B-FABA9A99907C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CACD4771-8297-4A2E-827B-FABA9A99907C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CACD4771-8297-4A2E-827B-FABA9A99907C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,7 +55,6 @@ Global
 		{BF12E3E7-6832-45C8-8E79-F0273A2D6E52} = {F43A4246-8AB3-4622-93BE-547E0339E7CA}
 		{793AD7CD-8FE2-4F35-84C0-DE9CD42A5348} = {F43A4246-8AB3-4622-93BE-547E0339E7CA}
 		{061A58B6-AA68-41EA-87F4-D3C29D8C6334} = {028A92CA-0D4A-4949-9ED7-CF2677C058D2}
-		{CACD4771-8297-4A2E-827B-FABA9A99907C} = {83F5EC47-D859-4667-84FB-B796D749E251}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {419C01AF-E1AA-49F6-8A53-7C1EF2374126}
