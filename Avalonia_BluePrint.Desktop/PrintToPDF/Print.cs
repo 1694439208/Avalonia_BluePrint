@@ -18,25 +18,28 @@ namespace Avalonia.PrintToPDF
         public static void ToFile(string fileName, params Visual[] visuals) => ToFile(fileName, visuals.AsEnumerable());
         public static void ToFile(string fileName, IEnumerable<Visual> visuals)
         {
-            using var doc = SKDocument.CreatePdf(fileName);
-            foreach (var visual in visuals)
+            using(var doc = SKDocument.CreatePdf(fileName))
             {
-                
-                var bounds = visual.Bounds;
-                var page = doc.BeginPage((float)bounds.Width, (float)bounds.Height);
-                using var context = DrawingContextHelper.WrapSkiaCanvas(page, SkiaPlatform.DefaultDpi);
+                foreach (var visual in visuals)
+                {
 
-                // 获取ImmediateRenderer.Render方法
-                var assembly = typeof(Avalonia.Rendering.IHitTester).Assembly;
-                var type = assembly.GetType("Avalonia.Rendering+ImmediateRenderer");
-                var method = type.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Static);
+                    var bounds = visual.Bounds;
+                    var page = doc.BeginPage((float)bounds.Width, (float)bounds.Height);
+                    using (var context = DrawingContextHelper.WrapSkiaCanvas(page, SkiaPlatform.DefaultDpi))
+                    {
+                        // 获取ImmediateRenderer.Render方法
+                        var assembly = typeof(Avalonia.Rendering.IHitTester).Assembly;
+                        var type = assembly.GetType("Avalonia.Rendering+ImmediateRenderer");
+                        var method = type.GetMethod("Render", BindingFlags.NonPublic | BindingFlags.Static);
 
-                // 调用ImmediateRenderer.Render方法
-                method.Invoke(null, new object[] { visual, context });
+                        // 调用ImmediateRenderer.Render方法
+                        method.Invoke(null, new object[] { visual, context });
 
-                doc.EndPage();
+                        doc.EndPage();
+                    }
+                }
+                doc.Close();
             }
-            doc.Close();
         }
     }
 }

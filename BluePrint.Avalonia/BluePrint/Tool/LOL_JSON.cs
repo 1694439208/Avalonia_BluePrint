@@ -68,10 +68,10 @@ namespace 蓝图重制版.BluePrint.INode
         }
         public static string ToPath(this string url,string name)
         {
-            var list = url.Split("/");
+            var list = url.Split('/');
             if (list.Length > 0 && Directory.Exists(name))
             {
-                var path = Path.Join(System.Environment.CurrentDirectory, name, list[list.Length - 1]);
+                var path = Path.Combine(System.Environment.CurrentDirectory, name, list[list.Length - 1]);
                 return path;
             }
             else {

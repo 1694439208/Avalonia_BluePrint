@@ -16,7 +16,6 @@ using 蓝图重制版.BluePrint.IJoin;
 using 蓝图重制版.BluePrint.INode;
 using 蓝图重制版.BluePrint.Node;
 using 蓝图重制版.BluePrint.Runtime;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Document.Join
 {
