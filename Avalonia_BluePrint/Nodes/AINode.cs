@@ -151,6 +151,8 @@ namespace Avalonia_BluePrint.Nodes
             if (string.IsNullOrWhiteSpace(prompt) && string.IsNullOrWhiteSpace(prompt2))
                 return;
 
+            await base.Execute(Context, arguments, result);
+
             for (int i = 0; i < _OutPutJoin.Count - 2; i++)
             {
                 if (mode)
@@ -191,8 +193,6 @@ namespace Avalonia_BluePrint.Nodes
                     result.SetReturnValue(i, retMsg);
                 }
             }
-
-           await base.Execute(Context, arguments, result);
         }
     }
 }
