@@ -129,69 +129,82 @@ namespace Avalonia_BluePrint.Nodes
 
         public override async Task Execute(object Context, List<object> arguments, Evaluate.Result result)
         {
-            base.SetState(NodeState.Error,"aaaaaa");
-            var prompt = arguments[0].ToString();
-            var prompt2 = arguments[1].ToString();
-            var mode = Convert.ToBoolean(arguments[2]);
-            var model = Convert.ToString(arguments[3]);
-            var sk = Convert.ToString(arguments[4]);
-
-            if (string.IsNullOrWhiteSpace(sk))
-                return;
-
-            var openAIService = new OpenAIService(new OpenAI.OpenAiOptions()
+            try
             {
-                ApiKey = sk,
-                BaseDomain = "https://api.youqianpay.com/"
-            });
+                base.SetState(NodeState.OK, "");
+                var prompt = arguments[0].ToString();
+                var prompt2 = arguments[1].ToString();
+                var mode = Convert.ToBoolean(arguments[2]);
+                var model = Convert.ToString(arguments[3]);
+                var sk = Convert.ToString(arguments[4]);
 
-            _IntPutJoin[1].Item1.Set(new Node_Interface_Data { Value = prompt });
-            _IntPutJoin[1].Item1.RenderData();
-
-            if (string.IsNullOrWhiteSpace(prompt) && string.IsNullOrWhiteSpace(prompt2))
-                return;
-
-            await base.Execute(Context, arguments, result);
-
-            for (int i = 0; i < _OutPutJoin.Count - 2; i++)
-            {
-                if (mode)
+                if (string.IsNullOrWhiteSpace(sk))
                 {
-                    var ret = await openAIService.Image.CreateImage(new ImageCreateRequest()
+                    base.SetState(NodeState.None, "");
+                    return;
+                }
+
+                var openAIService = new OpenAIService(new OpenAI.OpenAiOptions()
+                {
+                    ApiKey = sk,
+                    BaseDomain = "https://api.youqianpay.com/"
+                });
+
+                _IntPutJoin[1].Item1.Set(new Node_Interface_Data { Value = prompt });
+                _IntPutJoin[1].Item1.RenderData();
+
+                if (string.IsNullOrWhiteSpace(prompt) && string.IsNullOrWhiteSpace(prompt2))
+                {
+                    base.SetState(NodeState.None, "");
+                    return;
+                }
+
+                await base.Execute(Context, arguments, result);
+
+                for (int i = 0; i < _OutPutJoin.Count - 2; i++)
+                {
+                    if (mode)
                     {
-                        Prompt = (prompt ?? prompt2)!,
-                        N = 1,
-                        Size = "512x512",
-                        ResponseFormat = "b64_json"
-                    });
-                    var retMsg = ret.Successful ? ret.Results.Select(x => x.B64).First() : "";
-                    var image = new Data_Bitmap("");
-                    var imageStream = new MemoryStream();
-                    var imagef = PlatformImage.FromStream(new MemoryStream(Convert.FromBase64String(retMsg)));
-                    await imagef.SaveAsync(imageStream);
-                    imageStream.Position = 0;
-                    image.SetBitmap(new Avalonia.Media.Imaging.Bitmap(imageStream));
-                    if (image != null)
+                        var ret = await openAIService.Image.CreateImage(new ImageCreateRequest()
+                        {
+                            Prompt = (prompt ?? prompt2)!,
+                            N = 1,
+                            Size = "512x512",
+                            ResponseFormat = "b64_json"
+                        });
+                        var retMsg = ret.Successful ? ret.Results.Select(x => x.B64).First() : "";
+                        var image = new Data_Bitmap("");
+                        var imageStream = new MemoryStream();
+                        var imagef = PlatformImage.FromStream(new MemoryStream(Convert.FromBase64String(retMsg)));
+                        await imagef.SaveAsync(imageStream);
+                        imageStream.Position = 0;
+                        image.SetBitmap(new Avalonia.Media.Imaging.Bitmap(imageStream));
+                        if (image != null)
+                        {
+                            result.SetReturnValue(i, image);
+                        }
+                    }
+                    else
                     {
-                        result.SetReturnValue(i, image);
+                        var msgs = new List<ChatMessage>();
+                        if (!string.IsNullOrWhiteSpace(prompt))
+                            msgs.Add(ChatMessage.FromUser(prompt));
+                        if (!string.IsNullOrWhiteSpace(prompt2))
+                            msgs.Add(ChatMessage.FromUser(prompt2));
+                        var ret = await openAIService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
+                        {
+                            Messages = msgs,
+                            Model = model == "GPT4" ? Models.Gpt_4 : Models.Gpt_3_5_Turbo_16k,
+                            MaxTokens = 1024
+                        });
+                        var retMsg = ret.Successful ? ret.Choices.First().Message.Content : ret.Error?.Message ?? "未知异常";
+                        result.SetReturnValue(i, retMsg);
                     }
                 }
-                else
-                {
-                    var msgs = new List<ChatMessage>();
-                    if (!string.IsNullOrWhiteSpace(prompt))
-                        msgs.Add(ChatMessage.FromUser(prompt));
-                    if (!string.IsNullOrWhiteSpace(prompt2))
-                        msgs.Add(ChatMessage.FromUser(prompt2));
-                    var ret = await openAIService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
-                    {
-                        Messages = msgs,
-                        Model = model == "GPT4" ? Models.Gpt_4 : Models.Gpt_3_5_Turbo_16k,
-                        MaxTokens = 1024
-                    });
-                    var retMsg = ret.Successful ? ret.Choices.First().Message.Content : ret.Error?.Message ?? "未知异常";
-                    result.SetReturnValue(i, retMsg);
-                }
+            }
+            catch (Exception ex)
+            {
+                base.SetState(NodeState.Error, ex.Message);
             }
         }
     }
