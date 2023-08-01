@@ -14,6 +14,7 @@ using System.Reactive.Subjects;
 using System.Reactive.Linq;
 using Avalonia.Data;
 using System.Reflection;
+using Avalonia.Controls.Primitives;
 
 namespace 蓝图重制版.BluePrint.INode
 {
@@ -66,6 +67,56 @@ namespace 蓝图重制版.BluePrint.INode
             for (int i = 0; i < result.GetNextNodeSize(); i++)
             {
                 result.SetExecute(i);
+            }
+        }
+        /// <summary>
+        /// 节点状态
+        /// </summary>
+        NodeState NodeState { set; get; } = NodeState.None;
+        /// <summary>
+        /// 设置当前节点状态
+        /// </summary>
+        /// <param name="nodeState"></param>
+        /// <param name="title"></param>
+        public void SetState(NodeState nodeState,string title) {
+            NodeState = nodeState;
+            if (title != "")
+            {
+                ToolTip.SetTip(this, new TextBlock
+                {
+                    Text = title,
+                    Padding = new Thickness(5),
+                });
+                ToolTip.SetShowDelay(this, 0);
+                ToolTip.SetPlacement(this, PlacementMode.TopEdgeAlignedRight);
+            }
+            else
+            {
+                ToolTip.SetTip(this, null);
+            }
+            switch (nodeState)
+            {
+                case NodeState.Error:
+                    border.BoxShadow = new BoxShadows(new BoxShadow
+                    {
+                        Spread = 6,
+                        Color = Colors.Red,
+                        Blur = 3,
+                    });
+
+                    break;
+                case NodeState.OK:
+                    border.BoxShadow = new BoxShadows(new BoxShadow
+                    {
+                        Spread = 6,
+                        Color = Colors.Blue,
+                        Blur = 3,
+                    });
+                    break;
+                case NodeState.None:
+                    break;
+                default:
+                    break;
             }
         }
         /// <summary>
@@ -308,6 +359,10 @@ if({arguments[0]} > {arguments[1]}){{
         Border border;
         protected override void OnGotFocus(GotFocusEventArgs e)
         {
+            if (NodeState != NodeState.None)
+            {
+                return;
+            }
             base.OnGotFocus(e);
 
             var myButton = this.FindControl<Border>("test");
@@ -325,6 +380,10 @@ if({arguments[0]} > {arguments[1]}){{
         }
         protected override void OnLostFocus(RoutedEventArgs e)
         {
+            if (NodeState != NodeState.None)
+            {
+                return;
+            }
             if (border is Border)
             {
                 border.BoxShadow = new BoxShadows(new BoxShadow

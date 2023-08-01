@@ -129,6 +129,7 @@ namespace Avalonia_BluePrint.Nodes
 
         public override async Task Execute(object Context, List<object> arguments, Evaluate.Result result)
         {
+            base.SetState(NodeState.Error,"aaaaaa");
             var prompt = arguments[0].ToString();
             var prompt2 = arguments[1].ToString();
             var mode = Convert.ToBoolean(arguments[2]);
