@@ -34,7 +34,7 @@ jobs:
       - name: Install DotNet 7.0 SDK
         run: sudo apt-get update && sudo apt-get install -y dotnet-sdk-7.0
       - name: Install workloads And Build publish
-        run: dotnet workload install wasm-tools && dotnet publish ./Avalonia_BluePrint.Browser/Avalonia_BluePrint.Browser.csproj /p:PublishProfile=./Avalonia_BluePrint.Browser/PublishProfiles
+        run: dotnet workload install wasm-tools && dotnet publish ./Avalonia_BluePrint.Browser/Avalonia_BluePrint.Browser.csproj /p:PublishProfile=FolderProfile
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
