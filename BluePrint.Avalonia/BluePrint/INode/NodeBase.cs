@@ -60,7 +60,7 @@ namespace 蓝图重制版.BluePrint.INode
         /// <param name="Context">执行上下文</param>
         /// <param name="arguments">参数</param>
         /// <param name="result">返回</param>
-        public virtual void Execute(object Context,List<object> arguments, in Runtime.Evaluate.Result result) {
+        public virtual async Task Execute(object Context,List<object> arguments, Runtime.Evaluate.Result result) {
             PlayAnimation();
             //默认动作 ，输出所有连接
             for (int i = 0; i < result.GetNextNodeSize(); i++)

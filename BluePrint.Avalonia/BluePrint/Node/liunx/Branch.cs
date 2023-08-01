@@ -43,7 +43,7 @@ namespace 蓝图重制版.BluePrint.INode
                 }),
             });
         }
-        public override void Execute(object Context, List<object> arguments, in Runtime.Evaluate.Result result) {
+        public override async Task Execute(object Context, List<object> arguments, Runtime.Evaluate.Result result) {
             
             var data = _IntPutJoin[1].Item1.Get();
             if (arguments.Get<bool>(0))
@@ -62,7 +62,7 @@ namespace 蓝图重制版.BluePrint.INode
                 _IntPutJoin[i + 1].Item1.RenderData();
             }
             base.PlayAnimation();
-            //base.Execute(Context, arguments, result);
+            //await base.Execute(Context, arguments, result);
         }
         public override string CodeTemplate(List<string> Execute, List<string> PrevNodes, List<ParameterAST> arguments, List<ParameterAST> result)
         {

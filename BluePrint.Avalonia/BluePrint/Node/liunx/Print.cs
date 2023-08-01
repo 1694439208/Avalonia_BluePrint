@@ -38,7 +38,7 @@ namespace 蓝图重制版.BluePrint.INode
             });
         }
 
-        public override void Execute(object Context, List<object> arguments, in Runtime.Evaluate.Result result)
+        public override async Task Execute(object Context, List<object> arguments, Runtime.Evaluate.Result result)
         {
             for (int i = 0; i < arguments.Count; i++)
             {
@@ -46,7 +46,7 @@ namespace 蓝图重制版.BluePrint.INode
                 _IntPutJoin[i + 1].Item1.RenderData();
             }
             //输出默认
-            base.Execute(Context,arguments, result);
+            await base.Execute(Context,arguments, result);
         }
 
         public override string CodeTemplate(List<string> Execute, List<string> PrevNodes, List<ParameterAST> arguments, List<ParameterAST> result)

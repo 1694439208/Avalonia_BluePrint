@@ -38,7 +38,7 @@ namespace 蓝图重制版.BluePrint.INode
                 }),
             });
         }
-        public override void Execute(object Context, List<object> arguments, in Runtime.Evaluate.Result result) {
+        public override async Task Execute(object Context, List<object> arguments, Runtime.Evaluate.Result result) {
 
             result.SetReturnValue(0, arguments.Get<int>(0) > arguments.Get<int>(1));
 

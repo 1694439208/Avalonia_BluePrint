@@ -19,7 +19,7 @@ namespace 蓝图重制版.BluePrint.INode
         /// <summary>
         /// 执行节点
         /// </summary>
-        void Execute(object Context, List<object> arguments, in Runtime.Evaluate.Result result);
+        Task Execute(object Context, List<object> arguments, Runtime.Evaluate.Result result);
         
         
     }

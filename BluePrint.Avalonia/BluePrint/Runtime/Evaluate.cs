@@ -7,12 +7,12 @@ namespace 蓝图重制版.BluePrint.Runtime
 {
     public class Evaluate
     {
-        public static void Eval(NodeAst nodeAst,object GlobalContext) {
+        public static async Task Eval(NodeAst nodeAst,object GlobalContext) {
             Context.Clear();
-            Calculated(nodeAst, GlobalContext);
+            await Calculated(nodeAst, GlobalContext);
         }
         public static Dictionary<int, object> Context = new Dictionary<int, object>();
-        private static void Calculated(NodeAst nodeAst, object GlobalContext) {
+        private static async Task Calculated(NodeAst nodeAst, object GlobalContext) {
             switch (nodeAst.NodeToken)
             {
                 case Token.NodeToken.ExpressionValue:
@@ -20,7 +20,7 @@ namespace 蓝图重制版.BluePrint.Runtime
                     //表达式就执行
                     foreach (var item in nodeAst.PrevNodes)
                     {
-                        Calculated(item, GlobalContext);
+                        await Calculated(item, GlobalContext);
                     }
                     //Calculated();
 
@@ -29,14 +29,14 @@ namespace 蓝图重制版.BluePrint.Runtime
                     List<object> args = new List<object>();
                     foreach (var item in nodeAst.Arguments)
                     {
-                        Calculated(item, GlobalContext);
+                        await Calculated(item, GlobalContext);
                         if (Context.TryGetValue(item.NodeJoinId,out var value))
                         {
                             args.Add(value);
                         }
                     }
                     Result result = new Result(nodeAst.NextNodes.Count,nodeAst.Results);
-                    nodeAst.NodeBase.Execute(GlobalContext,args, result);
+                    await nodeAst.NodeBase.Execute(GlobalContext,args, result);
                     //执行完毕把返回数据放在数据上下文
                     for (int i = 0; i < nodeAst.Results.Count; i++)
                     {
@@ -57,7 +57,7 @@ namespace 蓝图重制版.BluePrint.Runtime
                         {
                             if (nodeAst.NextNodes[item] != null)
                             {
-                                Calculated(nodeAst.NextNodes[item], GlobalContext);
+                                await Calculated(nodeAst.NextNodes[item], GlobalContext);
                             }
                         }
                         

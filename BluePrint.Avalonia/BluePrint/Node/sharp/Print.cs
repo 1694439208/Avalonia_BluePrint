@@ -55,13 +55,13 @@ namespace Document.Node
             });
         }
 
-        public override void Execute(object Context, List<object> arguments, in Evaluate.Result result)
+        public override async Task Execute(object Context, List<object> arguments, Evaluate.Result result)
         {
             
             _IntPutJoin[1].Item1.Set(new Node_Interface_Data { Value = string.Join("\r\n", arguments.Where(a => a != null).Select(a => a.ToString())) }) ;
             _IntPutJoin[1].Item1.RenderData();
             //输出默认
-            base.Execute(Context,arguments, result);
+            await base.Execute(Context,arguments, result);
         }
 
         public override string CodeTemplate(List<string> Execute, List<string> PrevNodes, List<ParameterAST> arguments, List<ParameterAST> result)

@@ -127,7 +127,7 @@ namespace Avalonia_BluePrint.Nodes
             };
         }
 
-        public override void Execute(object Context, List<object> arguments, in Evaluate.Result result)
+        public override async Task Execute(object Context, List<object> arguments, Evaluate.Result result)
         {
             var prompt = arguments[0].ToString();
             var prompt2 = arguments[1].ToString();
@@ -154,26 +154,20 @@ namespace Avalonia_BluePrint.Nodes
             {
                 if (mode)
                 {
-                    var imageW = Task.Run(async () =>
+                    var ret = await openAIService.Image.CreateImage(new ImageCreateRequest()
                     {
-                        var ret = await openAIService.Image.CreateImage(new ImageCreateRequest()
-                        {
-                            Prompt = (prompt ?? prompt2)!,
-                            N = 1,
-                            Size = "512x512",
-                            ResponseFormat = "b64_json"
-                        });
-                        var retMsg = ret.Successful ? ret.Results.Select(x => x.B64).First() : "";
-                        var image = new Data_Bitmap("");
-                        var imageStream = new MemoryStream();
-                        var imagef = PlatformImage.FromStream(new MemoryStream(Convert.FromBase64String(retMsg)));
-                        await imagef.SaveAsync(imageStream);
-                        imageStream.Position = 0;
-                        image.SetBitmap(new Avalonia.Media.Imaging.Bitmap(imageStream));
-                        return image;
+                        Prompt = (prompt ?? prompt2)!,
+                        N = 1,
+                        Size = "512x512",
+                        ResponseFormat = "b64_json"
                     });
-                    imageW.Wait();
-                    var image = imageW.Result;
+                    var retMsg = ret.Successful ? ret.Results.Select(x => x.B64).First() : "";
+                    var image = new Data_Bitmap("");
+                    var imageStream = new MemoryStream();
+                    var imagef = PlatformImage.FromStream(new MemoryStream(Convert.FromBase64String(retMsg)));
+                    await imagef.SaveAsync(imageStream);
+                    imageStream.Position = 0;
+                    image.SetBitmap(new Avalonia.Media.Imaging.Bitmap(imageStream));
                     if (image != null)
                     {
                         result.SetReturnValue(i, image);
@@ -181,28 +175,23 @@ namespace Avalonia_BluePrint.Nodes
                 }
                 else
                 {
-                    var retd = Task.Run(() =>
+                    var msgs = new List<ChatMessage>();
+                    if (!string.IsNullOrWhiteSpace(prompt))
+                        msgs.Add(ChatMessage.FromUser(prompt));
+                    if (!string.IsNullOrWhiteSpace(prompt2))
+                        msgs.Add(ChatMessage.FromUser(prompt2));
+                    var ret = await openAIService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
                     {
-                        var msgs = new List<ChatMessage>();
-                        if (!string.IsNullOrWhiteSpace(prompt))
-                            msgs.Add(ChatMessage.FromUser(prompt));
-                        if (!string.IsNullOrWhiteSpace(prompt2))
-                            msgs.Add(ChatMessage.FromUser(prompt2));
-                        return openAIService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
-                        {
-                            Messages = msgs,
-                            Model = model == "GPT4" ? Models.Gpt_4 : Models.Gpt_3_5_Turbo_16k,
-                            MaxTokens = 1024
-                        });
+                        Messages = msgs,
+                        Model = model == "GPT4" ? Models.Gpt_4 : Models.Gpt_3_5_Turbo_16k,
+                        MaxTokens = 1024
                     });
-                    retd.Wait();
-                    var ret = retd.Result;
                     var retMsg = ret.Successful ? ret.Choices.First().Message.Content : ret.Error?.Message ?? "未知异常";
                     result.SetReturnValue(i, retMsg);
                 }
             }
 
-            base.Execute(Context, arguments, result);
+           await base.Execute(Context, arguments, result);
         }
     }
 }

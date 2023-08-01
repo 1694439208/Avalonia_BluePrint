@@ -101,7 +101,7 @@ namespace 蓝图重制版.BluePrint.IJoin
                     Width = 80f,
                     Content = "动态执行"
                 };
-                (UINode as Button).Click += (s, e) =>
+                (UINode as Button).Click += async (s, e) =>
                 {
                     foreach (var item in bParent.bluePrint.GetAllAnimationLines())
                     {
@@ -111,7 +111,7 @@ namespace 蓝图重制版.BluePrint.IJoin
                     //(_Node as Context).Execute();
                     var a = new Runtime.NodeParse(bParent);
                     var ast = a.Parser(_Node as NodeBase);
-                    Runtime.Evaluate.Eval(ast, null);
+                    await Runtime.Evaluate.Eval(ast, null);
                     //var code = Runtime.CodeGenerator.Generator(ast);
 
                     //System.Diagnostics.Debug.WriteLine(code);
