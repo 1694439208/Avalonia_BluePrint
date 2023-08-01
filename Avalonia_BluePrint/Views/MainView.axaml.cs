@@ -13,6 +13,7 @@ using Avalonia.Platform.Storage;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls.Primitives;
+using System.Text;
 
 namespace Avalonia_BluePrint.Views
 {
@@ -64,9 +65,7 @@ namespace Avalonia_BluePrint.Views
         {
             try
             {
-                using var contentStream = new MemoryStream();
-                using var writer = new StreamWriter(contentStream);
-                await writer.WriteAsync(JsonConvert.SerializeObject(bp.GetBP()));
+                using var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(bp.GetBP())));
                 await ShowSaveFileAsync("*.bp", contentStream);
             }
             catch (System.Exception ex)

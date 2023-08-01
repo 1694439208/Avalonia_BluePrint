@@ -36,7 +36,16 @@ namespace 蓝图重制版.BluePrint.Runtime
                         }
                     }
                     Result result = new Result(nodeAst.NextNodes.Count,nodeAst.Results);
-                    await nodeAst.NodeBase.Execute(GlobalContext,args, result);
+                    try
+                    {
+                        nodeAst.NodeBase.SetState(INode.NodeState.Running, "");
+                        await nodeAst.NodeBase.Execute(GlobalContext, args, result);
+                        nodeAst.NodeBase.SetState(INode.NodeState.OK, "");
+                    }
+                    catch (Exception ex)
+                    {
+                        nodeAst.NodeBase.SetState(INode.NodeState.Error, ex.Message);
+                    }
                     //执行完毕把返回数据放在数据上下文
                     for (int i = 0; i < nodeAst.Results.Count; i++)
                     {

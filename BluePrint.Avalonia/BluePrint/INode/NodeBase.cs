@@ -15,12 +15,19 @@ using System.Reactive.Linq;
 using Avalonia.Data;
 using System.Reflection;
 using Avalonia.Controls.Primitives;
+using BluePrint.Avalonia.BluePrint.INode.Model;
 
 namespace 蓝图重制版.BluePrint.INode
 {
     //[NodeBaseInfo("控件基类","基类")]
     public class NodeBase : Panel,Context
     {
+        /// <summary>
+        /// 样式
+        /// </summary>
+        public NodeStyle Style { get; set; } = new NodeStyle();
+        private BoxShadows? _defaultBoxShadow;
+
         /// <summary>
         /// 设计器专用
         /// </summary>
@@ -78,9 +85,9 @@ namespace 蓝图重制版.BluePrint.INode
         /// </summary>
         /// <param name="nodeState"></param>
         /// <param name="title"></param>
-        public void SetState(NodeState nodeState,string title) {
+        public void SetState(NodeState nodeState,string? title=null) {
             NodeState = nodeState;
-            if (title != "")
+            if (!string.IsNullOrEmpty(title))
             {
                 ToolTip.SetTip(this, new TextBlock
                 {
@@ -88,32 +95,59 @@ namespace 蓝图重制版.BluePrint.INode
                     Padding = new Thickness(5),
                 });
                 ToolTip.SetShowDelay(this, 0);
-                ToolTip.SetPlacement(this, PlacementMode.TopEdgeAlignedRight);
+                ToolTip.SetPlacement(this, PlacementMode.Top);
+                ToolTip.SetVerticalOffset(this, -6);
             }
             else
             {
                 ToolTip.SetTip(this, null);
             }
+            if (_defaultBoxShadow == null)
+                _defaultBoxShadow = border.BoxShadow;
             switch (nodeState)
             {
                 case NodeState.Error:
+                    if (Style.ErrorStateColor == null)
+                    {
+                        border.BoxShadow = _defaultBoxShadow.Value;
+                        break;
+                    }
                     border.BoxShadow = new BoxShadows(new BoxShadow
                     {
                         Spread = 6,
-                        Color = Colors.Red,
+                        Color = Style.ErrorStateColor.Value,
                         Blur = 3,
                     });
 
                     break;
                 case NodeState.OK:
+                    if (Style.OKStateColor == null)
+                    {
+                        border.BoxShadow = _defaultBoxShadow.Value;
+                        break;
+                    }
                     border.BoxShadow = new BoxShadows(new BoxShadow
                     {
                         Spread = 6,
-                        Color = Colors.Blue,
+                        Color = Style.OKStateColor.Value,
+                        Blur = 3,
+                    });
+                    break;
+                case NodeState.Running:
+                    if (Style.RunningStateColor == null)
+                    {
+                        border.BoxShadow = _defaultBoxShadow.Value;
+                        break;
+                    }
+                    border.BoxShadow = new BoxShadows(new BoxShadow
+                    {
+                        Spread = 6,
+                        Color = Style.RunningStateColor.Value,
                         Blur = 3,
                     });
                     break;
                 case NodeState.None:
+                    border.BoxShadow = _defaultBoxShadow.Value;
                     break;
                 default:
                     break;

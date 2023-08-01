@@ -8,7 +8,7 @@ namespace 蓝图重制版.BluePrint.INode
 {
     public enum NodeState
     {
-        Error,None,OK
+        Error,None,OK,Running
     }
     public interface Context
     {
