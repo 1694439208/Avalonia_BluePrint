@@ -6,6 +6,10 @@ using 蓝图重制版.BluePrint.Node;
 
 namespace 蓝图重制版.BluePrint.INode
 {
+    public enum NodeState
+    {
+        Error,None,OK
+    }
     public interface Context
     {
         /// <summary>
