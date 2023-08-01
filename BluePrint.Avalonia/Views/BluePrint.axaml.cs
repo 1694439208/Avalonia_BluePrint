@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OAvalonia = Avalonia;
 using BluePrint.Core;
-using BluePrint.Core.Node;
 using BluePrint.Core.INode;
 
 namespace BluePrint.Views
@@ -115,106 +114,12 @@ namespace BluePrint.Views
             Canvas.SetLeft(bp, 0);
             Canvas.SetTop(bp, 0);
 
-            _nodeTypes = new List<Type>{
-                    typeof(_StartNode),
-                    typeof(Branch),
-                    typeof(ImageShow),
-                    typeof(ImageSplit),
-                    typeof(sequence),
-                    typeof(ThanGreater),
-                    typeof(ScriptType),
-                    typeof(CreateVar),
-                    typeof(GetVar),
-                    typeof(Annotation),
-                    typeof(ThanEqual),
-                    typeof(ThanLess),
-                    typeof(ThanStrEqual),
-
-                    //-----------
-                    typeof(Sharp_StartNode),
-                    //Quicker
-                    typeof(Sharp_GetVar),
-                    typeof(Sharp_SetVar),
-                    //列表功能
-                    typeof(Sharp_List_Length),
-                    typeof(Sharp_Str_ListJoin),
-                    typeof(Sharp_where),
-                    typeof(Sharp_select),
-                    typeof(Sharp_Any),
-                    typeof(Sharp_GetStarValue),
-                    typeof(Sharp_FindIndex),
-                    typeof(Sharp_GetEnd),
-                    typeof(Sharp_OrderBy),
-                    typeof(Sharp_OrderByDescending),
-                    //流程
-                    typeof(Sharp_sequence),
-                    //其他
-                    typeof(Print),
-                    //逻辑运算
-                    typeof(Sharp_and),
-                    typeof(Sharp_or),
-                    //数据转换
-                    typeof(Sharp_ToEval),
-                    typeof(Sharp_ToJson),
-                    //表达式(条件)
-                    typeof(Sharp_TextExpression),
-                    typeof(Sharp_Str_Equal),
-                    typeof(Sharp_Str_IndexOf),
-                    typeof(Sharp_Str_StartsWith),
-                    typeof(Sharp_Str_EndsWith),
-                    //字符串处理
-                    typeof(Sharp_StrAppend),
-                    typeof(Sharp_Str_Replace),
-                    typeof(Sharp_Str_Split),
-                    typeof(Sharp_Str_Length),
-                    //
-                    /*typeof(Sharp_Str_ListToLamble),
-                    typeof(Sharp_OrderBy),,*/
-                };
+            _nodeTypes = new List<Type>();
 
             //NodeTypes.Add(typeof(_StartNode));
             //NodeTypes.Add(typeof(Branch));
             //设置节点上下文
             bp.SetContext(_nodeTypes);
-            bp.Initialized += (s, e) =>
-            {
-                var node = new _StartNode(bp)
-                {
-                };
-                bp.bluePrint.AddChildren(node);
-                //var node2 = new sequence(bp)
-                //{
-                //};
-                //bp.bluePrint.AddChildren(node2);
-                //Canvas.SetLeft(node2, 100);
-                //Canvas.SetTop(node2, 100);
-                Canvas.SetLeft(node, 100);
-                Canvas.SetTop(node, 100);
-                int x = 200;
-                int y = 30;
-                for (int i = 0; i < 5; i++)
-                {
-                    x += 100;
-                    if (i % 15 == 0)
-                    {
-                        y += 100;
-                        x = 200;
-                    }
-                    var node1 = new Branch(bp);
-                    bp.bluePrint.AddChildren(node1);
-                    Canvas.SetLeft(node1, x);
-                    Canvas.SetTop(node1, y);
-                    var line = new BP_Line(bp.bluePrint)
-                    {
-                        Width = 1f,
-                        Height = 1f
-                    };
-                    //bp.bluePrint.AddChildren(line);
-                    bp.bluePrint.AddLineChildren(line);
-                    line.SetJoin(node._OutPutJoin[0].Item1, node1._IntPutJoin[0].Item1);
-                    //line.RefreshDrawBezier();
-                }
-            };
             stackPanel.Children.Add(bp);
 
             this.Content = stackPanel;
@@ -234,6 +139,22 @@ namespace BluePrint.Views
                 bp.bluePrint.AddChildren(node);
                 Canvas.SetLeft(node, x);
                 Canvas.SetTop(node, y);
+            }
+        }
+
+        public void RegisterNode(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                RegisterNode(type);
+            }
+        }
+
+        public void UnRegisterNode(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                UnRegisterNode(type);
             }
         }
 

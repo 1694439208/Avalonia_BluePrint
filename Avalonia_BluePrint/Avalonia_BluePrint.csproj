@@ -32,5 +32,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\BluePrint.Avalonia\BluePrint.Avalonia.csproj" />
+	  <ProjectReference Include="..\BluePrint.Node.Common\BluePrint.Node.Common.csproj" />
 	</ItemGroup>
 </Project>

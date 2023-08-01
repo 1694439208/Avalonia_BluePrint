@@ -14,6 +14,7 @@ using Avalonia.Controls.Primitives;
 using System.Text;
 using BluePrint.Core.IJoin;
 using BluePrint.Core;
+using BluePrint.Node.Common;
 
 namespace Avalonia_BluePrint.Views
 {
@@ -32,6 +33,7 @@ namespace Avalonia_BluePrint.Views
             _topLevel = TopLevel.GetTopLevel(this);
             _manager = new WindowNotificationManager(_topLevel) { MaxItems = 3 };
             UIElementTool._manager = _manager;
+            bp.RegisterCommonNode();
             bp.RegisterNode(typeof(AINode));
         }
 

@@ -102,13 +102,13 @@ namespace Avalonia_BluePrint.Nodes
                     Title = "图片模式",
                     Value = false,
                     Type = typeof(bool),
-                    Tips = "test",
+                    Tips = "图片模式",
                 }),
-                (new ComboBoxJoin(bParent, IJoinControl.NodePosition.Left, this),new Node_Interface_Data{
-                    Title = "模型",
-                    Value = new List<string>(){"GPT3.5","GPT4"},
-                    Type = typeof(List<string>),
-                    Tips = "test",
+                (new Checkjoin(bParent, IJoinControl.NodePosition.Left, this),new Node_Interface_Data{
+                    Title = "GPT4",
+                    Value = false,
+                    Type = typeof(bool),
+                    Tips = "GPT4",
                 }),
                 (new TextBoxJoint(bParent, IJoinControl.NodePosition.Left, this)
                 {
@@ -131,21 +131,21 @@ namespace Avalonia_BluePrint.Nodes
         public override async Task Execute(object Context, List<object> arguments, Evaluate.Result result)
         {
             var tprompt = arguments[0];
-            var tprompt2 = arguments[0];
+            var tprompt2 = arguments[1];
             var prompt = tprompt?.ToString() ?? "";
             var prompt2 = tprompt2?.ToString() ?? "";
-            if (tprompt.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+            if (tprompt != null && tprompt.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
             {
                 var enumerable = (IEnumerable)tprompt;
                 prompt = string.Join("\r\n", enumerable);
             }
-            if (tprompt2.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+            if (tprompt2 != null && tprompt2.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
             {
                 var enumerable = (IEnumerable)tprompt2;
                 prompt2 = string.Join("\r\n", enumerable);
             }
             var mode = Convert.ToBoolean(arguments[2]);
-            var model = Convert.ToString(arguments[3]);
+            var enableGPT4 = Convert.ToBoolean(arguments[3]);
             var sk = Convert.ToString(arguments[4]);
 
             if (string.IsNullOrWhiteSpace(sk))
@@ -198,7 +198,7 @@ namespace Avalonia_BluePrint.Nodes
                     var ret = await openAIService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
                     {
                         Messages = msgs,
-                        Model = model == "GPT4" ? Models.Gpt_4 : Models.Gpt_3_5_Turbo_16k,
+                        Model = enableGPT4 ? Models.Gpt_4 : Models.Gpt_3_5_Turbo_16k,
                         MaxTokens = 1024
                     });
                     var retMsg = ret.Successful ? ret.Choices.First().Message.Content : ret.Error?.Message ?? "未知异常";

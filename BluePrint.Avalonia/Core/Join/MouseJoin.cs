@@ -33,10 +33,10 @@ namespace BluePrint.Core.Join
         public override Node_Interface_Data Get()
         {
             return new Node_Interface_Data
-            { 
+            {
                 Title = "MouseJoin",
             };
         }
-       
+
     }
 }

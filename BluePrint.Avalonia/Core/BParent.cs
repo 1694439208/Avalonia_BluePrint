@@ -19,8 +19,8 @@ using BluePrint.Core.IJoin;
 using BluePrint.Core.INode;
 using BluePrint.Core.DataType;
 using BluePrint.Core.Controls;
-using BluePrint.Core.Join;
 using BluePrint.Core.Tool;
+using BluePrint.Core.Join;
 
 namespace BluePrint.Core
 {

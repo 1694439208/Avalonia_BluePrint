@@ -149,9 +149,5 @@ namespace BluePrint.Core.Runtime
             }
             return ast;
         }
-        public void test()
-        {
-            NodeAst nodeAst = Parser(new Node._StartNode(null));
-        }
     }
 }

@@ -1,18 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net7.0;net472</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<RootNamespace>BluePrint</RootNamespace>
+		<RootNamespace>BluePrint.Node.Common</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
-	
+
+	<ItemGroup>
+		<ProjectReference Include="..\BluePrint.Avalonia\BluePrint.Avalonia.csproj" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="11.0.2" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.2" />
@@ -22,5 +26,5 @@
 		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
-	
+
 </Project>
