@@ -62,6 +62,17 @@ namespace BluePrint.Avalonia.Views
                             item1.Data.Value = jobj.ToObject(item1.Data.Type);
                         }
                     }
+                    if (item1.Data.Value is JArray arr)
+                    {
+                        if (item1.Data.Type == null)
+                        {
+                            item1.Data.Value = arr.ToObject<object>();
+                        }
+                        else
+                        {
+                            item1.Data.Value = arr.ToObject(item1.Data.Type);
+                        }
+                    }
                 }
                 foreach (var item1 in item._OutPutJoin)
                 {

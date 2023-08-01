@@ -19,10 +19,13 @@ using System.IO;
 using Microsoft.Maui.Graphics.Platform;
 using 蓝图重制版.BluePrint.Join;
 using OpenAI.Interfaces;
+using Avalonia.Controls;
+using System.Runtime.InteropServices;
 
 namespace Avalonia_BluePrint.Nodes
 {
     [NodeBaseInfo("AI组件", "功能")]
+    [Guid("F61391C6-F524-4B6B-81EC-118E87DBA4F4")]
     public class AINode : NodeBase
     {
         public AINode() : base() { }
@@ -48,6 +51,8 @@ namespace Avalonia_BluePrint.Nodes
                 (new AddCustomJoin(bParent, IJoinControl.NodePosition.right, this),new Node_Interface_Data{
                     Title = "添加输出",
                     Tips = "添加输出",
+                    Value = new JoinType("添加输出"),
+                    Type = typeof(JoinType),
                 }),
             };
 
