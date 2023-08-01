@@ -1,17 +1,17 @@
 using Avalonia.Controls;
-using Document.Node;
 using System.Collections.Generic;
 using System;
-using 蓝图重制版.BluePrint.INode;
-using 蓝图重制版.BluePrint;
+using BluePrint;
 using Avalonia.Media;
-using 蓝图重制版.BluePrint.IJoin;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OAvalonia = Avalonia;
+using BluePrint.Core;
+using BluePrint.Core.Node;
+using BluePrint.Core.INode;
 
-namespace BluePrint.Avalonia.Views
+namespace BluePrint.Views
 {
     public partial class BluePrint : UserControl
     {
@@ -125,7 +125,7 @@ namespace BluePrint.Avalonia.Views
                     typeof(ScriptType),
                     typeof(CreateVar),
                     typeof(GetVar),
-                    typeof(蓝图重制版.BluePrint.INode.Print),
+                    typeof(Annotation),
                     typeof(ThanEqual),
                     typeof(ThanLess),
                     typeof(ThanStrEqual),
@@ -149,7 +149,7 @@ namespace BluePrint.Avalonia.Views
                     //流程
                     typeof(Sharp_sequence),
                     //其他
-                    typeof(Document.Node.Print),
+                    typeof(Print),
                     //逻辑运算
                     typeof(Sharp_and),
                     typeof(Sharp_or),

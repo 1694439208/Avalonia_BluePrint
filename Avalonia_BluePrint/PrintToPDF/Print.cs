@@ -7,7 +7,6 @@ using Avalonia.Rendering;
 using Avalonia.Skia;
 using Avalonia.Skia.Helpers;
 using Avalonia.VisualTree;
-using BluePrint.Avalonia.BluePrint.Tool;
 using SkiaSharp;
 using System.Collections.Generic;
 using System.IO;

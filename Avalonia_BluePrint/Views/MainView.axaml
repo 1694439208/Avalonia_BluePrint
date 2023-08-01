@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Avalonia_BluePrint.ViewModels"
 			 xmlns:v="using:Avalonia_BluePrint.Views"
-			 xmlns:bw="using:BluePrint.Avalonia.Views"
+			 xmlns:bw="using:BluePrint.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia_BluePrint.Views.MainView"
              x:DataType="vm:MainViewModel">

@@ -1,8 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Newtonsoft.Json;
-using 蓝图重制版.BluePrint.IJoin;
-using 蓝图重制版.BluePrint;
 using System.IO;
 using Avalonia.Controls.Notifications;
 using System.Threading.Tasks;
@@ -14,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls.Primitives;
 using System.Text;
+using BluePrint.Core.IJoin;
+using BluePrint.Core;
 
 namespace Avalonia_BluePrint.Views
 {

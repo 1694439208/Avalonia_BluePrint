@@ -4,7 +4,6 @@ using System;
 using Avalonia.Media;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
-using ¿∂Õº÷ÿ÷∆∞Ê.BluePrint.IJoin;
 
 namespace Avalonia_BluePrint.Views
 {

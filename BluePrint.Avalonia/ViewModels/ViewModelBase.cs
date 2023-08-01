@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace BluePrint.Avalonia.ViewModels
+namespace BluePrint.ViewModels
 {
     public class ViewModelBase : ReactiveObject
     {

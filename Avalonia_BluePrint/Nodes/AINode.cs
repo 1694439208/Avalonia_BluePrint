@@ -1,26 +1,25 @@
-﻿using BluePrint.Avalonia.BluePrint.DataType;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using 蓝图重制版.BluePrint.DataType;
-using 蓝图重制版.BluePrint;
-using 蓝图重制版.BluePrint.IJoin;
-using 蓝图重制版.BluePrint.INode;
-using 蓝图重制版.BluePrint.Node;
 using Avalonia;
-using 蓝图重制版.BluePrint.Runtime;
 using OpenAI.Managers;
 using OpenAI.ObjectModels.RequestModels;
 using OpenAI.ObjectModels;
 using OpenAI.ObjectModels.ResponseModels;
 using System.IO;
 using Microsoft.Maui.Graphics.Platform;
-using 蓝图重制版.BluePrint.Join;
 using OpenAI.Interfaces;
 using Avalonia.Controls;
 using System.Runtime.InteropServices;
+using System.Collections;
+using BluePrint.Core.IJoin;
+using BluePrint.Core.INode;
+using BluePrint.Core;
+using BluePrint.Core.Join;
+using BluePrint.Core.Runtime;
+using BluePrint.Core.DataType;
 
 namespace Avalonia_BluePrint.Nodes
 {
@@ -72,6 +71,7 @@ namespace Avalonia_BluePrint.Nodes
                     Title = "prompt",
                     Value = "",
                     Type = typeof(string),
+                    IsTypeCheck=false,
                     Tips = "",
                     ClassValue = new Dictionary<string, MyData>{
                         {nameof(TextBoxJoint.Enabled),new MyData<bool>(false) },
@@ -88,6 +88,7 @@ namespace Avalonia_BluePrint.Nodes
                     Title = "prompt2",
                     Value = "",
                     Type = typeof(string),
+                    IsTypeCheck=false,
                     Tips = "",
                     ClassValue = new Dictionary<string, MyData>{
                         {nameof(TextBoxJoint.Enabled),new MyData<bool>(false) },
@@ -129,8 +130,20 @@ namespace Avalonia_BluePrint.Nodes
 
         public override async Task Execute(object Context, List<object> arguments, Evaluate.Result result)
         {
-            var prompt = arguments[0].ToString();
-            var prompt2 = arguments[1].ToString();
+            var tprompt = arguments[0];
+            var tprompt2 = arguments[0];
+            var prompt = tprompt?.ToString() ?? "";
+            var prompt2 = tprompt2?.ToString() ?? "";
+            if (tprompt.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+            {
+                var enumerable = (IEnumerable)tprompt;
+                prompt = string.Join("\r\n", enumerable);
+            }
+            if (tprompt2.GetType().GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+            {
+                var enumerable = (IEnumerable)tprompt2;
+                prompt2 = string.Join("\r\n", enumerable);
+            }
             var mode = Convert.ToBoolean(arguments[2]);
             var model = Convert.ToString(arguments[3]);
             var sk = Convert.ToString(arguments[4]);

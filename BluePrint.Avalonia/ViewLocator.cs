@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using BluePrint.Avalonia.ViewModels;
+using BluePrint.ViewModels;
 using System;
 
-namespace BluePrint.Avalonia
+namespace BluePrint
 {
     public class ViewLocator : IDataTemplate
     {
