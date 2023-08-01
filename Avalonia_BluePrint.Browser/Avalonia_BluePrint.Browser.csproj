@@ -27,4 +27,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Avalonia_BluePrint\Avalonia_BluePrint.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\PublishProfiles\" />
+	</ItemGroup>
 </Project>
