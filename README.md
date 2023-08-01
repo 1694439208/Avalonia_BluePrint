@@ -34,7 +34,8 @@
 
 ## 参考
 > https://github.com/wieslawsoltes/PanAndZoom
-> https://github.com/Oaz/AvaloniaUI.PrintToPDF/
+
+> https://github.com/Oaz/AvaloniaUI.PrintToPDF
 
 ## 预览
 
