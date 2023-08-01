@@ -9,67 +9,95 @@ using System.Threading.Tasks;
 using Avalonia.PrintToPDF;
 using Avalonia.Controls.Templates;
 using Avalonia_BluePrint.Nodes;
+using Avalonia.Platform.Storage;
+using System.Collections.Generic;
+using System.Linq;
+using Avalonia.Controls.Primitives;
 
 namespace Avalonia_BluePrint.Views
 {
     public partial class MainView : UserControl
     {
+        private WindowNotificationManager _manager;
+        private TopLevel? _topLevel;
         public MainView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+            _topLevel = TopLevel.GetTopLevel(this);
+            _manager = new WindowNotificationManager(_topLevel) { MaxItems = 3 };
+            UIElementTool._manager = _manager;
             bp.RegisterNode(typeof(AINode));
+        }
+
+        private async Task ShowSaveFileAsync(string extension, Stream cstream)
+        {
+            var storage = _topLevel?.StorageProvider;
+            if (storage == null)
+                return;
+            var ret = await storage.SaveFilePickerAsync(new FilePickerSaveOptions()
+            {
+                Title = "选择保存文件目录",
+                DefaultExtension = extension,
+                FileTypeChoices = new List<FilePickerFileType>()
+                    {
+                        new FilePickerFileType("蓝图")
+                        {
+                            Patterns = new[] { extension }
+                        }
+                    }
+            });
+
+            if (ret != null)
+            {
+                using var stream = await ret.OpenWriteAsync();
+                cstream.CopyTo(stream);
+                _manager?.Show(new Notification("提示", "保存成功", NotificationType.Success));
+            }
         }
 
         public async Task SaveBP()
         {
-            var dialog = new SaveFileDialog();
-            dialog.Filters.Add(new FileDialogFilter { Name = "选择保存bp文件目录", Extensions = { "bp" } });
-
-
-            var result = await dialog.ShowAsync(MainWindow._MainWindow);
-
-            if (!string.IsNullOrEmpty(result))
+            try
             {
-                string savePath = result;
-
-                // 处理选定的保存目录
-                var bptext = JsonConvert.SerializeObject(bp.GetBP());
-                File.WriteAllText(savePath, bptext);
-                MainWindow._manager?.Show(new Notification("提示", "保存成功", NotificationType.Error));
+                using var contentStream = new MemoryStream();
+                using var writer = new StreamWriter(contentStream);
+                await writer.WriteAsync(JsonConvert.SerializeObject(bp.GetBP()));
+                await ShowSaveFileAsync("*.bp", contentStream);
+            }
+            catch (System.Exception ex)
+            {
+                _manager?.Show(new Notification("错误", ex.Message, NotificationType.Error));
             }
         }
+
         public async Task SavePNG()
         {
-            var dialog = new SaveFileDialog();
-            dialog.Filters.Add(new FileDialogFilter { Name = "选择保存png文件目录", Extensions = { "png" } });
-
-
-            var result = await dialog.ShowAsync(MainWindow._MainWindow);
-
-            if (!string.IsNullOrEmpty(result))
+            try
             {
-                string savePath = result;
-
-                // 处理选定的保存目录
-                Print.ToPNGFile(savePath, bp);
-                MainWindow._manager?.Show(new Notification("提示", "保存成功", NotificationType.Error));
+                using var contentStream = Print.ToPNGStream(bp);
+                await ShowSaveFileAsync("*.png", contentStream);
+            }
+            catch (System.Exception ex)
+            {
+                _manager?.Show(new Notification("错误", ex.Message, NotificationType.Error));
             }
         }
+
         public async Task SavePDF()
         {
-            var dialog = new SaveFileDialog();
-            dialog.Filters.Add(new FileDialogFilter { Name = "选择保存pdf文件目录", Extensions = { "pdf" } });
-
-
-            var result = await dialog.ShowAsync(MainWindow._MainWindow);
-
-            if (!string.IsNullOrEmpty(result))
+            try
             {
-                string savePath = result;
-
-                // 处理选定的保存目录
-                Print.ToFile(savePath, bp);
-                MainWindow._manager?.Show(new Notification("提示", "保存成功", NotificationType.Error));
+                using var contentStream = Print.ToPDFStream(bp);
+                await ShowSaveFileAsync("*.pdf", contentStream);
+            }
+            catch (System.Exception ex)
+            {
+                _manager?.Show(new Notification("错误", ex.Message, NotificationType.Error));
             }
         }
 
@@ -77,39 +105,43 @@ namespace Avalonia_BluePrint.Views
         {
             try
             {
-                var dialog = new OpenFileDialog();
-                dialog.AllowMultiple = false;
-                dialog.Filters.Add(new FileDialogFilter { Name = "选择加载bp文件", Extensions = { "bp" } });
-
-                var result = await dialog.ShowAsync(MainWindow._MainWindow);
-
-                if (result != null && result.Length > 0)
+                var storage = _topLevel?.StorageProvider;
+                if (storage == null)
+                    return;
+                var select = await storage.OpenFilePickerAsync(new FilePickerOpenOptions()
                 {
-                    string filePath = result[0];
-                    // 处理选定的文件路径
-                    var strjson = File.ReadAllText(filePath);
-                    var BPObject = JsonConvert.DeserializeObject<BParent.BPByte>(strjson);
+                    Title = "选择加载bp文件",
+                    AllowMultiple = false,
+                    FileTypeFilter = new List<FilePickerFileType>()
+                    {
+                        new FilePickerFileType("蓝图")
+                        {
+                            Patterns = new[] { "*.bp" }
+                        }
+                    }
+                });
+                var selectFile = select?.FirstOrDefault();
+                if (selectFile != null)
+                {
+                    using var stream = await selectFile.OpenReadAsync();
+                    using var reader = new StreamReader(stream);
+                    var BPObject = JsonConvert.DeserializeObject<BParent.BPByte>(reader.ReadToEnd());
                     if (BPObject != null)
                     {
                         bp.SetBP(BPObject);
-                        MainWindow._manager?.Show(new Notification("提示", "加载成功", NotificationType.Error));
+                        _manager?.Show(new Notification("提示", "加载成功", NotificationType.Success));
                     }
                 }
             }
             catch (System.Exception ex)
             {
-                File.WriteAllText("error.txt",ex.Message);
+                _manager?.Show(new Notification("错误", ex.Message, NotificationType.Error));
             }
         }
 
         public void ClearBP()
         {
             bp.ClearBP();
-        }
-
-        public void Test()
-        {
-            bp.UnRegisterNode(typeof(AINode));
         }
     }
 }
