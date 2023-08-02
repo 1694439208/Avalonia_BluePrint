@@ -16,6 +16,7 @@ using BluePrint.Core.IJoin;
 using BluePrint.Core;
 using BluePrint.Node.Common;
 using SkiaSharp;
+using BluePrint.Core.Node;
 
 namespace Avalonia_BluePrint.Views
 {
@@ -26,6 +27,46 @@ namespace Avalonia_BluePrint.Views
         public MainView()
         {
             InitializeComponent();
+            //var bp = new BluePrint.Core.BParent();
+            bp.bp.Initialized += (s, e) =>
+            {
+                var node = new _StartNode(bp.bp)
+                {
+                };
+                bp.bp.bluePrint.AddChildren(node);
+                //var node2 = new sequence(bp)
+                //{
+                //};
+                //bp.bluePrint.AddChildren(node2);
+                //Canvas.SetLeft(node2, 100);
+                //Canvas.SetTop(node2, 100);
+                Canvas.SetLeft(node, 100);
+                Canvas.SetTop(node, 100);
+                int x = 200;
+                int y = 30;
+                for (int i = 0; i < 100; i++)
+                {
+                    x += 100;
+                    if (i % 15 == 0)
+                    {
+                        y += 100;
+                        x = 200;
+                    }
+                    var node1 = new Branch(bp.bp);
+                    bp.bp.bluePrint.AddChildren(node1);
+                    Canvas.SetLeft(node1, x);
+                    Canvas.SetTop(node1, y);
+                    var line = new BP_Line(bp.bp.bluePrint)
+                    {
+                        Width = 1f,
+                        Height = 1f
+                    };
+                    //bp.bluePrint.AddChildren(line);
+                    bp.bp.bluePrint.AddLineChildren(line);
+                    line.SetJoin(node._OutPutJoin[0].Item1, node1._IntPutJoin[0].Item1);
+                    //line.RefreshDrawBezier();
+                }
+            };
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -81,7 +122,7 @@ namespace Avalonia_BluePrint.Views
         {
             try
             {
-                using var contentStream = Print.ToPNGStream(bp);
+                using var contentStream = Avalonia.PrintToPDF.Print.ToPNGStream(bp);
                 await ShowSaveFileAsync("*.png", contentStream);
             }
             catch (System.Exception ex)
@@ -94,7 +135,7 @@ namespace Avalonia_BluePrint.Views
         {
             try
             {
-                using var contentStream = Print.ToPDFStream(bp);
+                using var contentStream = Avalonia.PrintToPDF.Print.ToPDFStream(bp);
                 await ShowSaveFileAsync("*.pdf", contentStream);
             }
             catch (System.Exception ex)
