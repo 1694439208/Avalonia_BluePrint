@@ -16,6 +16,22 @@
 - [ ] 划块合并  
 - [ ] ui主题  
 
+## 使用
+### 安装包：BluePrint.Node.Common
+
+    在ui上配置引用
+    xmlns:bp="using:BluePrint.Views"
+
+    然后使用
+	<bp:BluePrint Name="bp"></bp:BluePrint>
+
+    然后代码里注册常用节点即可
+    bp.RegisterCommonNode();
+
+### 若不使用常用节点，可以自定义节点
+### 只需要安装包：HMBB.BluePrint.Avalonia
+    自定义节点具体请参考本项目的Demo
+    
 ## 编译 
 
 > 此库是使用 [Avalonia](https://github.com/AvaloniaUI/Avalonia) 开发
