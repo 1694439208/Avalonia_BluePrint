@@ -10,8 +10,8 @@
 		<PublishTrimmed>true</PublishTrimmed>
 		<TrimMode>full</TrimMode>
 		<WasmBuildNative>true</WasmBuildNative>
-		<EmccCompileOptimizationFlag>-O2</EmccCompileOptimizationFlag>
-		<EmccLinkOptimizationFlag>-O2</EmccLinkOptimizationFlag>
+		<EmccCompileOptimizationFlag>-O3</EmccCompileOptimizationFlag>
+		<EmccLinkOptimizationFlag>-O3</EmccLinkOptimizationFlag>
 	</PropertyGroup>
 
 	<ItemGroup>
