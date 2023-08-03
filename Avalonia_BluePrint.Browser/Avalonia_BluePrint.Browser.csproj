@@ -4,10 +4,18 @@
 		<RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
 		<WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
 		<OutputType>Exe</OutputType>
+
+		<EmccFlags>-sVERBOSE -sERROR_ON_UNDEFINED_SYMBOLS=0</EmccFlags>
+		<RunAOTCompilation>true</RunAOTCompilation>
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>full</TrimMode>
+		<WasmBuildNative>true</WasmBuildNative>
+		<EmccCompileOptimizationFlag>-O3</EmccCompileOptimizationFlag>
+		<EmccLinkOptimizationFlag>-O3</EmccLinkOptimizationFlag>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<RdXmlFile Include="rd.xml" />
+		<TrimmerRootDescriptor Include="Roots.xml" />
 	</ItemGroup>
 	
 	<ItemGroup>

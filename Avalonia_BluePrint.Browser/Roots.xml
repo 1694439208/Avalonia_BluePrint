@@ -1,0 +1,9 @@
+﻿<linker>
+	<assembly fullname="BluePrint.Avalonia" preserve="All" />
+	<assembly fullname="BluePrint.Node.Common" preserve="All" />
+	<assembly fullname="Avalonia_BluePrint" preserve="All" />
+	<assembly fullname="Avalonia_BluePrint.Browser" preserve="All" />
+	<assembly fullname="Avalonia.Themes.Fluent" preserve="All" />
+	<assembly fullname="Avalonia.Themes.Simple" preserve="All" />
+	<assembly fullname="Avalonia.Controls.ColorPicker" preserve="All" />
+</linker>

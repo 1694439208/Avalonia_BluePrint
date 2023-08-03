@@ -21,7 +21,7 @@
 			<Button Command="{Binding ClearBP, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=v:MainView}}">清空蓝图</Button>
 			<Button Command="{Binding SavePDF, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=v:MainView}}">保存为pdf</Button>
 			<Button Command="{Binding SavePNG, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=v:MainView}}">保存为PNG</Button>
-			<Button>GitHub</Button>
+			<Button Command="{Binding PerformanceTest, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=v:MainView}}">性能测试</Button>
 		</StackPanel>
 		<DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
 			<bw:BluePrint Name="bp"></bw:BluePrint>
