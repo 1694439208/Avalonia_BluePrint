@@ -7,6 +7,15 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<RootNamespace>BluePrint.Node.Common</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
+		
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Authors>hmbb</Authors>
+		<Description>avalonia, avalonia node editor, imitate unreal engine blueprint. 使用avalonia开发的节点编辑器，模仿虚幻引擎蓝图</Description>
+		<PackageTags>Avalonia;Avalonia Node Editor;Node Editor;Unreal Engine;Unreal Engine Blueprint;Blueprint</PackageTags>
+		<PackageProjectUrl>https://github.com/1694439208/Avalonia_BluePrint</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/1694439208/Avalonia_BluePrint</RepositoryUrl>
+		<PackageId>HMBB.$(AssemblyName)</PackageId>
+		<Version>0.0.1-alpha</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
