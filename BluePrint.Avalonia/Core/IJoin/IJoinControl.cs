@@ -282,7 +282,7 @@ namespace BluePrint.Core.IJoin
             menuItem.Items.Add(delline);
             ContextMenu.Items.Add(menuItem);
 
-            Canvas.SetTop(this,3);
+            Blueprint_Canvas.SetTop(this,3);
             //Classes = { "IJoinControl"};
             B_Join = new Border
             {
@@ -349,7 +349,7 @@ namespace BluePrint.Core.IJoin
             {
                 //B_Join.Attacheds.Add(DockPanel.Dock, Dock.Left);
                 DockPanel.SetDock(B_Join, Dock.Left);
-                Canvas.SetLeft(B_Join, 0);
+                Blueprint_Canvas.SetLeft(B_Join, 0);
                 //B_Join.MarginLeft = 0;
             }
             else {
@@ -404,11 +404,11 @@ namespace BluePrint.Core.IJoin
             if (position == NodePosition.Left)
             {
                 //MarginLeft = 0;
-                Canvas.SetLeft(this, 0);
+                Blueprint_Canvas.SetLeft(this, 0);
             }
             else {
                 //MarginRight = 0;
-                Canvas.SetRight(this, 0);
+                Blueprint_Canvas.SetRight(this, 0);
             }
             //InvalidateVisual();
             //Children.Add(control);

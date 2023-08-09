@@ -61,7 +61,7 @@ namespace BluePrint.Core.IJoin
         public static Point GetPosition(this Control element,Point point)
         {
             //改成从canvas取
-            return new Point(Canvas.GetLeft(element)+ point.X, Canvas.GetTop(element)+ point.Y);
+            return new Point(Blueprint_Canvas.GetLeft(element)+ point.X, Blueprint_Canvas.GetTop(element)+ point.Y);
             //return GetParentPosition(element, point, parent);
         }
         public static Point GetParentPosition(Control element,Point point, Visual parent) {

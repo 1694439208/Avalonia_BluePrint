@@ -11,13 +11,13 @@ using Avalonia.Layout;
 using Avalonia.Rendering.Composition;
 using BluePrint.Core.IJoin;
 using BluePrint.Core.Join;
+using BluePrint.Core.INode.Model;
 
 namespace BluePrint.Core
 {
     
-    public class BP_Line : Control
+    public class BP_Line : Control, INode.Model.IBP_Render
     {
-        
         BluePrint? bluePrint { set; get; }
         public BP_Line(BluePrint _bluePrint) {
             bluePrint = _bluePrint;
@@ -228,26 +228,26 @@ namespace BluePrint.Core
                     case 4:
                         Width = SEnd.X - Spos.X;
                         Height = Spos.Y - SEnd.Y;
-                        Canvas.SetLeft(this, Spos.X);
-                        Canvas.SetTop(this, SEnd.Y);
+                        Blueprint_Canvas.SetLeft(this, Spos.X);
+                        Blueprint_Canvas.SetTop(this, SEnd.Y);
                         break;
                     case 3:
                         Width = Spos.X - SEnd.X;
                         Height = Spos.Y - SEnd.Y;
-                        Canvas.SetLeft(this, SEnd.X);
-                        Canvas.SetTop(this, SEnd.Y);
+                        Blueprint_Canvas.SetLeft(this, SEnd.X);
+                        Blueprint_Canvas.SetTop(this, SEnd.Y);
                         break;
                     case 2:
                         Width = Spos.X - SEnd.X;
                         Height = SEnd.Y - Spos.Y;
-                        Canvas.SetLeft(this, SEnd.X);
-                        Canvas.SetTop(this, Spos.Y);
+                        Blueprint_Canvas.SetLeft(this, SEnd.X);
+                        Blueprint_Canvas.SetTop(this, Spos.Y);
                         break;
                     case 1:
                         Width = SEnd.X - Spos.X;
                         Height = SEnd.Y - Spos.Y;
-                        Canvas.SetLeft(this, Spos.X);
-                        Canvas.SetTop(this, Spos.Y);
+                        Blueprint_Canvas.SetLeft(this, Spos.X);
+                        Blueprint_Canvas.SetTop(this, Spos.Y);
                         break;
                     default:
                         break;
@@ -316,6 +316,9 @@ namespace BluePrint.Core
                 _LineWidth = value;
             }
         }
+
+        bool IBP_Render.Render { get; set; }
+
         //protected override void OnMouseEnter(MouseEventArgs e)
         protected override void OnPointerEntered(PointerEventArgs e)
         {

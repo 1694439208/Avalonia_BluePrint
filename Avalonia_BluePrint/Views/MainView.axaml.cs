@@ -163,8 +163,8 @@ namespace Avalonia_BluePrint.Views
             //bp.bluePrint.AddChildren(node2);
             //Canvas.SetLeft(node2, 100);
             //Canvas.SetTop(node2, 100);
-            Canvas.SetLeft(node, 100);
-            Canvas.SetTop(node, 100);
+            Blueprint_Canvas.SetLeft(node, 100);
+            Blueprint_Canvas.SetTop(node, 100);
             int x = 200;
             int y = 30;
             for (int i = 0; i < 100; i++)
@@ -177,8 +177,8 @@ namespace Avalonia_BluePrint.Views
                 }
                 var node1 = new Branch(bp.bp);
                 bp.bp.bluePrint.AddChildren(node1);
-                Canvas.SetLeft(node1, x);
-                Canvas.SetTop(node1, y);
+                Blueprint_Canvas.SetLeft(node1, x);
+                Blueprint_Canvas.SetTop(node1, y);
                 var line = new BP_Line(bp.bp.bluePrint)
                 {
                     Width = 1f,

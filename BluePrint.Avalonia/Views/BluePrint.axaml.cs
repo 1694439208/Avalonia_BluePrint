@@ -111,8 +111,8 @@ namespace BluePrint.Views
                 //HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,// HorizontalAlignment.Stretch
             };
             //bp.Background = new SolidColorBrush(Colors.Red);
-            Canvas.SetLeft(bp, 0);
-            Canvas.SetTop(bp, 0);
+            Blueprint_Canvas.SetLeft(bp, 0);
+            Blueprint_Canvas.SetTop(bp, 0);
 
             _nodeTypes = new List<Type>();
 
@@ -137,8 +137,8 @@ namespace BluePrint.Views
                     }
                 };
                 bp.bluePrint.AddChildren(node);
-                Canvas.SetLeft(node, x);
-                Canvas.SetTop(node, y);
+                Blueprint_Canvas.SetLeft(node, x);
+                Blueprint_Canvas.SetTop(node, y);
             }
         }
 

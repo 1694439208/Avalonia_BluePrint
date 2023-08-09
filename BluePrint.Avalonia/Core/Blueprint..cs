@@ -12,7 +12,7 @@ using BluePrint.Core.IJoin;
 
 namespace BluePrint.Core
 {
-    public class BluePrint : Canvas
+    public class BluePrint : Blueprint_Canvas
     {
         /// <summary>
         /// 更新当前焦点控件的z轴，也就是渲染置顶
@@ -20,7 +20,6 @@ namespace BluePrint.Core
         /// <param name="control"></param>
         public void SelectThisInstance(Control control)
         {
-
             Instances.Remove(control);
             Instances.Add(control);
             for (int i = 0; i < Instances.Count; i++)

@@ -56,8 +56,8 @@ namespace BluePrint.Core
                 {
                     var Control = System.Activator.CreateInstance(item, new object[] { this });
                     //(Control as Control).Margin = $"{x1},{y1},auto,auto";
-                    Canvas.SetLeft((Control as Control), x1);
-                    Canvas.SetTop((Control as Control), y1);
+                    Blueprint_Canvas.SetLeft((Control as Control), x1);
+                    Blueprint_Canvas.SetTop((Control as Control), y1);
                     bluePrint.AddChildren((Control)Control);
                     control = (Control)Control;
                 }
@@ -92,8 +92,8 @@ namespace BluePrint.Core
                 {
                     var Control = System.Activator.CreateInstance(item, new object[] { this });
                     //(Control as Control).Margin = $"{p.X},{p.Y},auto,auto";
-                    Canvas.SetLeft((Control as Control), p.X);
-                    Canvas.SetTop((Control as Control), p.Y);
+                    Blueprint_Canvas.SetLeft((Control as Control), p.X);
+                    Blueprint_Canvas.SetTop((Control as Control), p.Y);
                     bluePrint.AddChildren((Control)Control);
                 }
             }
@@ -180,7 +180,7 @@ namespace BluePrint.Core
             var indexa = 1;
             foreach (var item in data.NodeList)
             {
-                //CreateNode((Type)tree1.Tag, Canvas.GetLeft(parent.MousepanelPupopPos), Canvas.GetTop(parent.MousepanelPupopPos));
+                //CreateNode((Type)tree1.Tag, Blueprint_Canvas.GetLeft(parent.MousepanelPupopPos), Blueprint_Canvas.GetTop(parent.MousepanelPupopPos));
                 var control = CreateNode(item.node.node,item.Point.X, item.Point.Y);
                 if (control == null)
                 {
@@ -241,8 +241,8 @@ namespace BluePrint.Core
                     Height = 1f,
                     //backound_color = "rgb(255,255,255)",
                 };
-                Canvas.SetLeft(bP_Line1, 0);
-                Canvas.SetTop(bP_Line1, 0);
+                Blueprint_Canvas.SetLeft(bP_Line1, 0);
+                Blueprint_Canvas.SetTop(bP_Line1, 0);
                 //var nodelist = bluePrint.GetChildrenList();
                 var star1 = from grade in keyValues
                             where grade.Key == item1._Star[0] && grade.Value.Key == item1._Star[1]
@@ -336,7 +336,7 @@ namespace BluePrint.Core
                     pdata.Add(new BPNodedata
                     {
                        
-                        Point = new Data_Point(Canvas.GetLeft(item), Canvas.GetTop(item)),//item.ActualOffset
+                        Point = new Data_Point(Blueprint_Canvas.GetLeft(item), Blueprint_Canvas.GetTop(item)),//item.ActualOffset
                         ID = item.ID,
                         node = new BPNodeType
                         {
@@ -402,8 +402,8 @@ namespace BluePrint.Core
                 //RenderTransform = new ScaleTransform(0.8, 0.8),
                 //RenderTransformOrigin = new RelativePoint(new Point(29, 29),RelativeUnit.Relative),
             };
-            Canvas.SetLeft(bluePrint,0);
-            Canvas.SetTop(bluePrint, 0);
+            Blueprint_Canvas.SetLeft(bluePrint,0);
+            Blueprint_Canvas.SetTop(bluePrint, 0);
             //panel = new Panel
             //{
             //    MarginLeft = 0f,
@@ -422,8 +422,8 @@ namespace BluePrint.Core
                 IsVisible = false
                 //Visibility = Visibility.Hidden
             };
-            Canvas.SetLeft(MouseJoin, 0);
-            Canvas.SetTop(MouseJoin, 0);
+            Blueprint_Canvas.SetLeft(MouseJoin, 0);
+            Blueprint_Canvas.SetTop(MouseJoin, 0);
             bluePrint.AddChildren1(MouseJoin);
             //
             //添加默认拖动显示线条
@@ -434,8 +434,8 @@ namespace BluePrint.Core
                 //backound_color = Color.Parse("#89C4F8"),
                 LineWidth = 5,
             };
-            Canvas.SetLeft(bP_Line, 0);
-            Canvas.SetTop(bP_Line, 0);
+            Blueprint_Canvas.SetLeft(bP_Line, 0);
+            Blueprint_Canvas.SetTop(bP_Line, 0);
             MousepanelPupopPos = new Panel
             {
                 Width = 1,
@@ -528,8 +528,8 @@ namespace BluePrint.Core
             //var tf = this.TransformToVisual(bluePrint);
             //if (tf is Matrix matrix)
             //    MousePoint = MatrixHelper.TransformPoint(matrix, e.GetPosition(this));
-            Canvas.SetLeft(MousepanelPupopPos, MousePoint.X);
-            Canvas.SetTop(MousepanelPupopPos, MousePoint.Y);
+            Blueprint_Canvas.SetLeft(MousepanelPupopPos, MousePoint.X);
+            Blueprint_Canvas.SetTop(MousepanelPupopPos, MousePoint.Y);
         }
         
         /// <summary>
@@ -605,11 +605,11 @@ namespace BluePrint.Core
             //bP_Line.Width = 1f;
             //bP_Line.Height = 1f;
             //bP_Line.Margin = "0,0,auto,auto";
-            Canvas.SetLeft(bP_Line, 0);
-            Canvas.SetTop(bP_Line, 0);
+            Blueprint_Canvas.SetLeft(bP_Line, 0);
+            Blueprint_Canvas.SetTop(bP_Line, 0);
             //MouseJoin.Margin = "0,0,auto,auto";
-            Canvas.SetLeft(MouseJoin, 0);
-            Canvas.SetTop(MouseJoin, 0);
+            Blueprint_Canvas.SetLeft(MouseJoin, 0);
+            Blueprint_Canvas.SetTop(MouseJoin, 0);
             //MouseJoin.MarginTop = -1;
             bP_Line.IsVisible = false;//.Visibility = Visibility.Hidden;
             MouseJoin.IsVisible = false;//Visibility.Hidden;
@@ -724,8 +724,8 @@ namespace BluePrint.Core
                                 
                                 //创建完成让他先刷新一下
                                 
-                                Canvas.SetLeft(bP_Line1, 0);
-                                Canvas.SetTop(bP_Line1, 0);
+                                Blueprint_Canvas.SetLeft(bP_Line1, 0);
+                                Blueprint_Canvas.SetTop(bP_Line1, 0);
                                 bP_Line1.RefreshDrawBezier();
                                 bP_Line.InvalidateVisual();
                             }
@@ -745,8 +745,8 @@ namespace BluePrint.Core
                                     Height = 1f
                                 };
                                 
-                                Canvas.SetLeft(bP_Line1, 0);
-                                Canvas.SetTop(bP_Line1, 0);
+                                Blueprint_Canvas.SetLeft(bP_Line1, 0);
+                                Blueprint_Canvas.SetTop(bP_Line1, 0);
                                 bP_Line1.RefreshDrawBezier();
                                 bP_Line.InvalidateVisual();
                                 bluePrint.AddLineChildren(bP_Line1);
@@ -782,8 +782,8 @@ namespace BluePrint.Core
                                     Width = 1f,
                                     Height = 1f
                                 };
-                                Canvas.SetLeft(bP_Line1, 0);
-                                Canvas.SetTop(bP_Line1, 0);
+                                Blueprint_Canvas.SetLeft(bP_Line1, 0);
+                                Blueprint_Canvas.SetTop(bP_Line1, 0);
                                 bluePrint.AddLineChildren(bP_Line1);
                                 bP_Line1.SetJoin(a, b);
                                 ///连上之后，输入禁用操作
@@ -846,8 +846,8 @@ namespace BluePrint.Core
                     node.SetOffset(temp_mouse_point);
                 }
             }
-            Canvas.SetLeft(MouseJoin, temp_mouse_point.X);
-            Canvas.SetTop(MouseJoin, temp_mouse_point.Y);
+            Blueprint_Canvas.SetLeft(MouseJoin, temp_mouse_point.X);
+            Blueprint_Canvas.SetTop(MouseJoin, temp_mouse_point.Y);
 
 
             // 计算缩放后的椭圆中心坐标
@@ -863,8 +863,8 @@ namespace BluePrint.Core
             //            node.SetOffset(scaledCenter);
             //        }
             //    }
-            //    Canvas.SetLeft(MouseJoin, scaledCenter.X);
-            //    Canvas.SetTop(MouseJoin, scaledCenter.Y);
+            //    Blueprint_Canvas.SetLeft(MouseJoin, scaledCenter.X);
+            //    Blueprint_Canvas.SetTop(MouseJoin, scaledCenter.Y);
             //}
 
             if (IsMouseJoin)
@@ -878,8 +878,8 @@ namespace BluePrint.Core
                 
                 //Debug.WriteLine($"e.Location11:{p}--{e.Location}");
             }
-            //Canvas.SetLeft(MouseJoin, MousePoint.X);
-            //Canvas.SetTop(MouseJoin, MousePoint.Y);
+            //Blueprint_Canvas.SetLeft(MouseJoin, MousePoint.X);
+            //Blueprint_Canvas.SetTop(MouseJoin, MousePoint.Y);
 
 
 

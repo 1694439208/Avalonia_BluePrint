@@ -280,7 +280,7 @@ namespace BluePrint.Core.Controls
                     {
                         if (tree1.Tag != null)
                         {
-                            parent.CreateNode((Type)tree1.Tag, Canvas.GetLeft(parent.MousepanelPupopPos), Canvas.GetTop(parent.MousepanelPupopPos));
+                            parent.CreateNode((Type)tree1.Tag, Blueprint_Canvas.GetLeft(parent.MousepanelPupopPos), Blueprint_Canvas.GetTop(parent.MousepanelPupopPos));
                             //var Control = System.Activator.CreateInstance((Type)itemview.Item.Tag,new object[]{ parent});
                             //parent.bluePrint.AddChildren((CPF.Controls.Control)Control);
                             parent.popup?.Hide();

@@ -18,8 +18,9 @@ using BluePrint.Core.IJoin;
 namespace BluePrint.Core.INode
 {
     //[NodeBaseInfo("控件基类","基类")]
-    public class NodeBase : Panel,Context
+    public class NodeBase : Panel,Context, Model.IBP_Render
     {
+        bool Model.IBP_Render.Render { get; set; }
         /// <summary>
         /// 样式
         /// </summary>
@@ -259,8 +260,8 @@ if({arguments[0]} > {arguments[1]}){{
             };
             stack.Children.Add(OuPutIJoin);
             Grid.SetColumn(OuPutIJoin, 1);
-            //Canvas.SetTop(OuPutIJoin, TitleHeight + 5);
-            //Canvas.SetLeft(OuPutIJoin, 20);
+            //Blueprint_Canvas.SetTop(OuPutIJoin, TitleHeight + 5);
+            //Blueprint_Canvas.SetLeft(OuPutIJoin, 20);
 
             border = new Border();
             var title_control = new StackPanel
@@ -625,8 +626,8 @@ if({arguments[0]} > {arguments[1]}){{
             return ret;
         }
         public void SetOffset(Point point) {
-            Canvas.SetLeft(this, point.X - Mouxy.X);
-            Canvas.SetTop(this, point.Y - Mouxy.Y);
+            Blueprint_Canvas.SetLeft(this, point.X - Mouxy.X);
+            Blueprint_Canvas.SetTop(this, point.Y - Mouxy.Y);
         }
         protected override void OnPointerMoved(PointerEventArgs e)
         {
@@ -639,8 +640,8 @@ if({arguments[0]} > {arguments[1]}){{
                 //为了刷新溢出了的线条
                 //Parent.Parent.Invalidate();
 
-                Canvas.SetLeft(this, Canvas.GetLeft(this) + 1);
-                Canvas.SetTop(this, Canvas.GetTop(this) + 1);
+                Blueprint_Canvas.SetLeft(this, Blueprint_Canvas.GetLeft(this) + 1);
+                Blueprint_Canvas.SetTop(this, Blueprint_Canvas.GetTop(this) + 1);
                 return;
             }
             if (point.Properties.IsLeftButtonPressed && isclick)
@@ -652,11 +653,11 @@ if({arguments[0]} > {arguments[1]}){{
 
                 //MarginLeft += a.X;
                 //MarginTop += a.Y;
-                //var aa = Canvas.GetLeft(this);
+                //var aa = Blueprint_Canvas.GetLeft(this);
                 //Debug.Print($"move:{a}");
                 //_moveX.OnNext(a.X);
-                //Canvas.SetLeft(this, Canvas.GetLeft(this) + a.X);
-                //Canvas.SetTop(this, Canvas.GetTop(this) + a.Y);
+                //Blueprint_Canvas.SetLeft(this, Blueprint_Canvas.GetLeft(this) + a.X);
+                //Blueprint_Canvas.SetTop(this, Blueprint_Canvas.GetTop(this) + a.Y);
                 // TransformPoint
 
             }
