@@ -13,6 +13,7 @@ using Avalonia.Media;
 using ReactiveUI;
 using BluePrint.Core.IJoin;
 using BluePrint.Core.INode;
+using Avalonia.Controls.Shapes;
 
 namespace BluePrint.Core.Join
 {
@@ -86,11 +87,20 @@ namespace BluePrint.Core.Join
             //    Stretch = Stretch.Uniform,
             //    Source = "<svg ><path d=\"m0,0l133.09092,0l110.90908,129.85546l-110.90908,129.85545l-133.09092,0l0,-259.71091z\" p-id=\"1199\"></path></svg>"
             //};
-            b.Child = new Panel
+            //b.Child = new Panel
+            //{
+            //    Background = Brushes.RoyalBlue,
+            //    Width = 16,
+            //    Height = 16,
+            //};
+            b.Child = new Avalonia.Controls.Shapes.Path
             {
-                Background = Brushes.RoyalBlue,
+                Data = PathGeometry.Parse("m0,0l133.09092,0l110.90908,129.85546l-110.90908,129.85545l-133.09092,0l0,-259.71091z"),
+                Stroke = Brushes.Black,
+                StrokeThickness = 2,
                 Width = 16,
-                Height = 16,
+                Height= 16,
+                Stretch = Stretch.Uniform,
             };
             ToolTip.SetTip(b.Child, title.Value);
             if (IsButton)

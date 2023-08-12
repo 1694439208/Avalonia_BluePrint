@@ -4,14 +4,21 @@ using Avalonia.Input;
 using BluePrint.Core.INode.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BluePrint.Core
 {
     public class Blueprint_Canvas : VirtualizingPanel, INavigableContainer
     {
+        /// <summary>
+        /// 设置需要移动 默认移动一次
+        /// </summary>
+        public static readonly AttachedProperty<bool> IsMoveProperty =
+            AvaloniaProperty.RegisterAttached<Blueprint_Canvas, Control, bool>("IsMove", true);
         /// <summary>
         /// Defines the Left attached property.
         /// </summary>
@@ -42,7 +49,7 @@ namespace BluePrint.Core
         static Blueprint_Canvas()
         {
             ClipToBoundsProperty.OverrideDefaultValue<Blueprint_Canvas>(false);
-            AffectsParentArrange<Blueprint_Canvas>(LeftProperty, TopProperty, RightProperty, BottomProperty);
+            AffectsParentArrange<Blueprint_Canvas>(LeftProperty, TopProperty, RightProperty, BottomProperty, IsMoveProperty);
         }
 
         /// <summary>
@@ -54,7 +61,14 @@ namespace BluePrint.Core
         {
             return element.GetValue(LeftProperty);
         }
-
+        public static bool GetIsMove(AvaloniaObject element)
+        {
+            return element.GetValue(IsMoveProperty);
+        }
+        public static void SetIsMove(AvaloniaObject element,bool value)
+        {
+            element.SetValue(IsMoveProperty, value);
+        }
         /// <summary>
         /// Sets the value of the Left attached property for a control.
         /// </summary>
@@ -62,6 +76,7 @@ namespace BluePrint.Core
         /// <param name="value">The left value.</param>
         public static void SetLeft(AvaloniaObject element, double value)
         {
+            SetIsMove(element,true);
             element.SetValue(LeftProperty, value);
         }
 
@@ -82,6 +97,7 @@ namespace BluePrint.Core
         /// <param name="value">The top value.</param>
         public static void SetTop(AvaloniaObject element, double value)
         {
+            SetIsMove(element, true);
             element.SetValue(TopProperty, value);
         }
 
@@ -102,6 +118,7 @@ namespace BluePrint.Core
         /// <param name="value">The right value.</param>
         public static void SetRight(AvaloniaObject element, double value)
         {
+            SetIsMove(element, true);
             element.SetValue(RightProperty, value);
         }
 
@@ -122,6 +139,7 @@ namespace BluePrint.Core
         /// <param name="value">The bottom value.</param>
         public static void SetBottom(AvaloniaObject element, double value)
         {
+            SetIsMove(element, true);
             element.SetValue(BottomProperty, value);
         }
 
@@ -194,11 +212,17 @@ namespace BluePrint.Core
         /// <returns>The space taken.</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
+            var index = 0;
             foreach (Control child in Children)
             {
-                ArrangeChild(child, finalSize);
+                if (GetIsMove(child))
+                {
+                    index++;
+                    ArrangeChild(child, finalSize);
+                    SetIsMove(child, false);
+                }
             }
-
+            //Debug.Print($"计算数量：{index}");
             return finalSize;
 
             //return base.ArrangeOverride(finalSize);
