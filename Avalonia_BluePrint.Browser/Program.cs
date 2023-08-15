@@ -53,6 +53,10 @@ internal partial class Program
     {
         AppBuilder builder = AppBuilder
             .Configure<App>()
+            .With(new SkiaOptions()
+            {
+                MaxGpuResourceSizeBytes = 2147483647,
+            })
             .ConfigureFonts(manager =>
             {
                 manager.AddFontCollection(new EmbeddedFontCollection(

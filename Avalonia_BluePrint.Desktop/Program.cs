@@ -18,6 +18,10 @@ namespace Avalonia_BluePrint.Desktop
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
+                .With(new SkiaOptions()
+                {
+                    MaxGpuResourceSizeBytes = 2147483647,
+                })
                 .WithInterFont()
                 .LogToTrace()
                 .UseReactiveUI();
