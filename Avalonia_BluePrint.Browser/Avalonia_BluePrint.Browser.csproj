@@ -5,7 +5,7 @@
 		<WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
 		<OutputType>Exe</OutputType>
 
-		<EmccFlags>-sVERBOSE -sERROR_ON_UNDEFINED_SYMBOLS=0 -sMAX_WEBGL_VERSION=2</EmccFlags>
+		<EmccFlags>-sVERBOSE -sERROR_ON_UNDEFINED_SYMBOLS=0 -sMAX_WEBGL_VERSION=2 -sWEBGL2_BACKWARDS_COMPATIBILITY_EMULATION</EmccFlags>
 		<RunAOTCompilation>true</RunAOTCompilation>
 		<PublishTrimmed>true</PublishTrimmed>
 		<TrimMode>full</TrimMode>
@@ -29,7 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia.Browser" Version="11.0.2" />
+		<PackageReference Include="Avalonia.Browser" Version="11.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
