@@ -307,11 +307,16 @@ namespace BluePrint.Core
                     List<BPPutJoin> IntPutJoin = new List<BPPutJoin>();
                     foreach (var item1 in item._IntPutJoin)
                     {
+                        var data_temp = item1.Item1.Get();
+                        if (!data_temp.IsSerialize)
+                        {
+                            data_temp.Value = default;
+                        }
                         IntPutJoin.Add(new BPPutJoin
                         {
                             Position = item1.Item1._position,
                             type = item1.Item1.GetType(),//Type
-                            Data = item1.Item1.Get(),
+                            Data = data_temp,
                             ID = index_id,
                             PropretyValue = item1.Item1.Dump()
                         }) ;
@@ -322,11 +327,16 @@ namespace BluePrint.Core
                     List<BPPutJoin> OutPutJoin = new List<BPPutJoin>();
                     foreach (var item1 in item._OutPutJoin)
                     {
+                        var data_temp = item1.Item1.Get();
+                        if (!data_temp.IsSerialize)
+                        {
+                            data_temp.Value = default;
+                        }
                         OutPutJoin.Add(new BPPutJoin
                         {
                             Position = item1.Item1._position,
                             type = item1.Item1.GetType(),
-                            Data = item1.Item1.Get(),
+                            Data = data_temp,
                             ID = index_id,
                             PropretyValue = item1.Item1.Dump()
                         });

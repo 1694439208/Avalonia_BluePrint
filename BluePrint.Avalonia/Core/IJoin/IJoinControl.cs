@@ -280,6 +280,16 @@ namespace BluePrint.Core.IJoin
                 this.bParent.ClearState();
             };
             menuItem.Items.Add(delline);
+            var eval = new MenuItem
+            {
+                Header = "从当前节点执行",
+            };
+            eval.Click +=async (s, e) => {
+                var a = new Runtime.NodeParse(bParent);
+                var ast = a.Parser(_Node as INode.NodeBase);
+                await Runtime.Evaluate.Eval(ast, null);
+            };
+            menuItem.Items.Add(eval);
             ContextMenu.Items.Add(menuItem);
 
             Blueprint_Canvas.SetTop(this,3);

@@ -49,6 +49,10 @@ namespace BluePrint.Core.IJoin
         /// </summary>
         public bool IsTypeCheck = true;
         /// <summary>
+        /// 接头数据是否序列化
+        /// </summary>
+        public bool IsSerialize = true;
+        /// <summary>
         /// 数据类型
         /// </summary>
         public Type Type { set; get; }
