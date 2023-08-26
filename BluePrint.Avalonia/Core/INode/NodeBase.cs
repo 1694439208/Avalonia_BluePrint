@@ -14,6 +14,7 @@ using Avalonia.Data;
 using System.Reflection;
 using Avalonia.Controls.Primitives;
 using BluePrint.Core.IJoin;
+using Newtonsoft.Json.Linq;
 
 namespace BluePrint.Core.INode
 {
@@ -275,7 +276,7 @@ if({arguments[0]} > {arguments[1]}){{
                         Children = {
                             new Title
                             {
-                                Name = "title",
+                                Name = "titlea",
                                 Background = new SolidColorBrush(Color.Parse("#B8FFBF19")),// Brushes.Aqua,
                                 title = Title,
                             },
@@ -293,7 +294,7 @@ if({arguments[0]} > {arguments[1]}){{
                     stack
                 }
             };
-            DockPanel.SetDock(title_control.FindViewControl<Title>("title"), Dock.Left);
+            DockPanel.SetDock(title_control.FindViewControl<Title>("titlea"), Dock.Left);
 
             var checkbox = title_control.FindViewControl<CheckBox>("zhedie");
             DockPanel.SetDock(checkbox, Dock.Right);
@@ -443,6 +444,13 @@ if({arguments[0]} > {arguments[1]}){{
         //    //IsKeyboardFocusWithin
         //}
         public string Title = "";
+        public void SetTitle(string data) {
+            if (this.FindViewControl<Title>("titlea") is Title title)
+            {
+                title.SetTitle(data);
+                Title = data;
+            }
+        }
         public void RefreshNodes()
         {
             

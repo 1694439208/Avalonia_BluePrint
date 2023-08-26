@@ -17,6 +17,13 @@ using BluePrint.Core;
 using BluePrint.Node.Common;
 using SkiaSharp;
 using BluePrint.Core.Node;
+using Avalonia.OpenGL;
+using HarfBuzzSharp;
+using System;
+using Avalonia_BluePrint.ViewModels;
+using BluePrint.Core.INode;
+using static OpenAI.ObjectModels.Models;
+using Avalonia;
 
 namespace Avalonia_BluePrint.Views
 {
@@ -64,7 +71,197 @@ namespace Avalonia_BluePrint.Views
                 _manager?.Show(new Notification("提示", "保存成功", NotificationType.Success));
             }
         }
+        public async Task LoadDartnet() {
+            try
+            {
+                var storage = _topLevel?.StorageProvider;
+                if (storage == null)
+                    return;
+                var select = await storage.OpenFilePickerAsync(new FilePickerOpenOptions()
+                {
+                    Title = "选择加载cfg文件",
+                    AllowMultiple = false,
+                    FileTypeFilter = new List<FilePickerFileType>()
+                    {
+                        new FilePickerFileType("dartnet")
+                        {
+                            Patterns = new[] { "*.cfg" }
+                        }
+                    }
+                });
+                var selectFile = select?.FirstOrDefault();
+                if (selectFile != null)
+                {
+                    var stream =  File.ReadAllText(selectFile.Path.LocalPath);//.OpenReadAsync();
+                    var cfg = Parser.parse_network_cfg(stream);//@"I:\CAFFE\C++\YOLO3\tiny.cfg"
+                                                                           //var nodes =  Parser.CreateLayer(cfg);
+                    var x = 0;
+                    var y = 0;
+                    var width = 60;
+                    List<KeyValuePair<int, KeyValuePair<int, IJoinControl>>> keyValues = new List<KeyValuePair<int, KeyValuePair<int, IJoinControl>>>();
+                    List<NodeBase> layers = new List<NodeBase>();
+                    for (int i = 0; i < cfg.Count; i++)
+                    {
+                        var indexa = 1;
+                        var nodeInterface = bp.bp.CreateNode(typeof(sequence), x, y) as NodeBase;
+                        x += width;
+                        if (nodeInterface == null)
+                        {
+                            continue;
+                        }
 
+
+                        //反序列化创建的 把他输入输出都删掉重新创建
+                        nodeInterface._IntPutJoin.Clear();
+                        nodeInterface.ClearIntPut();
+                        nodeInterface._OutPutJoin.Clear();
+                        nodeInterface.ClearOntPut();
+
+                        layers.Add(nodeInterface);
+                        if (cfg[i].Key == "[route]")
+                        {
+                            var layerss = cfg[i].Value["layers"].Trim().Split(',');
+                            if (layerss.Length == 1)
+                            {
+                                int laye = int.Parse(layerss[0]);
+                                var layout1 = layers[i + laye]._OutPutJoin.FirstOrDefault();
+                                //给这个层加个输出
+                                indexa++;
+                                var join = bp.bp.CreateJoin(typeof(BluePrint.Core.Join.ValueText), IJoinControl.NodePosition.Left, nodeInterface);
+                                keyValues.Add(new KeyValuePair<int, KeyValuePair<int, IJoinControl>>(indexa, new KeyValuePair<int, IJoinControl>(indexa, join)));
+                                nodeInterface._IntPutJoin.Add((join, new Node_Interface_Data
+                                {
+                                    Title = "层参数",
+                                    Value = "",
+                                    Type = typeof(object),
+                                    Tips = "层参数",
+                                    IsTypeCheck = false,
+                                }));
+
+                                //执行线只支持一对一
+                                var bP_Line1 = new BP_Line(bp.bp.bluePrint)
+                                {
+                                    Width = 1f,
+                                    Height = 1f,
+                                    //backound_color = "rgb(255,255,255)",
+                                };
+                                Blueprint_Canvas.SetLeft(bP_Line1, 0);
+                                Blueprint_Canvas.SetTop(bP_Line1, 0);
+
+                                bp.bp.bluePrint.AddLineChildren(bP_Line1);
+                                bP_Line1.SetJoin(layout1.Item1, join);
+                                //创建完成让他先刷新一下
+                                bP_Line1.RefreshDrawBezier();
+                            }
+                            if (layerss.Length == 2)
+                            {
+                                int laye1 = int.Parse(layerss[0]);
+                                int laye2 = int.Parse(layerss[1]);
+
+                                var layout1 = layers[i + laye1]._OutPutJoin.FirstOrDefault();
+
+                                var layout2 = layers[laye2]._OutPutJoin.FirstOrDefault();
+
+                                //给这个层加个输出
+                                indexa++;
+                                var join = bp.bp.CreateJoin(typeof(BluePrint.Core.Join.ValueText), IJoinControl.NodePosition.Left, nodeInterface);
+                                keyValues.Add(new KeyValuePair<int, KeyValuePair<int, IJoinControl>>(indexa, new KeyValuePair<int, IJoinControl>(indexa, join)));
+                                nodeInterface._IntPutJoin.Add((join, new Node_Interface_Data
+                                {
+                                    Title = "层参数",
+                                    Value = "",
+                                    Type = typeof(object),
+                                    Tips = "层参数",
+                                    IsTypeCheck = false,
+                                }));
+
+                                //执行线只支持一对一
+                                var bP_Line1 = new BP_Line(bp.bp.bluePrint)
+                                {
+                                    Width = 1f,
+                                    Height = 1f,
+                                    //backound_color = "rgb(255,255,255)",
+                                };
+                                Blueprint_Canvas.SetLeft(bP_Line1, 0);
+                                Blueprint_Canvas.SetTop(bP_Line1, 0);
+
+                                bp.bp.bluePrint.AddLineChildren(bP_Line1);
+                                bP_Line1.SetJoin(layout1.Item1, join);
+                                //创建完成让他先刷新一下
+                                bP_Line1.RefreshDrawBezier();
+
+                                //给这个层加个输出
+                                indexa++;
+                                var join1 = bp.bp.CreateJoin(typeof(BluePrint.Core.Join.ValueText), IJoinControl.NodePosition.Left, nodeInterface);
+                                keyValues.Add(new KeyValuePair<int, KeyValuePair<int, IJoinControl>>(indexa, new KeyValuePair<int, IJoinControl>(indexa, join1)));
+                                nodeInterface._IntPutJoin.Add((join1, new Node_Interface_Data
+                                {
+                                    Title = "层参数",
+                                    Value = "",
+                                    Type = typeof(object),
+                                    Tips = "层参数",
+                                    IsTypeCheck = false,
+                                }));
+
+                                //执行线只支持一对一
+                                var bP_Line11 = new BP_Line(bp.bp.bluePrint)
+                                {
+                                    Width = 1f,
+                                    Height = 1f,
+                                    //backound_color = "rgb(255,255,255)",
+                                };
+                                Blueprint_Canvas.SetLeft(bP_Line11, 0);
+                                Blueprint_Canvas.SetTop(bP_Line11, 0);
+
+                                bp.bp.bluePrint.AddLineChildren(bP_Line11);
+                                bP_Line11.SetJoin(layout2.Item1, join1);
+                                //创建完成让他先刷新一下
+                                bP_Line11.RefreshDrawBezier();
+                            }
+                        }
+                        else
+                        {
+                            indexa++;
+                            var join1 = bp.bp.CreateJoin(typeof(BluePrint.Core.Join.ValueText), IJoinControl.NodePosition.Left, nodeInterface);
+                            keyValues.Add(new KeyValuePair<int, KeyValuePair<int, IJoinControl>>(indexa, new KeyValuePair<int, IJoinControl>(indexa, join1)));
+                            nodeInterface._IntPutJoin.Add((join1, new Node_Interface_Data
+                            {
+                                Title = "输入参数",
+                                Value = "",
+                                Type = typeof(object),
+                                Tips = "输入参数",
+                                IsTypeCheck = false,
+                            }));
+
+                            indexa++;
+                            var join2 = bp.bp.CreateJoin(typeof(BluePrint.Core.Join.ValueText), IJoinControl.NodePosition.right, nodeInterface);
+                            keyValues.Add(new KeyValuePair<int, KeyValuePair<int, IJoinControl>>(indexa, new KeyValuePair<int, IJoinControl>(indexa, join2)));
+                            nodeInterface._OutPutJoin.Add((join2, new Node_Interface_Data
+                            {
+                                Title = "输出参数",
+                                Value = "",
+                                Type = typeof(object),
+                                Tips = "输出参数",
+                                IsTypeCheck = false,
+                            }));
+                        }
+                        nodeInterface.SetTitle(cfg[i].Key);
+                        nodeInterface.RefreshNodes();
+                    }
+
+                    //var BPObject = JsonConvert.DeserializeObject<BParent.BPByte>(reader.ReadToEnd());
+                    //if (BPObject != null)
+                    //{
+                    //    bp.SetBP(BPObject);
+                    //    _manager?.Show(new Notification("提示", "加载成功", NotificationType.Success));
+                    //}
+                }
+            }
+            catch (System.Exception ex)
+            {
+                _manager?.Show(new Notification("错误", ex.Message, NotificationType.Error));
+            }
+        }
         public async Task SaveBP()
         {
             try

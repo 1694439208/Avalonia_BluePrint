@@ -1,8 +1,12 @@
 ﻿
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Media;
+using BluePrint.Core.IJoin;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Subjects;
 using System.Text;
 
 namespace BluePrint.Core.INode
@@ -27,13 +31,26 @@ namespace BluePrint.Core.INode
         //    }*/
         //    base.Render(dc);
         //}
-        public string title;
+        public Subject<string> _title = new Subject<string>();
+        public string title = "";
+
+        public void SetTitle(string data)
+        {
+            //_title.OnNext(data);
+            if (this.FindViewControl<TextBlock>("title1") is TextBlock textBlock1)
+            {
+                textBlock1.Text = data;
+            }
+        }
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            VisualChildren.Add(new TextBlock
+            
+            Children.Add(new TextBlock
             {
+                Name = "title1",
                 Text = title,
+                //[!TextBlock.TextProperty] = new Binding("title"),
                 //Foreground = "218,223,221",
                 FontSize = 15,
                 FontFamily = "微软雅黑",

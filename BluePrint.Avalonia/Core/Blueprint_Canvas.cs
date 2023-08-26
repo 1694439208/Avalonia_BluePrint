@@ -215,12 +215,13 @@ namespace BluePrint.Core
             var index = 0;
             foreach (Control child in Children)
             {
-                if (GetIsMove(child))
-                {
-                    index++;
-                    ArrangeChild(child, finalSize);
-                    SetIsMove(child, false);
-                }
+                //if (GetIsMove(child))
+                //{
+                //    index++;
+                //    ArrangeChild(child, finalSize);
+                //    SetIsMove(child, false);
+                //}
+                ArrangeChild(child, finalSize);
             }
             //Debug.Print($"计算数量：{index}");
             return finalSize;
