@@ -53,6 +53,10 @@
 
 > https://github.com/Oaz/AvaloniaUI.PrintToPDF
 
+# 为了项目更好发展，可以支持一下
+
+> # ![](https://github.com/1694439208/BluePrint/raw/master/image/pay.png)
+
 ## 预览
 
 ![](Preview/1.png)
