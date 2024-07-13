@@ -6,12 +6,12 @@ using BluePrint.Core.IJoin;
 
 namespace BluePrint.Core.Join
 {
-    public class ComboBoxJoin : IJoinControl
+    public class ComboBoxJoin_ : IJoinControl
     {
-        public ComboBoxJoin() : base()
+        public ComboBoxJoin_() : base()
         {
         }
-        public ComboBoxJoin(BParent _bParent, NodePosition JoinDir, Control Node) : base(_bParent, JoinDir, Node, Runtime.Token.NodeToken.Value)
+        public ComboBoxJoin_(BParent _bParent, NodePosition JoinDir, Control Node) : base(_bParent, JoinDir, Node, Runtime.Token.NodeToken.Value)
         {
             nodePosition = JoinDir;
         }

@@ -14,6 +14,7 @@ using ReactiveUI;
 using BluePrint.Core.IJoin;
 using BluePrint.Core.INode;
 using Avalonia.Controls.Shapes;
+using BluePrint.Core.Controls;
 
 namespace BluePrint.Core.Join
 {
@@ -60,6 +61,7 @@ namespace BluePrint.Core.Join
             //Width = 5,
         };
 
+        
         public Node_Interface_Data title;
         
         protected override void OnInitialized()
@@ -93,14 +95,14 @@ namespace BluePrint.Core.Join
             //    Width = 16,
             //    Height = 16,
             //};
-            b.Child = new Avalonia.Controls.Shapes.Path
+            b.Child = new Path_
             {
-                Data = PathGeometry.Parse("m0,0l133.09092,0l110.90908,129.85546l-110.90908,129.85545l-133.09092,0l0,-259.71091z"),
-                Stroke = Brushes.Black,
+                // PathGeometry.Parse("m0,0l133.09092,0l110.90908,129.85546l-110.90908,129.85545l-133.09092,0l0,-259.71091z"),
+                //Stroke = Brushes.Black,
                 StrokeThickness = 2,
-                Width = 16,
-                Height= 16,
-                Stretch = Stretch.Uniform,
+                Width = 18,
+                Height = 18,
+                //Stretch = Stretch.Uniform,
             };
             ToolTip.SetTip(b.Child, title.Value);
             if (IsButton)

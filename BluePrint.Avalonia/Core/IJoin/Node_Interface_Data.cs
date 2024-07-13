@@ -23,6 +23,10 @@ namespace BluePrint.Core.IJoin
             {
                 return job.ToObject<T>();
             }
+            if (Data is JArray jarr)
+            {
+                return jarr.ToObject<T>();
+            }
             return (T)Data;
         }
     }
@@ -36,6 +40,10 @@ namespace BluePrint.Core.IJoin
     }
     public class Node_Interface_Data
     {
+        /// <summary>
+        /// Name
+        /// </summary>
+        public string? Name { set; get; }
         /// <summary>
         /// 标题
         /// </summary>

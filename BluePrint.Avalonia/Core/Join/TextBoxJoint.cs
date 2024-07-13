@@ -12,6 +12,7 @@ namespace BluePrint.Core.Join
 
         public TextBoxJoint() : base()
         {
+            
         }
         public TextBoxJoint(BParent _bParent, NodePosition JoinDir, Control Node) : base(_bParent, JoinDir, Node, Runtime.Token.NodeToken.Value)
         {

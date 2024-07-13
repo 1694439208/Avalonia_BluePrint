@@ -43,7 +43,7 @@ namespace BluePrint.Core.Join
         public TextBlock text1 = new TextBlock
         {
             Text = "文本a11111111",
-            Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
+            //Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
         };
         /*protected override void Initial0izeComponent()
         {

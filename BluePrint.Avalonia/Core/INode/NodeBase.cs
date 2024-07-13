@@ -15,6 +15,7 @@ using System.Reflection;
 using Avalonia.Controls.Primitives;
 using BluePrint.Core.IJoin;
 using Newtonsoft.Json.Linq;
+using easyData.Runtime;
 
 namespace BluePrint.Core.INode
 {
@@ -279,26 +280,46 @@ if({arguments[0]} > {arguments[1]}){{
                                 Name = "titlea",
                                 Background = new SolidColorBrush(Color.Parse("#B8FFBF19")),// Brushes.Aqua,
                                 title = Title,
+                                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
                             },
                             new CheckBox
                             {
                                 Width = TitleHeight,
                                 Height = TitleHeight,
+                                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
                                 IsThreeState = true,
                                 Name = "zhedie",
                                 Padding = new Thickness(0),
                                 //[!CheckBox.IsCheckedProperty] = new Binding("ischeck")
-                            }
+                            },
+                            new Button
+                            {
+                                Width = TitleHeight,
+                                Height = TitleHeight,
+                                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right,
+                                Content = "▷",
+                                Name = "run",
+                                Padding = new Thickness(0),
+                                //[!CheckBox.IsCheckedProperty] = new Binding("ischeck")
+                            },
                         }
                     },
                     stack
                 }
             };
+            
             DockPanel.SetDock(title_control.FindViewControl<Title>("titlea"), Dock.Left);
-
             var checkbox = title_control.FindViewControl<CheckBox>("zhedie");
-            DockPanel.SetDock(checkbox, Dock.Right);
 
+            var run = title_control.FindViewControl<Button>("run");
+            //ToolTip.SetPlacement(run,PlacementMode.);
+            ToolTip.SetTip(run, "从当前节点开始运行");
+            //DockPanel.SetDock(checkbox, Dock.Right);
+            run.Click += async (s,e)=>{
+                var a = new Runtime.NodeParse(bParent);
+                var ast = a.Parser(this as NodeBase);
+                await EvaluateRegex.Eval(ast, null);
+            };
             checkbox.IsCheckedChanged += (s, e) => {
                 if (s is CheckBox checkBox)
                 {
@@ -354,7 +375,7 @@ if({arguments[0]} > {arguments[1]}){{
                                 {
                                     var h = _OutPutJoin[i].Item1.Bounds.Height;
                                     _OutPutJoin[i].Item1.Margin = new Thickness(0, -h, 0, 0);
-                                    //_OutPutJoin[i].Item1.IsVisible = false;
+                                    _OutPutJoin[i].Item1.IsVisible = false;
                                 }
                             }
                             break;
@@ -393,24 +414,30 @@ if({arguments[0]} > {arguments[1]}){{
         Border border;
         protected override void OnGotFocus(GotFocusEventArgs e)
         {
-            if (NodeState != NodeState.None)
+            try
             {
-                return;
-            }
-            base.OnGotFocus(e);
-
-            var myButton = this.FindControl<Border>("test");
-            if (border is Border)
-            {
-                border.BoxShadow = new BoxShadows(new BoxShadow
+                if (NodeState != NodeState.None)
                 {
-                    Color = Colors.Black,
-                    Blur = 15,
-                });
-                //border.BorderBrush = new SolidColorBrush(Color.FromRgb(197, 131, 35));
-                //border.BorderThickness = new Thickness(1);
-            }
+                    return;
+                }
+                base.OnGotFocus(e);
 
+                var myButton = this.FindControl<Border>("test");
+                if (border is Border)
+                {
+                    border.BoxShadow = new BoxShadows(new BoxShadow
+                    {
+                        Color = Colors.Black,
+                        Blur = 15,
+                    });
+                    //border.BorderBrush = new SolidColorBrush(Color.FromRgb(197, 131, 35));
+                    //border.BorderThickness = new Thickness(1);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+            }
         }
         protected override void OnLostFocus(RoutedEventArgs e)
         {

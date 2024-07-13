@@ -61,9 +61,12 @@ namespace BluePrint.Core.Join
         protected override void OnInitialized()
         {
             base.OnInitialized();
+
+            text1.Content = __value.Title;
+
             text1.Click += (s,e) => {
                 __value.Value = text1.IsChecked??false;
-                text1.Content = __value.Value.ToString();
+                //text1.Content = __value.Value.ToString();
             };
             //VisualChildren.Add(new Panel
             //{

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using static BluePrint.Core.Runtime.Token;
+using easyData.Runtime;
 
 namespace BluePrint.Core.IJoin
 {
@@ -236,6 +237,7 @@ namespace BluePrint.Core.IJoin
         
         protected override void OnInitialized()
         {
+            
             ContextMenu = new ContextMenu()
             {
                 //Width = 100,
@@ -287,7 +289,7 @@ namespace BluePrint.Core.IJoin
             eval.Click +=async (s, e) => {
                 var a = new Runtime.NodeParse(bParent);
                 var ast = a.Parser(_Node as INode.NodeBase);
-                await Runtime.Evaluate.Eval(ast, null);
+                await EvaluateRegex.Eval(ast, null);
             };
             menuItem.Items.Add(eval);
             ContextMenu.Items.Add(menuItem);
@@ -357,12 +359,14 @@ namespace BluePrint.Core.IJoin
 
             if (_position == NodePosition.Left)
             {
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left;
                 //B_Join.Attacheds.Add(DockPanel.Dock, Dock.Left);
                 DockPanel.SetDock(B_Join, Dock.Left);
                 Blueprint_Canvas.SetLeft(B_Join, 0);
                 //B_Join.MarginLeft = 0;
             }
             else {
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right;
                 DockPanel.SetDock(B_Join, Dock.Right);
                 //B_Join.Attacheds.Add(DockPanel.Dock, Dock.Right);
                 //B_Join.MarginRight = 0;
