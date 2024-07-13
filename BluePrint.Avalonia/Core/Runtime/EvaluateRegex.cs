@@ -24,7 +24,7 @@ namespace easyData.Runtime
             {
                 case Token.NodeToken.ExpressionValue:
                 case Token.NodeToken.Expression:
-                    //表达式就执行
+                    //表达式就执行 
                     foreach (var item in nodeAst.PrevNodes)
                     {
                         await Calculated(item, GlobalContext);
