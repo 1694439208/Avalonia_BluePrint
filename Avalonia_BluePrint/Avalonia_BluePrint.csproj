@@ -13,16 +13,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Avalonia" Version="11.0.3" />
-		<PackageReference Include="Avalonia.Skia" Version="11.0.3" />
-		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.3" />
-		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.3" />
-		<PackageReference Include="Avalonia.ReactiveUI" Version="11.0.3" />
+		<PackageReference Include="Avalonia" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Skia" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5" />
+		<PackageReference Include="Avalonia.ReactiveUI" Version="11.0.5" />
 		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.3" />
-		<PackageReference Include="Betalgo.OpenAI" Version="7.1.5" />
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
+		<PackageReference Include="Betalgo.OpenAI" Version="7.3.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.92" />
+		<PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="8.0.0-rc.2.9530" />
 	</ItemGroup>
 
 	<ItemGroup>
